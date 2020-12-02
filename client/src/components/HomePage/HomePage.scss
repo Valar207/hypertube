@@ -1,0 +1,42 @@
+.HomePage__body {
+    h2 {
+        color: white;
+    }
+    h5 {
+        color: white;
+    }
+    padding: 50px 50px 0 80px;
+    .HomePage__section {
+        // margin: 40px 50px 0 50px;
+        display: flex;
+        .HomePage__section-link {
+            margin-left: 10px;
+            font-size: 24px;
+            color: #1DE9B6;
+            transition: 0.5s;
+            text-decoration: none;
+            &:hover {
+                color: #64FFDA;
+                transition: 0.5s;
+            }
+        }
+        .MuiGridList-root {
+            flex-wrap: nowrap !important;
+        }
+        .HomePage__section-items {
+            height: 350px;
+            width: 100%;
+        }
+        
+    }
+}  
+::-webkit-scrollbar {
+    width: 6px;
+    height: 3px;
+    }
+::-webkit-scrollbar-track {
+    background: #333333;
+    }
+::-webkit-scrollbar-thumb {
+    background: #1DE9B6;
+    }
