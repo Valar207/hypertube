@@ -1,0 +1,16 @@
+.header__body {
+    height: 70px;
+    .MuiAppBar-colorPrimary{
+        background-color: #1c1c1c;
+    }
+    .header__logo img{
+        height: 45px;
+    }
+    .header__icon {
+        .MuiSvgIcon-root {
+            color: white;
+            height: 35px;
+            width: 35px;
+        }
+    }
+}
