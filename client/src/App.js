@@ -1,11 +1,14 @@
-import React from 'react'
-import { Header } from './components/Header/Header'
-import { HomePage } from './components/HomePage/HomePage'
-import { ListMovie } from './components/ListMovie/ListMovie'
-import { SignInUp } from "./components/SignInUp/SignInUp"
-import { PlayerPage } from "./components/PlayerPage/PlayerPage"
+import React from "react";
+import { Header } from "./components/Header/Header";
+import { HomePage } from "./components/HomePage/HomePage";
+import { ListMovie } from "./components/ListMovie/ListMovie";
+import { SignInUp } from "./components/SignInUp/SignInUp";
+import { PlayerPage } from "./components/PlayerPage/PlayerPage";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import './assets/Style.scss'
+import "./assets/Style.scss";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:8080";
 
 function App() {
   return (
@@ -20,9 +23,6 @@ function App() {
         </Switch>
       </Router>
     </React.Fragment>
-
-
-
   );
 }
 

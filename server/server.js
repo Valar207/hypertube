@@ -18,8 +18,10 @@ server.listen(port, (err) => {
   console.log(`listening on ${port}`);
 });
 
-
 app.post("/login", (req, res) => {
   console.log(req.body);
 });
 
+app.post("/", (req, res) => {
+  console.log(req.body);
+});

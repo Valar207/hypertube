@@ -1,24 +1,24 @@
 #background {
-  position: fixed; 
-  top: -50%; 
-  left: -50%; 
-  width: 200%; 
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
   height: 200%;
   z-index: -1;
 }
 #background img {
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  bottom: 0; 
-  margin: auto; 
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
   min-width: 50%;
   min-height: 50%;
 }
 .homepage__body {
-  background-color: #2C2C2C;
-  margin: 0px 0 0 0 ;
+  background-color: #2c2c2c;
+  margin: 0px 0 0 0;
   padding: 20px;
   border-radius: 20px;
   height: 900px;
@@ -26,7 +26,7 @@
   justify-content: center;
   text-align: center;
   .MuiTabs-indicator {
-    background-color: #1DE9B6;
+    background-color: #1de9b6;
   }
   .font-size-20 {
     font-size: 20px;
@@ -36,12 +36,12 @@
     font-size: 20px !important;
     margin: 20px 0 20px 0;
     :focus {
-      outline: none
+      outline: none;
     }
   }
   .homepage__btn {
     margin: 30px 0 0 0;
-    height: 65px ;
+    height: 65px;
     width: 100%;
     background: black;
     border-radius: 50px;
@@ -49,14 +49,14 @@
     transition: 0.7s;
     &:hover {
       transition: 0.5s;
-      background-color: #1DE9B6;
-      color: #004D40;
+      background-color: #1de9b6;
+      color: #004d40;
     }
     &:focus {
       outline: none;
     }
   }
-  .homepage__omniauth img{
+  .homepage__omniauth img {
     width: 100px;
   }
   .separator {
@@ -65,8 +65,9 @@
     text-align: center;
     margin: 50px 0px 20px 0;
     color: white;
-    &::before, &::after {
-      content: '';
+    &::before,
+    &::after {
+      content: "";
       flex: 1;
       border-bottom: 1px solid white;
     }
@@ -84,7 +85,7 @@
       margin: 0 auto;
       border-radius: 50%;
       width: 180px;
-      height: 180px
+      height: 180px;
     }
     .uploadImgProfile-btn {
       position: absolute;
@@ -93,19 +94,19 @@
       left: 60px;
     }
   }
-  
+
   .homepage__form {
-    .MuiInputBase-root{
-        border-radius: 50px;
+    .MuiInputBase-root {
+      border-radius: 50px;
     }
-      .MuiOutlinedInput-notchedOutline{
-        border-color: white !important;
+    .MuiOutlinedInput-notchedOutline {
+      border-color: white !important;
     }
-      .MuiOutlinedInput-input {
-        color: white ;
+    .MuiOutlinedInput-input {
+      color: white;
     }
-      .MuiFormLabel-root {
-        color: white ;
+    .MuiFormLabel-root {
+      color: white;
     }
     .MuiFormHelperText-root {
       color: white;
@@ -119,13 +120,7 @@
   .show-pwd {
     color: white;
     &:focus {
-      outline: none ;
+      outline: none;
     }
   }
-
- 
 }
-
-
-
-
