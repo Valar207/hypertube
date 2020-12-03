@@ -37,7 +37,6 @@ export const SignInUp = (props) => {
   const [userSignIn, setUserSignIn] = useState({
     username: "",
     password: "",
-    showSigninPassword: false,
   });
 
   const handleChangeSignUp = (e) => {
@@ -54,12 +53,13 @@ export const SignInUp = (props) => {
   };
   const HandleSignIn = (e) => {
     e.preventDefault();
-    console.log("signin");
+    axios.post("/signin", userSignIn);
   };
   const HandleSignUp = (e) => {
     e.preventDefault();
-    console.log("signup");
-    axios.post("/", userSignUp);
+    axios.post("/signup", userSignUp).then((res) => {
+      console.log(res);
+    });
   };
   const handleClickShowPassword = (e) => {
     setUserSignUp({
@@ -88,7 +88,7 @@ export const SignInUp = (props) => {
         <Tab label="Sign in" className="font-size-20" />
       </Tabs>
       <TabPanel value={tabsValue} index={0}>
-        <form onSubmit={HandleSignUp}>
+        <form onSubmit={(e) => HandleSignUp(e)}>
           <div className="homepage__profil-img">
             <img
               className="imgProfile"
@@ -216,7 +216,7 @@ export const SignInUp = (props) => {
       </TabPanel>
 
       <TabPanel value={tabsValue} index={1} className="signin__body">
-        <form onSubmit={HandleSignIn}>
+        <form onSubmit={(e) => HandleSignIn(e)}>
           <Grid container spacing={3} className="homepage__form">
             <Grid item xs={12}>
               {" "}
