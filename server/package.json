@@ -1,22 +1,47 @@
 {
-  "name": "server",
+  "name": "hypertube",
   "version": "1.0.0",
-  "description": "",
+  "description": "First version hypertube",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint --fix src",
+    "test": "jest"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.6"
+  "author": "gbikoumo asoysava vrossi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Valar207/hypertube"
   },
+  "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.19.0",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-validator": "^6.7.0"
+    "express-promise-router": "^4.0.1",
+    "helmet": "^4.2.0",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "supertest": "^6.0.1"
   }
 }
