@@ -53,11 +53,11 @@ export const SignInUp = (props) => {
   };
   const HandleSignIn = (e) => {
     e.preventDefault();
-    axios.post("/signin", userSignIn);
+    axios.post("user/signin", userSignIn);
   };
   const HandleSignUp = (e) => {
     e.preventDefault();
-    axios.post("/signup", userSignUp).then((res) => {
+    axios.post("user/signup", userSignUp).then((res) => {
       console.log(res);
     });
   };
