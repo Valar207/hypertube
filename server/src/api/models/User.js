@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const Movie = require('./Movie');
 const authHelper = require('../helpers/authHelper');
 
 const { DEFAULT_USER_IMAGE } = process.env;
@@ -20,7 +19,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  name: {
+  firstname: {
     type: String,
     required: true
   },
@@ -50,7 +49,7 @@ const UserSchema = new Schema({
 });
 
 // Récupérer tout les utilisateurs
-UserSchema.methods.getUsers = async () => {
+UserSchema.statics.getUsers = async function () {
   try {
     const users = await this.model('User').find().exec();
     return users;
@@ -60,30 +59,30 @@ UserSchema.methods.getUsers = async () => {
 };
 
 // Insérer un nouvel utilisateur
-UserSchema.statics.insertUser = async (userData) => {
+UserSchema.statics.insertUser = async function (userData) {
   try {
     const hashedPassword = await authHelper.hashPassword(userData.password);
-
     const user = {
       login: userData.login,
       email: userData.email,
       password: hashedPassword,
-      name: userData.name,
+      firstname: userData.firstname,
       lastname: userData.lastname,
       image: userData.image ? userData.image : DEFAULT_USER_IMAGE,
       language: userData.language,
       history: []
     };
 
-    const result = await this.model('User', userData).save();
+    const newUser = new this(user);
+    const result = await newUser.save();
     return result;
   } catch (error) {
-    console.error(`User model: ${error}`);
+    console.error(`User model insertUser: ${error}`);
   }
 };
 
 // Update un utilisateur
-UserSchema.methods.updateUser = async (userId, userData) => {
+UserSchema.statics.updateUser = async function (userId, userData) {
   try {
     const result = await this.model('User').findByIdAndUpdate(userId, userData).exec();
     return result;
@@ -93,7 +92,7 @@ UserSchema.methods.updateUser = async (userId, userData) => {
 };
 
 // Récupérer un utilisateur via son id
-UserSchema.methods.findUserById = async (userId) => {
+UserSchema.statics.findUserById = async function (userId) {
   try {
     const result = await this.model('User').findById(userId).exec();
     return result;
@@ -103,7 +102,7 @@ UserSchema.methods.findUserById = async (userId) => {
 };
 
 // Récupérer un utilisateur via son login
-UserSchema.methods.findUserByLogin = async (userLogin) => {
+UserSchema.statics.findUserByLogin = async function (userLogin) {
   try {
     const result = await this.model('User').findOne({ login: userLogin }).exec();
     return result;
@@ -113,7 +112,7 @@ UserSchema.methods.findUserByLogin = async (userLogin) => {
 };
 
 // Récupérer un utilisateur via son email
-UserSchema.statics.findUserByEmail = async (userEmail) => {
+UserSchema.statics.findUserByEmail = async function (userEmail) {
   try {
     const result = await this.model('User').findOne({ email: userEmail }).exec();
     return result;
@@ -123,7 +122,7 @@ UserSchema.statics.findUserByEmail = async (userEmail) => {
 };
 
 // Supprimer un utilisateur
-UserSchema.methods.deleteUser = async (userId) => {
+UserSchema.statics.deleteUser = async function (userId) {
   try {
     const result = await this.model('User').findByIdAndRemove(userId).exec();
     return result;
@@ -133,7 +132,7 @@ UserSchema.methods.deleteUser = async (userId) => {
 };
 
 // Supprimer tout les utilisateurs
-UserSchema.statics.removeUsers = async () => {
+UserSchema.statics.removeUsers = async function () {
   try {
     const result = this.model('User').deleteMany().exec();
     return result;
@@ -142,6 +141,6 @@ UserSchema.statics.removeUsers = async () => {
   }
 };
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema, 'User');
 
 module.exports = User;

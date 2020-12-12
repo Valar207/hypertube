@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+require('dotenv').config();
 
-dotenv.config();
 
 const URI = process.env.DB_URL;
 
@@ -15,10 +14,11 @@ const options = {
   connectTimeoutMS: 30000,
 };
 
-const connectDB = async () => {
+const connectDB = async (req, res, next) => {
   await mongoose.connect(URI,
     options,);
   console.log('db connected');
+  next();
 };
 
 module.exports = connectDB;

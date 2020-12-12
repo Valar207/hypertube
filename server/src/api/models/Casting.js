@@ -34,6 +34,6 @@ const CastingSchema = new Schema({
   }]
 });
 
-const Casting = mongoose.model('Casting', CastingSchema);
+const Casting = mongoose.model('Casting', CastingSchema, 'User');
 
 module.exports = Casting;

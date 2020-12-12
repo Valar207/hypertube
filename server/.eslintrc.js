@@ -10,7 +10,7 @@ module.exports = {
         'no-return-assign': 0,
         "no-unused-vars": 1,
         "no-console": 0,
-        "consistent-return": 1,
+        "consistent-return": 0,
         camelcase: 0,
     }
 };
