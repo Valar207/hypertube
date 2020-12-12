@@ -26,7 +26,7 @@ export const SignInUp = (props) => {
     imgProfile: "",
     firstname: "",
     lastname: "",
-    username: "",
+    login: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -35,7 +35,7 @@ export const SignInUp = (props) => {
   });
 
   const [userSignIn, setUserSignIn] = useState({
-    username: "",
+    login: "",
     password: "",
   });
 
@@ -136,12 +136,12 @@ export const SignInUp = (props) => {
             </Grid>
             <Grid item xs={12}>
               {" "}
-              {/*UserName */}
+              {/*login */}
               <TextField
                 fullWidth
-                name="username"
+                name="login"
                 onChange={handleChangeSignUp}
-                value={userSignUp.UserName}
+                value={userSignUp.login}
                 label="User Name"
                 variant="outlined"
               />
@@ -220,12 +220,12 @@ export const SignInUp = (props) => {
           <Grid container spacing={3} className="homepage__form">
             <Grid item xs={12}>
               {" "}
-              {/*UserName */}
+              {/*login */}
               <TextField
                 fullWidth
-                name="username"
+                name="login"
                 onChange={handleChangeSignIn}
-                value={userSignIn.username}
+                value={userSignIn.login}
                 label="User Name"
                 variant="outlined"
               />

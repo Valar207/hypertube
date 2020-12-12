@@ -4,7 +4,7 @@ const validateSignupInputs = async (req) => {
   await check("imgProfile", "you should add a profile picture").isLength({ min: 1 }).run(req);
   await check("firstname", "firstname is not valid").isLength({ min: 1 }).run(req);
   await check("lastname", "lastname is not valid").isLength({ min: 1 }).run(req);
-  await check("username", "username is not valid").isLength({ min: 4 }).run(req);
+  await check("login", "login is not valid").isLength({ min: 4 }).run(req);
   await check("email", "email is not valid").isEmail().run(req);
   await check("password", "password is not valid").isLength({ min: 8 }).run(req);
   await check("confirmPassword", "Passwords don't match")

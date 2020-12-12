@@ -23,7 +23,7 @@ const sendMail = (to, subject, html) => {
   });
 };
 
-const sendSignUpMail = (to, username) => {
+const sendSignUpMail = (to, login) => {
   const mail = {
     from: "matchanoreply207@gmail.com",
     to,
@@ -36,7 +36,7 @@ const sendSignUpMail = (to, username) => {
                 <img src="cid:logoHypertube" width="245" />
                 <tr> 
                   <td style="font-family:Helvetica, Arial, sans;text-align:center;font-weight:bold;font-size:32px;color:rgb(34, 31, 31);line-height:36px;padding:40px 90px 10px 90px;">
-                    Welcome ${username} !
+                    Welcome ${login} !
                   </td> 
                 </tr>
                 <tr> 

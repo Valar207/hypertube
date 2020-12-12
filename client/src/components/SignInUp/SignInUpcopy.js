@@ -3,7 +3,6 @@
 // import { StyledTabs, StyledTextField, StyledButton } from './StyledHomePage.js'
 // import Styled from 'styled-components'
 
-
 // function TabPanel(props) {
 //     const { children, value, index } = props;
 
@@ -22,7 +21,7 @@
 //     const [User, setUser] = useState({
 //         FirstName: '',
 //         LastName: '',
-//         UserName: '',
+//         login: '',
 //         Email: '',
 //         Password: '',
 //         ConfirmPassword: '',
@@ -44,7 +43,6 @@
 
 //     return (
 
-
 //         <Container >
 //             <StyledTabs value={tabsValue} onChange={handleChangeTabs}>
 //                 <Tab label="Sign In" />
@@ -58,7 +56,6 @@
 //                 Item Two
 //             </TabPanel>
 
-
 //             <Grid container spacing={3} >
 //                 <Grid item md={6}>
 //                     <StyledTextField name="FirstName" onChange={handleChange} value={User.FirstName} label="fisrt name" variant="outlined" />
@@ -67,7 +64,7 @@
 //                     <StyledTextField name="LastName" onChange={handleChange} value={User.LastName} label="Last name" variant="outlined" />
 //                 </Grid>
 //                 <Grid item md={12}>
-//                     <StyledTextField fullWidth name="UserName" onChange={handleChange} value={User.UserName} label="User name" variant="outlined" />
+//                     <StyledTextField fullWidth name="login" onChange={handleChange} value={User.login} label="User name" variant="outlined" />
 //                 </Grid>
 //                 <Grid item md={12}>
 //                     <StyledTextField fullWidth name="Email" onChange={handleChange} value={User.Email} label="Adress email" variant="outlined" />
@@ -79,8 +76,6 @@
 //                     <StyledTextField fullWidth name="ConfirmPassword" onChange={handleChange} value={User.ConfirmPassword} label="Confirm Password" variant="outlined" />
 //                 </Grid>
 //             </Grid>
-
-
 
 //             <StyledButton onClick={() => {
 //                 console.log(User);
