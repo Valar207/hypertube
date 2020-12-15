@@ -62,6 +62,7 @@ UserSchema.statics.getUsers = async function () {
 UserSchema.statics.insertUser = async function (userData) {
   try {
     const hashedPassword = await authHandler.hashPassword(userData.password);
+    const vkey = await authHandler.generateToken(userData);
     const user = {
       login: userData.login,
       email: userData.email,
@@ -70,6 +71,7 @@ UserSchema.statics.insertUser = async function (userData) {
       lastname: userData.lastname,
       imgProfile: userData.imgProfile,
       language: userData.language,
+      vkey: vkey,
       history: [],
     };
 

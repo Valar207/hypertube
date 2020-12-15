@@ -4,7 +4,7 @@ const express = require("express");
 const User = require("../models/User");
 
 //import controllers
-const { getAllUsers, createUser } = require("../controllers/userController");
+const { getAllUsers, createUser, activateUser } = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -39,5 +39,7 @@ const error = (res, param, msg) => res.send({ errors: [{ param, msg }] });
 
 //SIGNUP USER IN DB
 router.post("/signup", createUser);
+//ACTIVE USER ACCOUNT
+router.post("/activateUser", activateUser);
 
 module.exports = router;
