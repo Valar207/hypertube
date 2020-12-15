@@ -8,6 +8,9 @@ require("dotenv/config");
 
 const app = express();
 
+corsOptions = { origin: false };
+app.use(cors(corsOptions));
+
 app.use(cors());
 app.use(bodyparser.json());
 app.use(db); //connect à la DB
