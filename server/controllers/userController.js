@@ -41,12 +41,26 @@ exports.createUser = async (req, res, next) => {
 
     return res.status(200).json({
       status: "success",
-      msg: `${login} a bien été inscrit`,
+      msg: `${login} a bien été inscrit. Validez votre compte via le lien envoyé par mail...`,
     });
   }
 };
 
 exports.activateUser = async (req, res, next) => {
-  console.log(req.body);
-  console.log("coucououuuu");
+  const login = req.body.search.split("&")[0].split("=")[1];
+  const user = await User.findUserByLogin(login);
+  const urlToken = req.body.search.split("&")[1].split("=")[1];
+  if (user) {
+    const bddToken = user.vkey;
+    if (urlToken === bddToken) {
+      console.log("token match");
+      User.updateUser(user.id, { vkey: "" });
+      res.send({ status: "success", msg: "Compte activé !" });
+    } else {
+      console.log("token doesnt match");
+      errorHandler(res, 404, "token", "incorrect token");
+    }
+  } else {
+    errorHandler(res, 404, "login", "incorrect login");
+  }
 };

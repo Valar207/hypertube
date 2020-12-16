@@ -6,6 +6,7 @@ import { ListMovie } from "./components/ListMovie/ListMovie";
 import { SignInUp } from "./components/SignInUp/SignInUp";
 import { PlayerPage } from "./components/PlayerPage/PlayerPage";
 import { Profil } from "./components/Profil/Profil";
+import { ActivateUser } from "./components/ActivateUser/ActivateUser";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/ListMovie" component={() => <ListMovie />} />
           <Route path="/PlayerPage" component={() => <PlayerPage />} />
           <Route exact path="/Profil" component={() => <Profil />} />
+          <Route exact path="/activateUser" component={() => <ActivateUser />} />
         </Switch>
       </Router>
     </React.Fragment>
