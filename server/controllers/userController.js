@@ -5,14 +5,12 @@ const errorHandler = require("../utils/errorHandler");
 const User = require("../models/User");
 
 exports.getAllUsers = async (req, res, next) => {
-  async (req, res) => {
-    try {
-      const users = await User.find();
-      res.json(users);
-    } catch (err) {
-      res.json({ message: err });
-    }
-  };
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (err) {
+    res.json({ message: err });
+  }
 };
 
 exports.createUser = async (req, res, next) => {
