@@ -4,17 +4,30 @@ const { sendSignUpMail } = require("../utils/sendMail");
 const errorHandler = require("../utils/errorHandler");
 const User = require("../models/User");
 
+// Recupere tout les utilisateurs
 exports.getAllUsers = async (req, res, next) => {
-  async (req, res) => {
-    try {
-      const users = await User.find();
-      res.json(users);
-    } catch (err) {
-      res.json({ message: err });
-    }
-  };
+  try {
+    const users = await User.getUsers();
+    return res.status(200).json(users);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: err });
+  }
 };
 
+// Recupere un utilisateur via son ID
+exports.getUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findUserById(id);
+    return res.json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error });
+  }
+};
+
+// Creer un utilisateur
 exports.createUser = async (req, res, next) => {
   let { email, login } = req.body;
   //CHECK SIGNUP INPUTS
@@ -35,20 +48,12 @@ exports.createUser = async (req, res, next) => {
       return errorHandler(res, 500, "Erreur lors de l'inscription de l'utilisateur");
     }
 
-    const user = await User.findUserByLogin(login);
-    const validationToken = user.vkey; //get validation token to insert in sendMail
-
     console.log("user entered in db");
-    sendSignUpMail(email, login, validationToken);
+    sendSignUpMail(email, login);
 
     return res.status(200).json({
       status: "success",
       msg: `${login} a bien été inscrit`,
     });
   }
-};
-
-exports.activateUser = async (req, res, next) => {
-  console.log(req.body);
-  console.log("coucououuuu");
 };

@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const authHandler = require("../utils/authHandler");
 
+require('dotenv').config();
+
 const UserSchema = mongoose.Schema({
   lastname: {
     type: String,
@@ -26,7 +28,6 @@ const UserSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   language: {
     type: String,
@@ -61,17 +62,17 @@ UserSchema.statics.getUsers = async function () {
 // Insérer un nouvel utilisateur
 UserSchema.statics.insertUser = async function (userData) {
   try {
-    const hashedPassword = await authHandler.hashPassword(userData.password);
-    const vkey = await authHandler.generateToken(userData);
+    let hashedPassword = null;
+    if (userData.password)
+      hashedPassword = await authHandler.hashPassword(userData.password);
     const user = {
       login: userData.login,
       email: userData.email,
       password: hashedPassword,
       firstname: userData.firstname,
       lastname: userData.lastname,
-      imgProfile: userData.imgProfile,
+      imgProfile: userData.imgProfile ? userData.imgProfile : process.env.DEFAULT_USER_IMAGE,
       language: userData.language,
-      vkey: vkey,
       history: [],
     };
 

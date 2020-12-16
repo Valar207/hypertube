@@ -1,7 +1,7 @@
 const { check, validationResult } = require("express-validator");
 
 const validateSignupInputs = async (req) => {
-  await check("imgProfile", "you should add a profile picture").isLength({ min: 1 }).run(req);
+  // await check("imgProfile", "you should add a profile picture").isLength({ min: 1 }).run(req); La photo de profile n'est pas forcément requise lors de l'inscription
   await check("firstname", "firstname is not valid").isLength({ min: 1 }).run(req);
   await check("lastname", "lastname is not valid").isLength({ min: 1 }).run(req);
   await check("login", "login is not valid").isLength({ min: 4 }).run(req);

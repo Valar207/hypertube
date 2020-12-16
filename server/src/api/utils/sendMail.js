@@ -1,15 +1,17 @@
 const nodemailer = require("nodemailer");
 
+require('dotenv').config()
+
 const sendMail = (to, subject, html) => {
   var transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: 'gmail',
     auth: {
-      user: "matchanoreply207@gmail.com",
-      pass: "Matcha207",
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASSWORD,
     },
   });
   var mailOptions = {
-    from: "matchanoreply207@gmail.com",
+    from: process.env.NODEMAILER_USER,
     to,
     subject,
     html,
@@ -23,9 +25,9 @@ const sendMail = (to, subject, html) => {
   });
 };
 
-const sendSignUpMail = (to, login, validationToken) => {
+const sendSignUpMail = (to, login) => {
   const mail = {
-    from: "matchanoreply207@gmail.com",
+    from: process.env.NODEMAILER_USER,
     to,
     subject: `Welcome to Hypertube !`,
     html: `
@@ -46,13 +48,13 @@ const sendSignUpMail = (to, login, validationToken) => {
                 </tr>
                 <tr>
                   <td align="center" style="padding:20px 44px 0 44px;">
-                    <a href="http://localhost:3000/activateUser?token=${validationToken}" style="text-decoration:none;color:inherit;">
+                    <a href="${process.env.SITEURL}" style="text-decoration:none;color:inherit;">
                       <table class="button red" cellpadding="0" cellspacing="0" border="0" align="center">
                         <tbody>
                           <tr>
                             <td align="center" style="color:rgb(255, 255, 255);font-size:14px;font-weight:bold;background-color:rgb(229, 9, 20);text-align:center;padding:3px 22px;border-radius:4px;max-width:250px;">
                             <p>
-                              <a href="http://localhost:3000/activateUser?token=${validationToken}" style="color:#ffffff;font-family: Helvetica, Arial, sans;font-size:14px;font-weight:bold;text-align:center;text-decoration:none;color:inherit;color:rgb(255, 255, 255);font-size:14px;font-weight:bold;text-align:center;text-decoration:none;font-family:Helvetica, Arial, sans;">
+                              <a href="${process.env.SITEURL}" style="color:#ffffff;font-family: Helvetica, Arial, sans;font-size:14px;font-weight:bold;text-align:center;text-decoration:none;color:inherit;color:rgb(255, 255, 255);font-size:14px;font-weight:bold;text-align:center;text-decoration:none;font-family:Helvetica, Arial, sans;">
                                 Hypertube.com
                               </a>
                             </p>
