@@ -14,6 +14,7 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
 import axios from "axios";
+import SimpleSnackbar from "./SnackBar";
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -24,7 +25,7 @@ export const SignInUp = (props) => {
     imgProfile: "",
     firstname: "",
     lastname: "",
-    username: "",
+    login: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -33,10 +34,17 @@ export const SignInUp = (props) => {
   });
 
   const [userSignIn, setUserSignIn] = useState({
-    username: "",
+    login: "",
     password: "",
     showSigninPassword: false,
   });
+
+  const [alert, setAlert] = useState({
+    open: false,
+    msg: "",
+    status: "",
+  });
+  const [errors, setErrors] = useState();
 
   const handleChangeSignUp = (e) => {
     setUserSignUp({
@@ -52,14 +60,26 @@ export const SignInUp = (props) => {
   };
   const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post("user/signin", userSignIn).then((res) => {
-      console.log(res);
-    });
+    axios.post("user/signin", userSignIn).then((res) => {});
   };
   const handleSignUp = (e) => {
     e.preventDefault();
     axios.post("user/signup", userSignUp).then((res) => {
       console.log(res);
+
+      if (res.data.errors) {
+        var errors = res.data.errors;
+        var mapped = errors.map((item) => ({ [item.param]: item.msg }));
+        var newObj = Object.assign({}, ...mapped);
+        setErrors(newObj);
+      } else {
+        setErrors("");
+        setAlert({
+          open: true,
+          message: "A email was send to you",
+          status: "success",
+        });
+      }
     });
   };
   const handleClickShowSignUpPassword = (e) => {
@@ -100,7 +120,7 @@ export const SignInUp = (props) => {
             <img
               className="imgProfile"
               src={userSignUp.imgProfile === "" ? "/img/img-default.jpg" : userSignUp.imgProfile}
-              alt=""
+              alt="Image profil"
             />
             <input
               accept="image/*"
@@ -115,65 +135,71 @@ export const SignInUp = (props) => {
                 <img src="/img/icons/add-circle.svg" className="uploadImgProfile-btn" alt="" />
               </Button>
             </label>
+            <p style={{ color: "red", fontSize: "12px", margin: "-20px" }}>
+              {errors?.imgProfile ? errors?.imgProfile : ""}
+            </p>
           </div>
-          <Grid container spacing={3} className="homepage__form">
+          <Grid container spacing={5} className="homepage__form">
             <Grid item xs={6}>
-              {" "}
               {/*firstname */}
               <TextField
                 fullWidth
-                name="firstName"
+                name="firstname"
                 onChange={handleChangeSignUp}
-                value={userSignUp.firstName || ""}
-                label="first name"
+                value={userSignUp.firstname || ""}
+                label={errors?.firstname ? "Errors" : "First name"}
+                helperText={errors?.firstname ? errors?.firstname : ""}
                 variant="outlined"
+                className={errors?.firstname ? "errors" : ""}
               />
             </Grid>
             <Grid item xs={6}>
-              {" "}
               {/*LastName */}
               <TextField
                 fullWidth
-                name="lastName"
+                name="lastname"
                 onChange={handleChangeSignUp}
-                value={userSignUp.lastName || ""}
-                label="Last name"
+                value={userSignUp.lastname || ""}
+                label={errors?.lastname ? "Errors" : "Last name"}
+                helperText={errors?.lastname ? errors?.lastname : ""}
                 variant="outlined"
+                className={errors?.lastname ? "errors" : ""}
               />
             </Grid>
             <Grid item xs={12}>
-              {" "}
-              {/*UserName */}
+              {/*login */}
               <TextField
                 fullWidth
-                name="userName"
+                name="login"
                 onChange={handleChangeSignUp}
-                value={userSignUp.userName || ""}
-                label="User name"
+                value={userSignUp.login || ""}
+                label={errors?.login ? "Errors" : "User name"}
+                helperText={errors?.login ? errors?.login : ""}
                 variant="outlined"
+                className={errors?.login ? "errors" : ""}
               />
             </Grid>
             <Grid item xs={12}>
-              {" "}
               {/*Email */}
               <TextField
                 fullWidth
                 name="email"
                 onChange={handleChangeSignUp}
                 value={userSignUp.email || ""}
-                label="Adress email"
+                label={errors?.email ? "Errors" : "Adress email"}
+                helperText={errors?.email ? errors?.email : ""}
                 variant="outlined"
+                className={errors?.email ? "errors" : ""}
               />
             </Grid>
             <Grid item xs={12}>
-              {" "}
               {/*Password */}
               <TextField
                 fullWidth
                 name="password"
                 onChange={handleChangeSignUp}
                 value={userSignUp.password || ""}
-                label="Password"
+                label={errors?.password ? "Errors" : "Password"}
                 variant="outlined"
                 helperText="Must contain 8 characters, 1 letter, 1 number and 1 special character"
                 InputProps={{
@@ -190,18 +216,20 @@ export const SignInUp = (props) => {
                   ),
                 }}
                 type={userSignUp.showSignUpPassword ? "text" : "password"}
+                className={errors?.password ? "errors" : ""}
               />
             </Grid>
             <Grid item xs={12}>
-              {" "}
               {/*ConfirmPassword */}
               <TextField
                 fullWidth
                 name="confirmPassword"
                 onChange={handleChangeSignUp}
                 value={userSignUp.confirmPassword || ""}
-                label="Confirm Password"
+                label={errors?.confirmPassword ? "Errors" : "Confirm Password"}
+                helperText={errors?.confirmPassword ? errors?.confirmPassword : ""}
                 variant="outlined"
+                className={errors?.confirmPassword ? "errors" : ""}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment>
@@ -231,15 +259,15 @@ export const SignInUp = (props) => {
             <img className="imgProfile" src="/img/img-default.jpg" alt="" />
           </div>
 
-          <Grid container spacing={3} className="homepage__form">
+          <Grid container spacing={5} className="homepage__form">
             <Grid item xs={12}>
               {" "}
-              {/*UserName */}
+              {/*login */}
               <TextField
                 fullWidth
-                name="userName"
+                name="login"
                 onChange={handleChangeSignIn}
-                value={userSignIn.userName || ""}
+                value={userSignIn.login || ""}
                 label="User name"
                 variant="outlined"
               />
@@ -292,6 +320,8 @@ export const SignInUp = (props) => {
           </Grid>
         </form>
       </TabPanel>
+
+      {alert.open && <SimpleSnackbar message={alert.message} />}
     </Container>
   );
 };

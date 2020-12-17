@@ -48,8 +48,11 @@ exports.createUser = async (req, res, next) => {
       return errorHandler(res, 500, "Erreur lors de l'inscription de l'utilisateur");
     }
 
+    const user = await User.findUserByLogin(login);
+    const validationToken = user.vkey; //get validation token to insert in sendMail
+
     console.log("user entered in db");
-    sendSignUpMail(email, login);
+    sendSignUpMail(email, login, validationToken);
 
     return res.status(200).json({
       status: "success",
