@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import axios from "axios";
 import { Header } from "./components/Header/Header";
 import { HomePage } from "./components/HomePage/HomePage";
@@ -10,21 +10,27 @@ import { ActivateUser } from "./components/ActivateUser/ActivateUser";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
 
+//INITIALIZE CONTEXT
+export const AppContext = createContext();
+
 axios.defaults.baseURL = "http://localhost:5000/api/v1";
 
 function App() {
+  const [logged, setLogged] = useState(false);
   return (
     <React.Fragment>
       <Router>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={() => <SignInUp />} />
-          <Route exact path="/HomePage" component={() => <HomePage />} />
-          <Route path="/ListMovie" component={() => <ListMovie />} />
-          <Route path="/PlayerPage" component={() => <PlayerPage />} />
-          <Route exact path="/Profil" component={() => <Profil />} />
-          <Route exact path="/activateUser" component={() => <ActivateUser />} />
-        </Switch>
+        <AppContext.Provider value={logged}>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={() => <SignInUp />} />
+            <Route exact path="/HomePage" component={() => <HomePage />} />
+            <Route path="/ListMovie" component={() => <ListMovie />} />
+            <Route path="/PlayerPage" component={() => <PlayerPage />} />
+            <Route exact path="/Profil" component={() => <Profil />} />
+            <Route exact path="/activateUser" component={() => <ActivateUser />} />
+          </Switch>
+        </AppContext.Provider>
       </Router>
     </React.Fragment>
   );

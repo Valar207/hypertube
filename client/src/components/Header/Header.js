@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { AppBar, Toolbar, IconButton, Grid, Popover } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 import "./Header.scss";
 import { ExitToApp, Movie, AccountCircle } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
+import { AppContext } from "../../App";
+
 export const Header = () => {
-  const logged = "true";
+  const logged = useContext(AppContext);
   const [popover, setPopover] = useState(false);
 
   const openPopover = (e) => {
@@ -15,6 +17,8 @@ export const Header = () => {
   const closePopover = () => {
     setPopover(false);
   };
+
+  console.log(logged);
 
   return (
     <div className="header__body">
