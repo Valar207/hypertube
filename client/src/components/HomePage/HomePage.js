@@ -1,9 +1,10 @@
 import React, { UseState } from "react";
-import { Grid, GridList, GridListTileBar, GridListTile, Link } from "@material-ui/core";
+import { Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Teste } from "./teste";
+import { Link } from "react-router-dom";
 // import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 // import { Carousel } from 'react-responsive-carousel';
 
@@ -30,7 +31,7 @@ export const HomePage = () => {
           <Grid item xs={12}>
             <h2>
               Horror
-              <Link href={`/ListMovie/${gender}`} className="HomePage__section-link">
+              <Link to={`/ListMovie/${gender}`} className="HomePage__section-link">
                 see more <ChevronRight />
               </Link>
             </h2>
