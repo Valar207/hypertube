@@ -34,6 +34,17 @@ const verifyCallback = async (accessToken, refreshToken, profile, done) => {
     }
 }
 
+passport.serializeUser((user, done) => {
+    done(null, user._id);
+});
+
+passport.deserializeUser((id, done) => {
+    User.findUserById(id).then((user) => {
+        console.log(user);
+        done(null, user);
+    });
+})
+
 passport.use(new GoogleStrategy(strategyOptions, verifyCallback));
 
 
