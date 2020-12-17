@@ -57,3 +57,22 @@ exports.createUser = async (req, res, next) => {
     });
   }
 };
+
+exports.activateUser = async (req, res, next) => {
+  const login = req.body.search.split("&")[0].split("=")[1];
+  const user = await User.findUserByLogin(login);
+  const urlToken = req.body.search.split("&")[1].split("=")[1];
+  if (user) {
+    const bddToken = user.vkey;
+    if (urlToken === bddToken) {
+      console.log("token match");
+      User.updateUser(user.id, { vkey: "" });
+      res.send({ status: "success", msg: "Compte activé !" });
+    } else {
+      console.log("token doesnt match");
+      errorHandler(res, 404, "token", "incorrect token");
+    }
+  } else {
+    errorHandler(res, 404, "login", "incorrect login");
+  }
+};

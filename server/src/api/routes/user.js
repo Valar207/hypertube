@@ -4,7 +4,7 @@ const express = require("express");
 const User = require("../models/User");
 
 //import controllers
-const { getAllUsers, createUser } = require("../controllers/userController");
+const { getAllUsers, createUser, activateUser } = require("../controllers/userController");
 
 const router = express.Router();
 
@@ -36,6 +36,8 @@ router.post("/signin", (req, res) => {
 });
 
 //SIGNUP USER IN DB
-router.post("/", createUser);
+router.post("/signup", createUser);
+//ACTIVATE USER ACCOUNT
+router.post('/activateUser', activateUser);
 
 module.exports = router;
