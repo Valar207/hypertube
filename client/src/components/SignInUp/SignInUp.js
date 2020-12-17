@@ -10,7 +10,6 @@ import {
   Box,
   IconButton,
   InputAdornment,
-  Typography,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
@@ -20,23 +19,23 @@ function TabPanel(props) {
   const { children, value, index } = props;
   return <div>{value === index && <Box p={3}>{children}</Box>}</div>;
 }
-
 export const SignInUp = (props) => {
   const [userSignUp, setUserSignUp] = useState({
     imgProfile: "",
     firstname: "",
     lastname: "",
-    login: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    showPassword: false,
-    showConfirmPassword: false,
+    showSignUpPassword: false,
+    showConfirmSignUpPassword: false,
   });
 
   const [userSignIn, setUserSignIn] = useState({
-    login: "",
+    username: "",
     password: "",
+    showSigninPassword: false,
   });
 
   const handleChangeSignUp = (e) => {
@@ -51,20 +50,28 @@ export const SignInUp = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  const HandleSignIn = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post("user/signin", userSignIn);
+    axios.post("user/signin", userSignIn).then((res) => {
+      console.log(res);
+    });
   };
-  const HandleSignUp = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
     axios.post("user/signup", userSignUp).then((res) => {
       console.log(res);
     });
   };
-  const handleClickShowPassword = (e) => {
+  const handleClickShowSignUpPassword = (e) => {
     setUserSignUp({
       ...userSignUp,
       [e.currentTarget.name]: !userSignUp[e.currentTarget.name],
+    });
+  };
+  const handleClickShowSignInPassword = (e) => {
+    setUserSignIn({
+      ...userSignIn,
+      [e.currentTarget.name]: !userSignIn[e.currentTarget.name],
     });
   };
   const uploadPhoto = (e) => {
@@ -74,7 +81,7 @@ export const SignInUp = (props) => {
     });
   };
   const [tabsValue, setTabsValue] = useState(0);
-  const handleChangeSignUpTabs = (event, newValue) => {
+  const handleChangeTabs = (event, newValue) => {
     setTabsValue(newValue);
   };
 
@@ -83,12 +90,12 @@ export const SignInUp = (props) => {
       <div id="background">
         <img src="img/homepage.jpg" alt="" />
       </div>
-      <Tabs className="homepage__tabs " value={tabsValue} onChange={handleChangeSignUpTabs} centered>
+      <Tabs className="homepage__tabs " value={tabsValue} onChange={handleChangeTabs} centered>
         <Tab label="Sign up" className="font-size-20" />
         <Tab label="Sign in" className="font-size-20" />
       </Tabs>
       <TabPanel value={tabsValue} index={0}>
-        <form onSubmit={(e) => HandleSignUp(e)}>
+        <form onSubmit={handleSignUp}>
           <div className="homepage__profil-img">
             <img
               className="imgProfile"
@@ -115,34 +122,34 @@ export const SignInUp = (props) => {
               {/*firstname */}
               <TextField
                 fullWidth
-                name="firstname"
+                name="firstName"
                 onChange={handleChangeSignUp}
-                value={userSignUp.firstname}
-                label="First Name"
+                value={userSignUp.firstName || ""}
+                label="first name"
                 variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
               {" "}
-              {/*lastName */}
+              {/*LastName */}
               <TextField
                 fullWidth
-                name="lastname"
+                name="lastName"
                 onChange={handleChangeSignUp}
-                value={userSignUp.lastname}
-                label="Last Name"
+                value={userSignUp.lastName || ""}
+                label="Last name"
                 variant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
               {" "}
-              {/*login */}
+              {/*UserName */}
               <TextField
                 fullWidth
-                name="login"
+                name="userName"
                 onChange={handleChangeSignUp}
-                value={userSignUp.login}
-                label="User Name"
+                value={userSignUp.userName || ""}
+                label="User name"
                 variant="outlined"
               />
             </Grid>
@@ -153,8 +160,8 @@ export const SignInUp = (props) => {
                 fullWidth
                 name="email"
                 onChange={handleChangeSignUp}
-                value={userSignUp.email}
-                label="Email"
+                value={userSignUp.email || ""}
+                label="Adress email"
                 variant="outlined"
               />
             </Grid>
@@ -165,20 +172,24 @@ export const SignInUp = (props) => {
                 fullWidth
                 name="password"
                 onChange={handleChangeSignUp}
-                value={userSignUp.password}
+                value={userSignUp.password || ""}
                 label="Password"
                 variant="outlined"
                 helperText="Must contain 8 characters, 1 letter, 1 number and 1 special character"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment>
-                      <IconButton name="showPassword" onClick={handleClickShowPassword} className="show-pwd">
-                        {userSignUp.showPassword ? <Visibility /> : <VisibilityOff />}
+                      <IconButton
+                        name="showSignUpPassword"
+                        onClick={handleClickShowSignUpPassword}
+                        className="show-pwd"
+                      >
+                        {userSignUp.showSignUpPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   ),
                 }}
-                type={userSignUp.showPassword ? "text" : "password"}
+                type={userSignUp.showSignUpPassword ? "text" : "password"}
               />
             </Grid>
             <Grid item xs={12}>
@@ -187,9 +198,8 @@ export const SignInUp = (props) => {
               <TextField
                 fullWidth
                 name="confirmPassword"
-                id="confirmPassword"
                 onChange={handleChangeSignUp}
-                value={userSignUp.ConfirmPassword}
+                value={userSignUp.confirmPassword || ""}
                 label="Confirm Password"
                 variant="outlined"
                 InputProps={{
@@ -197,7 +207,7 @@ export const SignInUp = (props) => {
                     <InputAdornment>
                       <IconButton
                         name="showConfirmPassword"
-                        onClick={handleClickShowPassword}
+                        onClick={handleClickShowSignUpPassword}
                         className="show-pwd"
                       >
                         {userSignUp.showConfirmPassword ? <Visibility /> : <VisibilityOff />}
@@ -216,17 +226,21 @@ export const SignInUp = (props) => {
       </TabPanel>
 
       <TabPanel value={tabsValue} index={1} className="signin__body">
-        <form onSubmit={(e) => HandleSignIn(e)}>
+        <form onSubmit={handleSignIn}>
+          <div className="homepage__profil-img">
+            <img className="imgProfile" src="/img/img-default.jpg" alt="" />
+          </div>
+
           <Grid container spacing={3} className="homepage__form">
             <Grid item xs={12}>
               {" "}
-              {/*login */}
+              {/*UserName */}
               <TextField
                 fullWidth
-                name="login"
+                name="userName"
                 onChange={handleChangeSignIn}
-                value={userSignIn.login}
-                label="User Name"
+                value={userSignIn.userName || ""}
+                label="User name"
                 variant="outlined"
               />
             </Grid>
@@ -237,10 +251,23 @@ export const SignInUp = (props) => {
                 fullWidth
                 name="password"
                 onChange={handleChangeSignIn}
-                value={userSignIn.password}
+                value={userSignIn.password || ""}
                 label="Password"
                 variant="outlined"
-                type="password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment>
+                      <IconButton
+                        name="showSigninPassword"
+                        onClick={handleClickShowSignInPassword}
+                        className="show-pwd"
+                      >
+                        {userSignIn.showSignInPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                type={userSignIn.showSigninPassword ? "text" : "password"}
               />
             </Grid>
             <Grid item>

@@ -12,5 +12,14 @@
       height: 35px;
       width: 35px;
     }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.header_popover-profil {
+  .MuiPaper-rounded {
+    background-color: #1c1c1c;
+    padding: 10px 20px 40px 20px;
   }
 }

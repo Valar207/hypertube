@@ -1,0 +1,27 @@
+.Profil__body {
+  color: white;
+  // margin: 10px;
+  .imgProfile {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  .profil__settings {
+    left: 90px;
+    &:focus {
+      outline: none;
+    }
+    .MuiSvgIcon-root {
+      color: white;
+      &:hover {
+        transition: 0.5s;
+        color: #1de9b6;
+      }
+    }
+  }
+  .profil__grid {
+    margin: 5px 0;
+    text-align: center;
+  }
+}
