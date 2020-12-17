@@ -25,7 +25,7 @@ export const SignInUp = (props) => {
     imgProfile: "",
     firstname: "",
     lastname: "",
-    login: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -34,7 +34,7 @@ export const SignInUp = (props) => {
   });
 
   const [userSignIn, setUserSignIn] = useState({
-    login: "",
+    username: "",
     password: "",
     showSigninPassword: false,
   });
@@ -76,7 +76,7 @@ export const SignInUp = (props) => {
         setErrors("");
         setAlert({
           open: true,
-          message: "A email was send to you",
+          message: "An email was sent to you",
           status: "success",
         });
       }
@@ -167,16 +167,16 @@ export const SignInUp = (props) => {
               />
             </Grid>
             <Grid item xs={12}>
-              {/*login */}
+              {/*username */}
               <TextField
                 fullWidth
-                name="login"
+                name="username"
                 onChange={handleChangeSignUp}
-                value={userSignUp.login || ""}
-                label={errors?.login ? "Errors" : "User name"}
-                helperText={errors?.login ? errors?.login : ""}
+                value={userSignUp.username || ""}
+                label={errors?.username ? "Errors" : "User name"}
+                helperText={errors?.username ? errors?.username : ""}
                 variant="outlined"
-                className={errors?.login ? "errors" : ""}
+                className={errors?.username ? "errors" : ""}
               />
             </Grid>
             <Grid item xs={12}>
@@ -262,12 +262,12 @@ export const SignInUp = (props) => {
           <Grid container spacing={5} className="homepage__form">
             <Grid item xs={12}>
               {" "}
-              {/*login */}
+              {/*username */}
               <TextField
                 fullWidth
-                name="login"
+                name="username"
                 onChange={handleChangeSignIn}
-                value={userSignIn.login || ""}
+                value={userSignIn.username || ""}
                 label="User name"
                 variant="outlined"
               />

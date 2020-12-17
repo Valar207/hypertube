@@ -7,7 +7,7 @@ exports.generateToken = (userData) => {
   const payload = {
     user: {
       id: userData.id,
-      login: userData.login,
+      username: userData.username,
     },
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "24h" });

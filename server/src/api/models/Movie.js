@@ -38,7 +38,7 @@ const MovieSchema = new Schema({
   },
   comments: [
     {
-      user_login: {
+      user_username: {
         type: String,
         required: true,
       },

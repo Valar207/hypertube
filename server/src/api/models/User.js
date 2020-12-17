@@ -12,7 +12,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  login: {
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -66,7 +66,7 @@ UserSchema.statics.insertUser = async function (userData) {
     if (userData.password) hashedPassword = await authHandler.hashPassword(userData.password);
     const vkey = await authHandler.generateToken(userData);
     const user = {
-      login: userData.login,
+      username: userData.username,
       email: userData.email,
       password: hashedPassword,
       firstname: userData.firstname,
@@ -105,10 +105,10 @@ UserSchema.statics.findUserById = async function (userId) {
   }
 };
 
-// Récupérer un utilisateur via son login
-UserSchema.statics.findUserByLogin = async function (userLogin) {
+// Récupérer un utilisateur via son username
+UserSchema.statics.findUserByUsername = async function (userUsername) {
   try {
-    const result = await this.model("User").findOne({ login: userLogin }).exec();
+    const result = await this.model("User").findOne({ username: userUsername }).exec();
     return result;
   } catch (error) {
     console.error(`User model: ${error}`);

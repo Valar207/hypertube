@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import { Close, Tune } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import {
   Button,
   Grow,
@@ -9,7 +10,6 @@ import {
   GridList,
   GridListTile,
   GridListTileBar,
-  Link,
   Slider,
   ToggleButton,
   ToggleButtonGroup,

@@ -18,7 +18,7 @@ const verifyCallback = async (accessToken, refreshToken, profile, done) => {
     const user = await User.findUserByEmail(email);
     if (user) return done(null, user);
     const newUser = new User({
-      login: name,
+      username: name,
       email,
       password: null,
       firstname: given_name,

@@ -29,41 +29,41 @@ exports.getUser = async (req, res, next) => {
 
 // Creer un utilisateur
 exports.createUser = async (req, res, next) => {
-  let { email, login } = req.body;
+  let { email, username } = req.body;
   //CHECK SIGNUP INPUTS
   const errors = await validateSignupInputs(req);
   if (!errors.isEmpty()) {
     res.send(errors);
   } else {
     const userEmailExist = await User.findUserByEmail(email);
-    const userLoginExist = await User.findUserByLogin(login);
+    const userUsernameExist = await User.findUserByUsername(username);
 
     //CHECK IF USER EXIST IN DB
-    if (userEmailExist || userLoginExist) {
-      return errorHandler(res, 403, "Login or email already exist");
+    if (userEmailExist || userUsernameExist) {
+      return res.send({ status: "error", message: "Username or email already exist" });
     }
 
     const newUser = await User.insertUser(req.body);
     if (!newUser) {
-      return errorHandler(res, 500, "Erreur lors de l'inscription de l'utilisateur");
+      return res.send({ status: "error", message: "Erreur lors de l'inscription de l'utilisateur" });
     }
 
-    const user = await User.findUserByLogin(login);
+    const user = await User.findUserByUsername(username);
     const validationToken = user.vkey; //get validation token to insert in sendMail
 
     console.log("user entered in db");
-    sendSignUpMail(email, login, validationToken);
+    sendSignUpMail(email, username, validationToken);
 
-    return res.status(200).json({
+    return res.send({
       status: "success",
-      msg: `${login} a bien été inscrit`,
+      message: `${username} a bien été inscrit`,
     });
   }
 };
 
 exports.activateUser = async (req, res, next) => {
-  const login = req.body.search.split("&")[0].split("=")[1];
-  const user = await User.findUserByLogin(login);
+  const username = req.body.search.split("&")[0].split("=")[1];
+  const user = await User.findUserByUsername(username);
   const urlToken = req.body.search.split("&")[1].split("=")[1];
   if (user) {
     const bddToken = user.vkey;
@@ -73,9 +73,9 @@ exports.activateUser = async (req, res, next) => {
       res.send({ status: "success", msg: "Compte activé !" });
     } else {
       console.log("token doesnt match");
-      errorHandler(res, 404, "token", "incorrect token");
+      return res.send({ status: "error", message: "incorrect token" });
     }
   } else {
-    errorHandler(res, 404, "login", "incorrect login");
+    return res.send({ status: "error", message: "incorrect username" });
   }
 };
