@@ -35,11 +35,9 @@ router.post("/signin", (req, res) => {
   console.log(req.body);
 });
 
-const error = (res, param, msg) => res.send({ errors: [{ param, msg }] });
-
 //SIGNUP USER IN DB
 router.post("/signup", createUser);
-//ACTIVE USER ACCOUNT
-router.post("/activateUser", activateUser);
+//ACTIVATE USER ACCOUNT
+router.post('/activateUser', activateUser);
 
 module.exports = router;

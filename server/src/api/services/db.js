@@ -13,11 +13,10 @@ const options = {
   connectTimeoutMS: 30000,
 };
 
-const connectDB = async (req, res, next) => {
-  await mongoose.connect(URI, options, () => {
+const connectDB = () => {
+  mongoose.connect(URI, options, () => {
     console.log("CONNECTED TO DB...");
   });
-  next();
 };
 
 module.exports = connectDB;
