@@ -26,8 +26,8 @@ app.use(cookieSession({
   keys: [process.env.COOKIE_KEY]
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize()); //Middleware qui initialise passport
+app.use(passport.session()); // Middleware qui prend l'objet request et ajoute un req.user
 
 
 app.get('/', (req, res) => res.json({

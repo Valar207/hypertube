@@ -63,8 +63,9 @@ UserSchema.statics.getUsers = async function () {
 UserSchema.statics.insertUser = async function (userData) {
   try {
     let hashedPassword = null;
+    let vkey = "";
     if (userData.password) hashedPassword = await authHandler.hashPassword(userData.password);
-    const vkey = await authHandler.generateToken(userData);
+    if (userData.password) vkey = await authHandler.generateToken(userData);
     const user = {
       username: userData.username,
       email: userData.email,
@@ -72,7 +73,7 @@ UserSchema.statics.insertUser = async function (userData) {
       firstname: userData.firstname,
       lastname: userData.lastname,
       imgProfile: userData.imgProfile,
-      language: userData.language,
+      language: userData.language ? userData.language : 'fr',
       vkey: vkey,
       history: [],
     };
