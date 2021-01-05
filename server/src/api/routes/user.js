@@ -15,9 +15,22 @@ router.get("/", getAllUsers);
 router.get("/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
-    res.json(user);
+    res.json({ status: "success", user: { ...user, email: null } });
   } catch (err) {
     res.json({ message: err });
+  }
+});
+
+router.patch("/", async (req, res) => {
+  try {
+    const user = req.user;
+    const user_id = user._id;
+    const body = req.body;
+    await User.updateUser(user_id, body);
+    return res.status(200).json({ status: 'success', message: 'profile modifié avec succes'});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ err: error })
   }
 });
 
