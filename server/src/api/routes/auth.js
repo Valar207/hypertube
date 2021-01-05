@@ -27,7 +27,7 @@ router.get("/42/redirect", passport.authenticate("42"), (request, response, next
 
 //LOGOUT
 router.get('/logout', (request, response) => {
-  if (request.user) {
+  if (request.isAuthenticated()) {
     request.logout();
     return response.status(200).json({ status: 'success', message: 'Logged out successfuly'})
   }

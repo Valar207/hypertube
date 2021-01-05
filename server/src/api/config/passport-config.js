@@ -24,7 +24,12 @@ const verifyCallbackGoogle = async (accessToken, refreshToken, profile, done) =>
     const google_user = profile._json;
     const { name, given_name, family_name, email, picture, locale } = google_user;
     const user = await User.findUserByEmail(email);
-    if (user) return done(null, user);
+    console.log(user);
+    if (user) {
+      if (!user.password)
+        return done(null, user);
+      await User.deleteUser(user._id);
+    }
     const newUser = new User({
       username: name,
       email,
@@ -59,7 +64,7 @@ const verifyCallback42 = async (accessToken, refreshToken, profile, done) => {
       imgProfile: image_url,
       language: campus[0].language.identifier
     });
-    console.log("usuer inserted");
+    console.log("user inserted");
     await User.insertUser(newUser);
     done(null, newUser);
   } catch (error) {
