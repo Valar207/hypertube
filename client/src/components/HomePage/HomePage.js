@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 export const HomePage = () => {
   const onWheel = (name) => (e) => {
     const container = document.getElementById(`${name}`);
+    console.log(container);
     const containerScrollPosition = document.getElementById(`${name}`).scrollLeft;
     container.scrollTo({
       top: 0,
