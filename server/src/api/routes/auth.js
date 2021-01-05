@@ -37,8 +37,8 @@ router.get("/local/redirect", (request, response, next) => {
 });
 
 //LOGOUT
-router.get("/logout", (request, response) => {
-  if (request.user) {
+router.get('/logout', (request, response) => {
+  if (request.isAuthenticated()) {
     request.logout();
     return response.status(200).json({ status: "success", message: "Logged out successfuly" });
   }

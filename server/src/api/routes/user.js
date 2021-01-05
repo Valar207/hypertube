@@ -35,6 +35,19 @@ router.post("/signin", (req, res) => {
   console.log(req.body);
 });
 
+router.patch('/language/:language', async (req, res) => {
+  try {
+    const user = req.user;
+    const user_id = user._id;
+    user.language = req.params.language;
+    await User.updateUser(user_id, user);
+    return res.status(200).json({ status: 'success', message: 'langue changé avec succes'});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error })
+  }
+});
+
 //SIGNUP USER IN DB
 router.post("/signup", createUser);
 //ACTIVATE USER ACCOUNT
