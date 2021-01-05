@@ -24,7 +24,6 @@ const UserSchema = mongoose.Schema({
   },
   imgProfile: {
     type: String,
-    required: true,
   },
   password: {
     type: String,
@@ -73,7 +72,7 @@ UserSchema.statics.insertUser = async function (userData) {
       firstname: userData.firstname,
       lastname: userData.lastname,
       imgProfile: userData.imgProfile,
-      language: userData.language ? userData.language : 'fr',
+      language: userData.language ? userData.language : "fr",
       vkey: vkey,
       history: [],
     };

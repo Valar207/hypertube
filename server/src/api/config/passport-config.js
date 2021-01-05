@@ -1,7 +1,9 @@
 const passport = require("passport");
 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const FortyTwoStrategy = require('passport-42').Strategy;
+const FortyTwoStrategy = require("passport-42").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
+const { comparePassword } = require("../../api/utils/authHandler");
 
 const User = require("../models/User");
 require("dotenv").config();
@@ -44,8 +46,8 @@ const verifyCallbackGoogle = async (accessToken, refreshToken, profile, done) =>
 
 const verifyCallback42 = async (accessToken, refreshToken, profile, done) => {
   try {
-    console.log(profile)
-    const user_42 = profile._json
+    console.log(profile);
+    const user_42 = profile._json;
     const { login, first_name, last_name, email, image_url, campus } = user_42;
     console.log(login, first_name, last_name, email, image_url, campus[0].language.identifier);
     const user = await User.findUserByEmail(email);
@@ -57,9 +59,9 @@ const verifyCallback42 = async (accessToken, refreshToken, profile, done) => {
       firstname: first_name,
       lastname: last_name,
       imgProfile: image_url,
-      language: campus[0].language.identifier
+      language: campus[0].language.identifier,
     });
-    console.log("usuer inserted");
+    console.log("user inserted");
     await User.insertUser(newUser);
     done(null, newUser);
   } catch (error) {
@@ -80,5 +82,17 @@ passport.deserializeUser((id, done) => {
 
 passport.use(new GoogleStrategy(strategyOptionsGoogle, verifyCallbackGoogle));
 passport.use(new FortyTwoStrategy(strategyOptions42, verifyCallback42));
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    const user = await User.findUserByUsername(username);
+    if (!user) {
+      return done(null, false);
+    }
+    if (!(await comparePassword(user.password, password))) {
+      return done(null, false);
+    }
+    return done(null, user);
+  })
+);
 
 module.exports = passport;
