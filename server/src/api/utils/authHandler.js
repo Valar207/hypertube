@@ -26,6 +26,6 @@ exports.hashPassword = async (password) => {
 // Compare un mdp crypté et un mdp en clair
 // Return : true en cas d'égalité, false sinon
 exports.comparePassword = async (userPassword, otherPassword) => {
-  const result = await bcrypt.compare(userPassword, otherPassword);
+  const result = await bcrypt.compare(otherPassword, userPassword);
   return result;
 };
