@@ -1,8 +1,17 @@
+const { response } = require("express");
 const express = require("express");
 
 const passport = require("../config/passport-config");
 
+const { checkLoggedIn } = require('../utils/authHandler');
+
 const router = express.Router();
+
+//CHeck si l'utilisateur est connecté
+router.get('/is_logged', checkLoggedIn, (req, res) => {
+  return res.status(200).json({ status: "success", message: true });
+});
+
 
 // GOOGLE
 router.get(
@@ -16,10 +25,7 @@ router.get(
 router.get("/42", passport.authenticate("42"));
 
 // LOCAL
-router.post("/local", passport.authenticate("local"), (request, response, next) => {
-  // console.log(request.user);
-  console.log(response);
-});
+
 
 //CALLBACK GOOGLE
 router.get("/google/redirect", passport.authenticate("google"), (request, response, next) => {
@@ -37,7 +43,7 @@ router.get("/local/redirect", (request, response, next) => {
 });
 
 //LOGOUT
-router.get('/logout', (request, response) => {
+router.get('/logout', checkLoggedIn, (request, response) => {
   if (request.isAuthenticated()) {
     request.logout();
     return response.status(200).json({ status: "success", message: "Logged out successfuly" });

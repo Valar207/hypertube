@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Header } from "./components/Header/Header";
 import { HomePage } from "./components/HomePage/HomePage";
@@ -14,9 +14,25 @@ import "./assets/Style.scss";
 export const AppContext = createContext();
 
 axios.defaults.baseURL = "http://localhost:5000/api/v1";
+axios.defaults.withCredentials = true;
 
 function App() {
   const [logged, setLogged] = useState(false);
+
+  const checkAuth = async () => {
+    try {
+      const response = await axios.get("/auth/is_logged");
+      const auth = response.data;
+      setLogged(auth.message);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
     <React.Fragment>
       <Router>

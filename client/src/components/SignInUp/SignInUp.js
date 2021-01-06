@@ -60,7 +60,7 @@ export const SignInUp = (props) => {
   };
   const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post("user/signin", userSignIn).then((res) => { });
+    axios.post("user/signin", userSignIn).then((res) => { console.log(res) });
   };
   const handleSignUp = (e) => {
     e.preventDefault();

@@ -1,4 +1,5 @@
 const express = require("express");
+const passport = require("../config/passport-config");
 
 //import model
 const User = require("../models/User");
@@ -6,13 +7,15 @@ const User = require("../models/User");
 //import controllers
 const { getAllUsers, createUser, activateUser } = require("../controllers/userController");
 
+const { checkLoggedIn } = require('../utils/authHandler');
+
 const router = express.Router();
 
 //GET ALL THE USERS
 router.get("/", getAllUsers);
 
 //GET SPECIFIC USER IN DB
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", checkLoggedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
     res.json({ status: "success", user: { ...user, email: null } });
@@ -21,7 +24,7 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
-router.patch("/", async (req, res) => {
+router.patch("/", checkLoggedIn, async (req, res) => {
   try {
     const user = req.user;
     const user_id = user._id;
@@ -44,11 +47,14 @@ router.delete("/:userId", async (req, res) => {
   }
 });
 
-router.post("/signin", (req, res) => {
-  console.log(req.body);
+
+
+router.post("/signin", passport.authenticate("local"), (request, response, next) => {
+  console.log(request.user);
+  return response.status(200).json("OK");
 });
 
-router.patch('/language/:language', async (req, res) => {
+router.patch('/language/:language', checkLoggedIn, async (req, res) => {
   try {
     const user = req.user;
     const user_id = user._id;
