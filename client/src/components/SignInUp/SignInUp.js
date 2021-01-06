@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   TextField,
   Container,
@@ -14,13 +15,25 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
 import axios from "axios";
-import SimpleSnackbar from "./SnackBar";
+import SimpleSnackbar from "../SnackBar/SnackBar";
 
 function TabPanel(props) {
   const { children, value, index } = props;
   return <div>{value === index && <Box p={3}>{children}</Box>}</div>;
 }
 export const SignInUp = (props) => {
+  const url = useLocation();
+
+  useEffect(() => {
+    axios.post("user/activateUser", url).then((data) => {
+      setAlert({
+        open: true,
+        message: data.data.message,
+        status: data.data.status,
+      });
+    });
+  }, []);
+
   const [userSignUp, setUserSignUp] = useState({
     imgProfile: "",
     firstname: "",
@@ -65,19 +78,31 @@ export const SignInUp = (props) => {
   const handleSignUp = (e) => {
     e.preventDefault();
     axios.post("user/signup", userSignUp).then((res) => {
-      console.log(res);
-
       if (res.data.errors) {
         var errors = res.data.errors;
         var mapped = errors.map((item) => ({ [item.param]: item.msg }));
         var newObj = Object.assign({}, ...mapped);
         setErrors(newObj);
+        setAlert({
+          open: true,
+          message: "wrong input",
+          status: "error",
+          date: new Date()
+        })
+      } else if (res.data.status === "error") {
+        setAlert({
+          open: true,
+          message: res.data.message,
+          status: "error",
+          date: new Date()
+        });
       } else {
         setErrors("");
         setAlert({
           open: true,
           message: "An email was sent to you",
           status: "success",
+          date: new Date()
         });
       }
     });
@@ -104,7 +129,6 @@ export const SignInUp = (props) => {
   const handleChangeTabs = (event, newValue) => {
     setTabsValue(newValue);
   };
-
   return (
     <Container className="homepage__body">
       <div id="background">
@@ -321,7 +345,7 @@ export const SignInUp = (props) => {
         </form>
       </TabPanel>
 
-      {alert.open && <SimpleSnackbar message={alert.message} />}
+      {alert.open && <SimpleSnackbar key={alert.date} message={alert.message} status={alert.status} teste={alert.open} />}
     </Container>
   );
 };
