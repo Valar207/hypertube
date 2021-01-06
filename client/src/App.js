@@ -36,7 +36,7 @@ function App() {
   return (
     <React.Fragment>
       <Router>
-        <AppContext.Provider value={logged}>
+        <AppContext.Provider value={{logged, setLogged}}>
           <Header />
           <Switch>
             <Route exact path="/" component={() => logged ? <HomePage /> : <SignInUp />} />

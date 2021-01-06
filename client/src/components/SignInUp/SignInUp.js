@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   Container,
@@ -15,6 +15,8 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
 import axios from "axios";
 import SimpleSnackbar from "./SnackBar";
+import { AppContext } from "../../App";
+
 
 function TabPanel(props) {
   const { children, value, index } = props;
@@ -46,6 +48,8 @@ export const SignInUp = (props) => {
   });
   const [errors, setErrors] = useState();
 
+  const {logged, setLogged} = useContext(AppContext);
+
   const handleChangeSignUp = (e) => {
     setUserSignUp({
       ...userSignUp,
@@ -58,9 +62,12 @@ export const SignInUp = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    axios.post("user/signin", userSignIn).then((res) => { console.log(res) });
+    const response = await axios.post("user/signin", userSignIn);
+    const result = response.data;
+    if (result.status === "success")
+      setLogged(true);
   };
   const handleSignUp = (e) => {
     e.preventDefault();

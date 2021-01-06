@@ -37,8 +37,7 @@ exports.deleteUser = (request, response, next) => {
 
 // Connecte un utilisateur inscrit
 exports.postLogin = (request, response, next) => {
-  console.log(request.user);
-  return response.status(200).json("OK");
+  return response.status(200).json({ status:"success", message:"OK" });
 };
 
 // Mets a jour la langue par defaut de l'utilisateur
