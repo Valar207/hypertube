@@ -39,12 +39,12 @@ function App() {
         <AppContext.Provider value={logged}>
           <Header />
           <Switch>
-            <Route exact path="/" component={() => <SignInUp />} />
+            <Route exact path="/" component={() => logged ? <HomePage /> : <SignInUp />} />
             <Route exact path="/HomePage" component={() => <HomePage />} />
             <Route path="/ListMovie" component={() => <ListMovie />} />
-            <Route path="/PlayerPage" component={() => <PlayerPage />} />
-            <Route exact path="/Profil" component={() => <Profil />} />
-            <Route exact path="/activateUser" component={() => <ActivateUser />} />
+            <Route path="/PlayerPage" component={() => logged ? <PlayerPage /> : <HomePage />} />
+            <Route exact path="/Profil" component={() => logged ? <Profil /> : <HomePage />} />
+            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <ActivateUser />} />
           </Switch>
         </AppContext.Provider>
       </Router>
