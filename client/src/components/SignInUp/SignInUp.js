@@ -60,7 +60,7 @@ export const SignInUp = (props) => {
   };
   const handleSignIn = (e) => {
     e.preventDefault();
-    axios.post("user/signin", userSignIn).then((res) => {});
+    axios.post("user/signin", userSignIn).then((res) => { });
   };
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -314,7 +314,7 @@ export const SignInUp = (props) => {
             </Grid>
             <Grid item xs={6}>
               <IconButton>
-                <img src="/img/icons/facebook-logo.svg" alt="facebook-logo" />
+                <img src="/img/icons/googleplus-logo.svg" alt="googleplus-logo" />
               </IconButton>
             </Grid>
           </Grid>
