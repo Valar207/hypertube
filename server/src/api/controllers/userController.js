@@ -15,20 +15,6 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
-// Recuperer des infos sur un utilisateur
-exports.getUser = async (req, res) => {
-  try {
-    const user = req.user;
-    const user_id = user._id;
-    const body = req.body;
-    await User.updateUser(user_id, body);
-    return res.status(200).json({ status: 'success', message: 'profile modifié avec succes'});
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ err: error })
-  }
-}
-
 // Mettre a jour un utilisateur
 exports.updateUser = async (req, res) => {
   try {
