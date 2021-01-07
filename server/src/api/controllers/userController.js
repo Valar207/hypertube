@@ -54,12 +54,21 @@ exports.updateLanguage = async (req, res) => {
   }
 };
 
+//Recupere un utilisateur via son login
+
+
 // Recupere un utilisateur via son ID
-exports.getUser = async (req, res, next) => {
+exports.getUserById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const user = await User.findUserById(id);
-    return res.json(user);
+    const { userId } = req.params;
+    const user = await User.findUserById(userId);
+    const result = { 
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      imgProfile: user.imgProfile,
+    }
+    return res.json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: error });

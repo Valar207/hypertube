@@ -5,7 +5,7 @@ const passport = require("../config/passport-config");
 const User = require("../models/User");
 
 //import controllers
-const { getAllUsers, getUser, updateUser, deleteUser, postLogin, updateLanguage, createUser, activateUser } = require("../controllers/userController");
+const { getAllUsers, getUserById, updateUser, deleteUser, postLogin, updateLanguage, createUser, activateUser } = require("../controllers/userController");
 
 const { checkLoggedIn } = require('../utils/authHandler');
 
@@ -15,7 +15,7 @@ const router = express.Router();
 router.get("/", getAllUsers);
 
 //GET SPECIFIC USER IN DB
-router.get("/:userId", checkLoggedIn, getUser);
+router.get("/:userId", getUserById);
 
 router.patch("/", checkLoggedIn, updateUser);
 
