@@ -6,7 +6,7 @@ import { ListMovie } from "./components/ListMovie/ListMovie";
 import { SignInUp } from "./components/SignInUp/SignInUp";
 import { PlayerPage } from "./components/PlayerPage/PlayerPage";
 import { Profil } from "./components/Profil/Profil";
-import { ActivateUser } from "./components/ActivateUser/ActivateUser";
+// import { ActivateUser } from "./components/ActivateUser/ActivateUser";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
 
@@ -44,7 +44,7 @@ function App() {
             <Route path="/ListMovie" component={() => <ListMovie />} />
             <Route path="/PlayerPage" component={() => logged ? <PlayerPage /> : <HomePage />} />
             <Route exact path="/Profil" component={() => logged ? <Profil /> : <HomePage />} />
-            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <ActivateUser />} />
+            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <SignInUp />} />
           </Switch>
         </AppContext.Provider>
       </Router>

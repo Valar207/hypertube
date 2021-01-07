@@ -138,7 +138,7 @@ exports.activateUser = async (req, res, next) => {
     if (urlToken === bddToken) {
       console.log("token match");
       User.updateUser(user.id, { vkey: "" });
-      res.send({ status: "success", msg: "Compte activé !" });
+      res.send({ status: "success", message: "Compte activated !" });
     } else {
       console.log("token doesnt match");
       return res.send({ status: "error", message: "incorrect token" });
