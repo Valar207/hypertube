@@ -9,6 +9,8 @@ import { Profil } from "./components/Profil/Profil";
 // import { ActivateUser } from "./components/ActivateUser/ActivateUser";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
+import { ResetPasswordEmail } from "./components/ResetPassword/ResetPasswordEmail";
+import { ResetPassword } from "./components/ResetPassword/ResetPassword";
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();
@@ -36,15 +38,17 @@ function App() {
   return (
     <React.Fragment>
       <Router>
-        <AppContext.Provider value={{logged, setLogged}}>
+        <AppContext.Provider value={{ logged, setLogged }}>
           <Header />
           <Switch>
             <Route exact path="/" component={() => logged ? <HomePage /> : <SignInUp />} />
+            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <SignInUp />} />
             <Route exact path="/HomePage" component={() => <HomePage />} />
             <Route path="/ListMovie" component={() => <ListMovie />} />
             <Route path="/PlayerPage" component={() => logged ? <PlayerPage /> : <HomePage />} />
             <Route exact path="/Profil" component={() => logged ? <Profil /> : <HomePage />} />
-            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <SignInUp />} />
+            <Route exact path="/ResetPasswordEmail" component={() => logged ? < HomePage /> : <ResetPasswordEmail />} />
+            <Route exact path="/ResetPassword" component={() => logged ? < HomePage /> : <ResetPassword />} />
           </Switch>
         </AppContext.Provider>
       </Router>
