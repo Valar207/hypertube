@@ -1,12 +1,12 @@
-import React, { useEffect, useState ,useContext } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useLocation, Link } from "react-router-dom";
+
 import {
   TextField,
   Container,
   Tabs,
   Tab,
   Grid,
-  Link,
   Button,
   Box,
   IconButton,
@@ -60,7 +60,7 @@ export const SignInUp = (props) => {
   });
   const [errors, setErrors] = useState();
 
-  const {logged, setLogged} = useContext(AppContext);
+  const { logged, setLogged } = useContext(AppContext);
 
   const handleChangeSignUp = (e) => {
     setUserSignUp({
@@ -283,7 +283,7 @@ export const SignInUp = (props) => {
         </form>
       </TabPanel>
 
-      <TabPanel value={tabsValue} index={1} className="signin__body">
+      <TabPanel value={tabsValue} index={1} >
         <form onSubmit={handleSignIn}>
           <div className="homepage__profil-img">
             <img className="imgProfile" src="/img/img-default.jpg" alt="" />
@@ -328,13 +328,13 @@ export const SignInUp = (props) => {
                 type={userSignIn.showSigninPassword ? "text" : "password"}
               />
             </Grid>
-            <Grid item>
-              <Link href="#">Forgot password</Link>
-            </Grid>
-            <Button className="homepage__btn font-size-20" type="submit">
-              Sign In
-            </Button>
           </Grid>
+          <Grid style={{ textAlign: "start", marginTop: "18px" }}>
+            <Link to="/ResetPasswordEmail">Forgot password</Link>
+          </Grid>
+          <Button className="homepage__btn font-size-20" type="submit">
+            Sign In
+            </Button>
           <div className="separator"> OR </div>
           <Grid container className="homepage__omniauth">
             <Grid item xs={6}>
