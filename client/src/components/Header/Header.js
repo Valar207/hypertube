@@ -6,9 +6,10 @@ import "./Header.scss";
 import { ExitToApp, Movie, AccountCircle } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
+import axios from "axios";
 
 export const Header = () => {
-  const logged = useContext(AppContext);
+  const {logged, setLogged} = useContext(AppContext);
   const [popover, setPopover] = useState(false);
 
   const openPopover = (e) => {
@@ -16,6 +17,13 @@ export const Header = () => {
   };
   const closePopover = () => {
     setPopover(false);
+  };
+
+  const handleLogout = async () => {
+    const response = await axios.get('/auth/logout');
+    const result = response.data;
+    if (result.status === "success")
+      setLogged(false)
   };
 
   console.log(logged);
@@ -61,7 +69,7 @@ export const Header = () => {
             <IconButton onClick={openPopover} className="header__icon">
               <AccountCircle />
             </IconButton>
-            <IconButton className="header__icon">
+            <IconButton onClick={handleLogout} className="header__icon">
               <ExitToApp />
             </IconButton>
           </Toolbar>

@@ -15,15 +15,83 @@ exports.getAllUsers = async (req, res, next) => {
   }
 };
 
-// Recupere un utilisateur via son ID
-exports.getUser = async (req, res, next) => {
+// Mettre a jour un utilisateur
+exports.updateUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findUserById(id);
-    return res.json(user);
+    const user = req.user;
+    const user_id = user._id;
+    const body = req.body;
+    await User.updateUser(user_id, body);
+    return res.status(200).json({ status: 'success', message: 'profile modifié avec succes'});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ err: error })
+  }
+};
+
+// Supprime un utilisateur
+exports.deleteUser = (request, response, next) => {
+  console.log(request.user);
+  return response.status(200).json("OK");
+};
+
+// Connecte un utilisateur inscrit
+exports.postLogin = (request, response, next) => {
+  return response.status(200).json({ status:"success", message:"OK" });
+};
+
+// Mets a jour la langue par defaut de l'utilisateur
+exports.updateLanguage = async (req, res) => {
+  try {
+    const user = req.user;
+    const user_id = user._id;
+    user.language = req.params.language;
+    await User.updateUser(user_id, user);
+    return res.status(200).json({ status: 'success', message: 'langue changé avec succes'});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error })
+  }
+};
+
+//Recupere un utilisateur via son login
+
+exports.getUserByLogin = async (req, res, next) => {
+  try {
+    const { userLogin } = req.params;
+    const user = await User.findUserByUsername(userLogin);
+    if (!user)
+      return res.status(200).json({ status: "error", message: "Utilisateur introuvable" })
+    const result = { 
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      imgProfile: user.imgProfile,
+    }
+    return res.status(200).json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: error });
+  }
+};
+
+// Recupere un utilisateur via son ID
+exports.getUserById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findUserById(userId);
+    if (!user)
+      return res.status(200).json({ status:"error", message:"Utilisateur introuvable" })
+    const result = { 
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      imgProfile: user.imgProfile,
+    }
+    return res.status(200).json({status:"success", user: result});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: JSON.stringify(error) });
   }
 };
 

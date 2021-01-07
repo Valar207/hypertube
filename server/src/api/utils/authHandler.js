@@ -2,6 +2,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+//Check si un user est connecté
+exports.checkLoggedIn = (req, res, next) => {
+  if (!req.user)
+    return res.status(200).json({ status: "error", message: false});
+  next();
+};
+
 // Génere un jwt
 exports.generateToken = (userData) => {
   const payload = {

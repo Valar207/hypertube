@@ -1,65 +1,34 @@
 const express = require("express");
+const passport = require("../config/passport-config");
 
 //import model
 const User = require("../models/User");
 
 //import controllers
-const { getAllUsers, createUser, activateUser } = require("../controllers/userController");
+const { getAllUsers, getUserByLogin, getUserById, updateUser, deleteUser, postLogin, updateLanguage, createUser, activateUser } = require("../controllers/userController");
+
+const { checkLoggedIn } = require('../utils/authHandler');
 
 const router = express.Router();
 
 //GET ALL THE USERS
 router.get("/", getAllUsers);
 
-//GET SPECIFIC USER IN DB
-router.get("/:userId", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId);
-    res.json({ status: "success", user: { ...user, email: null } });
-  } catch (err) {
-    res.json({ message: err });
-  }
-});
+router.get("/:userLogin", getUserByLogin);
 
-router.patch("/", async (req, res) => {
-  try {
-    const user = req.user;
-    const user_id = user._id;
-    const body = req.body;
-    await User.updateUser(user_id, body);
-    return res.status(200).json({ status: 'success', message: 'profile modifié avec succes'});
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ err: error })
-  }
-});
+//GET SPECIFIC USER IN DB BY ID
+router.get("/id/:userId", getUserById);
+
+
+// UPDATE USER
+router.patch("/", checkLoggedIn, updateUser);
 
 //DELETE A USER
-router.delete("/:userId", async (req, res) => {
-  try {
-    const removedUser = await User.deleteOne({ _id: req.params.userId });
-    res.json(removedUser);
-  } catch (err) {
-    res.json({ message: err });
-  }
-});
+router.delete("/:userId", deleteUser);
 
-router.post("/signin", (req, res) => {
-  console.log(req.body);
-});
+router.post("/signin", passport.authenticate("local"), postLogin);
 
-router.patch('/language/:language', async (req, res) => {
-  try {
-    const user = req.user;
-    const user_id = user._id;
-    user.language = req.params.language;
-    await User.updateUser(user_id, user);
-    return res.status(200).json({ status: 'success', message: 'langue changé avec succes'});
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error })
-  }
-});
+router.patch('/language/:language', checkLoggedIn, updateLanguage);
 
 //SIGNUP USER IN DB
 router.post("/signup", createUser);
