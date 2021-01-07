@@ -56,22 +56,42 @@ exports.updateLanguage = async (req, res) => {
 
 //Recupere un utilisateur via son login
 
-
-// Recupere un utilisateur via son ID
-exports.getUserById = async (req, res, next) => {
+exports.getUserByLogin = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const user = await User.findUserById(userId);
+    const { userLogin } = req.params;
+    const user = await User.findUserByUsername(userLogin);
+    if (!user)
+      return res.status(200).json({ status: "error", message: "Utilisateur introuvable" })
     const result = { 
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
       imgProfile: user.imgProfile,
     }
-    return res.json(result);
+    return res.status(200).json(result);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: error });
+  }
+};
+
+// Recupere un utilisateur via son ID
+exports.getUserById = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findUserById(userId);
+    if (!user)
+      return res.status(200).json({ status:"error", message:"Utilisateur introuvable" })
+    const result = { 
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      imgProfile: user.imgProfile,
+    }
+    return res.status(200).json({status:"success", user: result});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: JSON.stringify(error) });
   }
 };
 
