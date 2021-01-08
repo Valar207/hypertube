@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
 import { ResetPasswordEmail } from "./components/ResetPassword/ResetPasswordEmail";
 import { ResetPassword } from "./components/ResetPassword/ResetPassword";
+import { ErrorPage } from "./components/ErrorPage/ErrorPage"
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();
@@ -46,6 +47,7 @@ function App() {
               <Route exact path="/ListMovie" component={() => <ListMovie />} />
               <Route exact path="/PlayerPage" component={() => <PlayerPage />} />
               <Route exact path="/Profil" component={() => <Profil />} />
+              <Route path="/ErrorPage" component={() => <ErrorPage />} />
               <Route path="/" component={() => <HomePage />} />
             </Switch>
           </AppContext.Provider>
@@ -62,6 +64,7 @@ function App() {
               <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />
               <Route exact path="/ResetPassword" component={() => <ResetPassword />} />
               <Route path="/" component={() => <SignInUp />} />
+              <Route path="/ErrorPage" component={() => <ErrorPage />} />
             </Switch>
           </AppContext.Provider>
         </Router>
