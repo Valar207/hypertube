@@ -29,31 +29,45 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     checkAuth();
   }, []);
 
-  return (
-    <React.Fragment>
-      <Router>
-        <AppContext.Provider value={{ logged, setLogged }}>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={() => logged ? <HomePage /> : <SignInUp />} />
-            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <SignInUp />} />
-            <Route exact path="/HomePage" component={() => <HomePage />} />
-            <Route path="/ListMovie" component={() => <ListMovie />} />
-            <Route path="/PlayerPage" component={() => logged ? <PlayerPage /> : <HomePage />} />
-            <Route exact path="/Profil" component={() => logged ? <Profil /> : <HomePage />} />
-            <Route exact path="/ResetPasswordEmail" component={() => logged ? < HomePage /> : <ResetPasswordEmail />} />
-            <Route exact path="/ResetPassword" component={() => logged ? < HomePage /> : <ResetPassword />} />
-          </Switch>
-        </AppContext.Provider>
-      </Router>
-    </React.Fragment>
-  );
+  if (logged)
+    return (
+      <React.Fragment>
+        <Router>
+          <AppContext.Provider value={{ logged, setLogged }}>
+            <Header />
+            <Switch>
+              <Route exact path="/HomePage" component={() => <HomePage />} />
+              <Route exact path="/ListMovie" component={() => <ListMovie />} />
+              <Route exact path="/PlayerPage" component={() => <PlayerPage />} />
+              <Route exact path="/Profil" component={() => <Profil />} />
+              <Route path="/" component={() => <HomePage />} />
+            </Switch>
+          </AppContext.Provider>
+        </Router>
+      </React.Fragment>
+    );
+  else {
+    return (
+      <React.Fragment>
+        <Router>
+          <AppContext.Provider value={{ logged, setLogged }}>
+            <Header />
+            <Switch>
+              <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />
+              <Route exact path="/ResetPassword" component={() => <ResetPassword />} />
+              <Route path="/" component={() => <SignInUp />} />
+            </Switch>
+          </AppContext.Provider>
+        </Router>
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;
