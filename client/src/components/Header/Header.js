@@ -7,10 +7,12 @@ import { ExitToApp, Movie, AccountCircle } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 export const Header = () => {
-  const {logged, setLogged} = useContext(AppContext);
+  const { logged, setLogged } = useContext(AppContext);
   const [popover, setPopover] = useState(false);
+  const history = useHistory();
 
   const openPopover = (e) => {
     setPopover(e.currentTarget);
@@ -20,10 +22,10 @@ export const Header = () => {
   };
 
   const handleLogout = async () => {
-    const response = await axios.get('/auth/logout');
+    const response = await axios.get("/auth/logout");
     const result = response.data;
-    if (result.status === "success")
-      setLogged(false)
+    if (result.status === "success") setLogged(false);
+    history.push("/");
   };
 
   console.log(logged);

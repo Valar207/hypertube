@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useHistory, Link } from "react-router-dom";
 
 import {
   TextField,
@@ -24,15 +24,22 @@ function TabPanel(props) {
 }
 export const SignInUp = (props) => {
   const url = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
-    axios.post("user/activateUser", url).then((data) => {
-      setAlert({
-        open: true,
-        message: data.data.message,
-        status: data.data.status,
+    if (url.search) {
+      axios.post("user/activateUser", url).then((res) => {
+        if (res.data.status === "error") {
+          history.push("/");
+        } else if (res.data.status === "success") {
+          setAlert({
+            open: true,
+            message: res.data.message,
+            status: res.data.status,
+          });
+        }
       });
-    });
+    }
   }, []);
 
   const [userSignUp, setUserSignUp] = useState({
@@ -78,8 +85,7 @@ export const SignInUp = (props) => {
     e.preventDefault();
     const response = await axios.post("user/signin", userSignIn);
     const result = response.data;
-    if (result.status === "success")
-      setLogged(true);
+    if (result.status === "success") setLogged(true);
   };
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -93,22 +99,22 @@ export const SignInUp = (props) => {
           open: true,
           message: "wrong input",
           status: "error",
-          date: new Date()
-        })
+          date: new Date(),
+        });
       } else if (res.data.status === "error") {
         setAlert({
           open: true,
           message: res.data.message,
           status: "error",
-          date: new Date()
+          date: new Date(),
         });
       } else {
         setErrors("");
         setAlert({
           open: true,
-          message: "An email was sent to you",
+          message: "An email has been sent to you",
           status: "success",
-          date: new Date()
+          date: new Date(),
         });
       }
     });
@@ -283,7 +289,7 @@ export const SignInUp = (props) => {
         </form>
       </TabPanel>
 
-      <TabPanel value={tabsValue} index={1} >
+      <TabPanel value={tabsValue} index={1}>
         <form onSubmit={handleSignIn}>
           <div className="homepage__profil-img">
             <img className="imgProfile" src="/img/img-default.jpg" alt="" />
@@ -334,7 +340,7 @@ export const SignInUp = (props) => {
           </Grid>
           <Button className="homepage__btn font-size-20" type="submit">
             Sign In
-            </Button>
+          </Button>
           <div className="separator"> OR </div>
           <Grid container className="homepage__omniauth">
             <Grid item xs={6}>
@@ -351,7 +357,9 @@ export const SignInUp = (props) => {
         </form>
       </TabPanel>
 
-      {alert.open && <SimpleSnackbar key={alert.date} message={alert.message} status={alert.status} teste={alert.open} />}
+      {alert.open && (
+        <SimpleSnackbar key={alert.date} message={alert.message} status={alert.status} teste={alert.open} />
+      )}
     </Container>
   );
 };

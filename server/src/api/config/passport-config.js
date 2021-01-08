@@ -27,9 +27,8 @@ const verifyCallbackGoogle = async (accessToken, refreshToken, profile, done) =>
     const { name, given_name, family_name, email, picture, locale } = google_user;
     const user = await User.findUserByEmail(email);
     if (user) {
-      if (!user.password)
-        return done(null, user);
-      await User.deleteUser(user)
+      if (!user.password) return done(null, user);
+      await User.deleteUser(user);
     }
     const newUser = new User({
       username: name,
@@ -50,7 +49,7 @@ const verifyCallbackGoogle = async (accessToken, refreshToken, profile, done) =>
 
 const verifyCallback42 = async (accessToken, refreshToken, profile, done) => {
   try {
-    const user_42 = profile._json
+    const user_42 = profile._json;
     const { login, first_name, last_name, email, image_url, campus } = user_42;
     console.log(login, first_name, last_name, email, image_url, campus[0].language.identifier);
     const user = await User.findUserByEmail(email);
@@ -94,6 +93,9 @@ passport.use(
     }
     if (!(await comparePassword(user.password, password))) {
       return done(null, false);
+    }
+    if (user.vkey !== "") {
+      return done(null, false, { message: "Your account is not activated" });
     }
     return done(null, user);
   })
