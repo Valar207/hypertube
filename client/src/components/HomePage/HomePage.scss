@@ -26,6 +26,10 @@
     .HomePage__section-items {
       height: 350px;
       width: 100%;
+      .items-img {
+        height: 300px;
+        width: 200px;
+      }
     }
   }
 }

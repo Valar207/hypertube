@@ -12,6 +12,8 @@ import "./assets/Style.scss";
 import { ResetPasswordEmail } from "./components/ResetPassword/ResetPasswordEmail";
 import { ResetPassword } from "./components/ResetPassword/ResetPassword";
 import { ErrorPage } from "./components/ErrorPage/ErrorPage"
+import { EditProfil } from "./components/Profil/EditProfil"
+import { EditPassword } from "./components/Profil/EditPassword"
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();
@@ -47,6 +49,8 @@ function App() {
               <Route exact path="/ListMovie" component={() => <ListMovie />} />
               <Route exact path="/PlayerPage" component={() => <PlayerPage />} />
               <Route exact path="/Profil" component={() => <Profil />} />
+              <Route exact path="/EditProfil" component={() => <EditProfil />} />
+              <Route exact path="/EditPassword" component={() => <EditPassword />} />
               <Route path="/ErrorPage" component={() => <ErrorPage />} />
               <Route path="/" component={() => <HomePage />} />
             </Switch>
