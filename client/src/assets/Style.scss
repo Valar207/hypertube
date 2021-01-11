@@ -9,8 +9,9 @@ body {
   background-color: #1DE9B6;
   color: #004D40;
 }
-
-
+.font-size-20 {
+  font-size: 20px !important;
+}
 
 .custom__form {
   .MuiInputBase-root {
@@ -52,7 +53,7 @@ body {
 }
 
 .custom__btn {
-  margin: 40px 0 0 0;
+  margin: 40px 0 0 0 !important;
   height: 65px;
   width: 100%;
   background: black !important;
@@ -61,10 +62,21 @@ body {
   transition: 0.7s !important;
   &:hover {
     transition: 0.5s !important;
-    background-color: #1de9b6 !important;
+    background-color: #1DE9B6 !important;
     color: #004d40 !important;
   }
   &:focus {
     outline: none;
   }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: #333333;
+}
+::-webkit-scrollbar-thumb {
+  background: #1de9b6;
 }

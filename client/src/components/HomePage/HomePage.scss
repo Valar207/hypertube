@@ -1,4 +1,4 @@
-.HomePage__body {
+.homePage__body {
   h2 {
     color: white;
   }
@@ -6,10 +6,10 @@
     color: white;
   }
   padding: 50px 80px 0 80px;
-  .HomePage__section {
+  .homePage__section {
     // margin: 40px 50px 0 50px;
     display: flex;
-    .HomePage__section-link {
+    .homePage__section-link {
       margin-left: 10px;
       font-size: 24px;
       color: #1de9b6;
@@ -23,7 +23,7 @@
     .MuiGridList-root {
       flex-wrap: nowrap !important;
     }
-    .HomePage__section-items {
+    .homePage__section-items {
       height: 350px;
       width: 100%;
       .items-img {
@@ -32,14 +32,4 @@
       }
     }
   }
-}
-::-webkit-scrollbar {
-  width: 6px;
-  height: 3px;
-}
-::-webkit-scrollbar-track {
-  background: #333333;
-}
-::-webkit-scrollbar-thumb {
-  background: #1de9b6;
 }

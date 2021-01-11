@@ -1,11 +1,11 @@
-.PlayerPage__body {
+.playerPage__body {
     color: white;
-    .PlayerPage__player {
+    .playerPage__player {
         border: 1px solid white;
         width: 100%;
         height: 500px;
     }
-    .PlayerPage__header {
+    .playerPage__header {
         width: 100%;
         height: 50px;
     }
@@ -14,13 +14,13 @@
         color: white;
         box-shadow: none
     }
-    .PlayerPage__information {
+    .playerPage__information {
         width: 100%;
         img {
             width: 100%;
         }
     }
-    .PlayerPage__comments {
+    .playerPage__comments {
         width: 100%;
         .MuiInputBase-root{
             border-radius: 50px;

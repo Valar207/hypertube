@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Container, Grid, Button } from "@material-ui/core";
 import axios from "axios";
 import "./ResetPassword.scss";
+import "../../assets/Style.scss"
 import { useLocation, useHistory, Link } from "react-router-dom";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 
@@ -71,14 +72,14 @@ export const ResetPassword = () => {
   };
 
   return (
-    <Container className="ResetPassword__body">
+    <Container className="resetPassword__body">
       <div id="background">
         <img src="img/homepage.jpg" alt="" />
       </div>
       <form onSubmit={handleSubmit}>
         <h3>Enter a new password</h3>
 
-        <Grid container spacing={5} className="ResetPassword__form" style={{ marginTop: "50px" }}>
+        <Grid container spacing={5} className="custom__form" style={{ marginTop: "50px" }}>
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -101,7 +102,7 @@ export const ResetPassword = () => {
             />
           </Grid>
         </Grid>
-        <Button className="ResetPassword__btn font-size-20" type="submit">
+        <Button className="custom__btn font-size-20" type="submit">
           Reset password
         </Button>
       </form>

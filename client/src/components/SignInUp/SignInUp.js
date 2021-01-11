@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
+import '../../assets/Style.scss'
 import axios from "axios";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 import { AppContext } from "../../App";
@@ -184,7 +185,7 @@ export const SignInUp = (props) => {
               {errors?.imgProfile ? errors?.imgProfile : ""}
             </p>
           </div>
-          <Grid container spacing={5} className="homepage__form">
+          <Grid container spacing={5} className="custom__form">
             <Grid item xs={6}>
               {/*firstname */}
               <TextField
@@ -298,7 +299,7 @@ export const SignInUp = (props) => {
               />
             </Grid>
           </Grid>
-          <Button className="homepage__btn font-size-20" type="submit">
+          <Button className="custom__btn font-size-20" type="submit">
             Sign Up
           </Button>
         </form>
@@ -310,7 +311,7 @@ export const SignInUp = (props) => {
             <img className="imgProfile" src="/img/img-default.jpg" alt="" />
           </div>
 
-          <Grid container spacing={5} className="homepage__form">
+          <Grid container spacing={5} className="custom__form">
             <Grid item xs={12}>
               {" "}
               {/*username */}
@@ -355,7 +356,7 @@ export const SignInUp = (props) => {
           <Grid style={{ textAlign: "start", marginTop: "18px" }}>
             <Link to="/ResetPasswordEmail">Forgot password</Link>
           </Grid>
-          <Button className="homepage__btn font-size-20" type="submit">
+          <Button className="custom__btn font-size-20" type="submit">
             Sign In
           </Button>
           <div className="separator"> OR </div>
