@@ -27,10 +27,10 @@ const router = express.Router();
 //GET ALL THE USERS
 router.get("/", getAllUsers);
 
-router.get("/:userLogin", getUserByLogin);
+router.get("/:userLogin", checkLoggedIn, getUserByLogin);
 
 //GET SPECIFIC USER IN DB BY ID
-router.get("/id/:userId", getUserById);
+router.get("/id/:userId", checkLoggedIn, getUserById);
 
 // UPDATE USER
 router.patch("/", checkLoggedIn, updateUser);
@@ -38,7 +38,11 @@ router.patch("/", checkLoggedIn, updateUser);
 //DELETE A USER
 router.delete("/:userId", deleteUser);
 
-router.post("/signin", passport.authenticate("local"), postLogin);
+router.post("/signin", postLogin);
+
+router.get("/errorLogin", (res, req) => {
+  console.log("TEESST");
+});
 
 router.patch("/language/:language", checkLoggedIn, updateLanguage);
 
