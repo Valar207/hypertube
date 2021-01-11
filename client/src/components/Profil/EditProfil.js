@@ -13,6 +13,19 @@ import {
 import './EditProfil.scss'
 import '../../assets/Style.scss'
 import Axios from 'axios';
+import countries from './CountrySelect.json'
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
+
+
+function countryToFlag(isoCode) {
+    return typeof String.fromCodePoint !== 'undefined'
+        ? isoCode
+            .toUpperCase()
+            .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+        : isoCode;
+}
+
 
 export const EditProfil = () => {
 
@@ -22,6 +35,7 @@ export const EditProfil = () => {
         lastname: "",
         username: "",
         email: "",
+        language: ""
     })
 
     const uploadPhoto = (e) => {
@@ -36,10 +50,25 @@ export const EditProfil = () => {
             [e.target.name]: e.target.value
         })
     }
+    const handleChangeLanguage = (e, value) => {
+        if (value === null) {
+            setUser({
+                ...user,
+                language: ""
+            })
+        }
+        else {
+            setUser({
+                ...user,
+                language: value.name
+            })
+        }
+    }
     const handleSubmit = () => {
         Axios.post("/", user)
     }
 
+    console.log(user);
     return (
         <Container className="editProfil__body">
             <form onSubmit={handleSubmit}>
@@ -118,6 +147,32 @@ export const EditProfil = () => {
                             // helperText={errors?.email ? errors?.email : ""}
                             variant="outlined"
                         // className={errors?.email ? "errors" : ""}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        {/*language */}
+                        <Autocomplete
+                            options={countries}
+                            autoHighlight
+                            onChange={handleChangeLanguage}
+                            getOptionLabel={(option) => option.name}
+                            renderOption={(option) => (
+                                <React.Fragment>
+                                    {option.name} ({option.code})
+                                </React.Fragment>
+                            )}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    name="language"
+                                    label="Language"
+                                    variant="outlined"
+                                    inputProps={{
+                                        ...params.inputProps,
+                                        autoComplete: 'new-password', // disable autocomplete and autofill
+                                    }}
+                                />
+                            )}
                         />
                     </Grid>
                 </Grid>
