@@ -85,7 +85,16 @@ export const SignInUp = (props) => {
     e.preventDefault();
     const response = await axios.post("user/signin", userSignIn);
     const result = response.data;
+    console.log(result);
     if (result.status === "success") setLogged(true);
+    else if (result.status === "error") {
+      setAlert({
+        open: true,
+        message: result.message,
+        status: "error",
+        date: new Date(),
+      });
+    }
   };
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -187,6 +196,7 @@ export const SignInUp = (props) => {
                 helperText={errors?.firstname ? errors?.firstname : ""}
                 variant="outlined"
                 className={errors?.firstname ? "errors" : ""}
+                required
               />
             </Grid>
             <Grid item xs={6}>
@@ -200,6 +210,7 @@ export const SignInUp = (props) => {
                 helperText={errors?.lastname ? errors?.lastname : ""}
                 variant="outlined"
                 className={errors?.lastname ? "errors" : ""}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -213,6 +224,7 @@ export const SignInUp = (props) => {
                 helperText={errors?.username ? errors?.username : ""}
                 variant="outlined"
                 className={errors?.username ? "errors" : ""}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -226,6 +238,7 @@ export const SignInUp = (props) => {
                 helperText={errors?.email ? errors?.email : ""}
                 variant="outlined"
                 className={errors?.email ? "errors" : ""}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -253,6 +266,7 @@ export const SignInUp = (props) => {
                 }}
                 type={userSignUp.showSignUpPassword ? "text" : "password"}
                 className={errors?.password ? "errors" : ""}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -280,6 +294,7 @@ export const SignInUp = (props) => {
                   ),
                 }}
                 type={userSignUp.showConfirmPassword ? "text" : "password"}
+                required
               />
             </Grid>
           </Grid>
@@ -306,6 +321,7 @@ export const SignInUp = (props) => {
                 value={userSignIn.username || ""}
                 label="User name"
                 variant="outlined"
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -332,6 +348,7 @@ export const SignInUp = (props) => {
                   ),
                 }}
                 type={userSignIn.showSigninPassword ? "text" : "password"}
+                required
               />
             </Grid>
           </Grid>

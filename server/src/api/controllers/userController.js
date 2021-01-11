@@ -2,6 +2,7 @@ const { validateSignupInputs, validateNewPasswordInputs } = require("../utils/in
 const { sendSignUpMail, sendResetPasswordMail } = require("../utils/sendMail");
 const authHandler = require("../utils/authHandler");
 const errorHandler = require("../utils/errorHandler");
+const passport = require("../config/passport-config");
 const User = require("../models/User");
 
 // Recupere tout les utilisateurs
@@ -36,8 +37,22 @@ exports.deleteUser = (request, response, next) => {
 };
 
 // Connecte un utilisateur inscrit
-exports.postLogin = (request, response, next) => {
-  return response.status(200).json({ status: "success", message: "OK" });
+exports.postLogin = (req, res, next) => {
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      return next(err); // will generate a 500 error
+    }
+    // Generate a JSON response reflecting authentication status
+    if (!user) {
+      return res.send({ status: "error", message: "Wrong username or password" });
+    }
+    req.login(user, (loginErr) => {
+      if (loginErr) {
+        return next(loginErr);
+      }
+      return res.send({ status: "success", message: "authentication succeeded" });
+    });
+  })(req, res, next);
 };
 
 // Mets a jour la langue par defaut de l'utilisateur

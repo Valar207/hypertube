@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
 import { ResetPasswordEmail } from "./components/ResetPassword/ResetPasswordEmail";
 import { ResetPassword } from "./components/ResetPassword/ResetPassword";
-import { ErrorPage } from "./components/ErrorPage/ErrorPage"
+import { ErrorPage } from "./components/ErrorPage/ErrorPage";
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();

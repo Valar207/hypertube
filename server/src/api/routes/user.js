@@ -38,7 +38,11 @@ router.patch("/", checkLoggedIn, updateUser);
 //DELETE A USER
 router.delete("/:userId", deleteUser);
 
-router.post("/signin", passport.authenticate("local"), postLogin);
+router.post("/signin", postLogin);
+
+router.get("/errorLogin", (res, req) => {
+  console.log("TEESST");
+});
 
 router.patch("/language/:language", checkLoggedIn, updateLanguage);
 
