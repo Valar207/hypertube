@@ -32,7 +32,7 @@ export const Header = () => {
 
   return (
     <div className="header__body">
-      {logged === "false" ? (
+      {logged === false ? (
         <AppBar position="fixed" color="transparent">
           <Toolbar>
             <Link to="/" className="header__logo">
@@ -41,42 +41,42 @@ export const Header = () => {
           </Toolbar>
         </AppBar>
       ) : (
-        <AppBar position="fixed" color="primary">
-          <Toolbar>
-            <Link to="/HomePage" className="header__logo">
-              <img src="/img/hypertube-logo.svg" alt="" />
-            </Link>
-            <Grid item xs />
-            <IconButton className="header__icon">
-              <Link to="/listmovie" className="header__icon">
-                <Movie />
-                <Popover
-                  className="header_popover-profil"
-                  open={popover}
-                  anchorEl={popover}
-                  onClose={closePopover}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                >
-                  <Profil />
-                </Popover>
+          <AppBar position="fixed" color="primary">
+            <Toolbar>
+              <Link to="/HomePage" className="header__logo">
+                <img src="/img/hypertube-logo.svg" alt="" />
               </Link>
-            </IconButton>
-            <IconButton onClick={openPopover} className="header__icon">
-              <AccountCircle />
-            </IconButton>
-            <IconButton onClick={handleLogout} className="header__icon">
-              <ExitToApp />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      )}
+              <Grid item xs />
+              <IconButton className="header__icon">
+                <Link to="/listmovie" className="header__icon">
+                  <Movie />
+                  <Popover
+                    className="header_popover-profil"
+                    open={popover}
+                    anchorEl={popover}
+                    onClose={closePopover}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
+                    <Profil />
+                  </Popover>
+                </Link>
+              </IconButton>
+              <IconButton onClick={openPopover} className="header__icon">
+                <AccountCircle />
+              </IconButton>
+              <IconButton onClick={handleLogout} className="header__icon">
+                <ExitToApp />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        )}
     </div>
   );
 };
