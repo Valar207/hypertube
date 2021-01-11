@@ -50,23 +50,23 @@ export const Header = () => {
               <IconButton className="header__icon">
                 <Link to="/listmovie" className="header__icon">
                   <Movie />
-                  <Popover
-                    className="header_popover-profil"
-                    open={popover}
-                    anchorEl={popover}
-                    onClose={closePopover}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                  >
-                    <Profil />
-                  </Popover>
                 </Link>
+                <Popover
+                  className="header_popover-profil"
+                  open={popover}
+                  anchorEl={popover}
+                  onClose={closePopover}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                  <Profil />
+                </Popover>
               </IconButton>
               <IconButton onClick={openPopover} className="header__icon">
                 <AccountCircle />

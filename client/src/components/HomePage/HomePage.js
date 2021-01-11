@@ -9,16 +9,6 @@ import { Link } from "react-router-dom";
 // import { Carousel } from 'react-responsive-carousel';
 
 export const HomePage = () => {
-  const onWheel = (name) => (e) => {
-    const container = document.getElementById(`${name}`);
-    const containerScrollPosition = document.getElementById(`${name}`).scrollLeft;
-    container.scrollTo({
-      top: 0,
-      left: containerScrollPosition + e.deltaY,
-      behaviour: "smooth",
-    });
-  };
-
   const gender = "horror";
 
   // const child = { width: `30em`, height: `100%` }
@@ -39,63 +29,91 @@ export const HomePage = () => {
 
           {/* <Teste /> */}
           <div className="HomePage__section-items">
-            <HorizontalScroll reverseScroll={true} animValues={60}>
+            <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
               <Grid item xs={12}>
-                <GridList id="items" className="HomePage__section-item">
+                <GridList id="items" >
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/joker.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    <Link to="">
+                      <img src="/img/joker.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/parasite.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/parasite.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/gladiator.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/gladiator.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/joker.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    <Link to="">
+                      <img src="/img/joker.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/parasite.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/parasite.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/gladiator.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/gladiator.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/joker.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    <Link to="">
+                      <img src="/img/joker.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/parasite.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/parasite.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/gladiator.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/gladiator.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/joker.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    <Link to="">
+                      <img src="/img/joker.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/parasite.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/parasite.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <img src="/img/gladiator.jpg" alt="" className="items-img" />
-                    <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    <Link>
+                      <img src="/img/gladiator.jpg" alt="" className="items-img" />
+                      <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
+                    </Link>
                   </GridListTile>
+
                 </GridList>
               </Grid>
+              <div></div>
             </HorizontalScroll>
           </div>
         </Grid>
       </div>
+
+
     </div>
   );
 };
