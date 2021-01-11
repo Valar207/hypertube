@@ -153,7 +153,6 @@ export const EditProfil = () => {
                         {/*language */}
                         <Autocomplete
                             options={countries}
-                            autoHighlight
                             onChange={handleChangeLanguage}
                             getOptionLabel={(option) => option.name}
                             renderOption={(option) => (
@@ -169,7 +168,6 @@ export const EditProfil = () => {
                                     variant="outlined"
                                     inputProps={{
                                         ...params.inputProps,
-                                        autoComplete: 'new-password', // disable autocomplete and autofill
                                     }}
                                 />
                             )}
