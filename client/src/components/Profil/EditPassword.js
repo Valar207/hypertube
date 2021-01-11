@@ -60,7 +60,7 @@ export const EditPassword = () => {
                         />
                     </Grid>
                 </Grid>
-                <Button className="editPassword__btn font-size-20" type="submit">
+                <Button className="custom__btn font-size-20" type="submit">
                     Edit password
                 </Button>
 

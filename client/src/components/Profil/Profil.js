@@ -15,21 +15,22 @@ export const Profil = () => {
   }
 
   return (
-    <Container className="Profil__body">
+    <Container className="profil__body">
       <Grid item xs={12}>
         <IconButton className="profil__settings" onClick={openSetting}>
           <Settings />
         </IconButton>
 
         <Menu
-          id="simple-menu"
+          className="profil_menu"
+          // id="simple-menu"
           anchorEl={setting}
-          keepMounted
+          // keepMounted
           open={Boolean(setting)}
           onClose={closeSetting}
         >
           <MenuItem onClick={closeSetting}>
-            <NavLink to="/EditProfil">
+            <NavLink to="/EditProfil" >
               Edit profil
             </NavLink>
           </MenuItem>

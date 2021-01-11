@@ -8,12 +8,12 @@ export const PlayerPage = () => {
 
 
     return (
-        <Container className="PlayerPage__body">
+        <Container className="playerPage__body">
             <Grid container >
-                <Grid className="PlayerPage__player">
+                <Grid className="playerPage__player">
 
                 </Grid>
-                <Grid container className="PlayerPage__header">
+                <Grid container className="playerPage__header">
                     <h5>
                         titre
                            </h5>
@@ -25,7 +25,7 @@ export const PlayerPage = () => {
                         duree
                             </h5>
                 </Grid>
-                <Grid className="PlayerPage__information">
+                <Grid className="playerPage__information">
                     <Divider style={{ backgroundColor: "#6c6c6c" }} />
                     <Accordion >
                         <AccordionSummary
@@ -60,7 +60,7 @@ export const PlayerPage = () => {
                     </Accordion>
                     <Divider style={{ backgroundColor: "#6c6c6c" }} />
                 </Grid>
-                <Grid className="PlayerPage__comments">
+                <Grid className="playerPage__comments">
                     <Accordion defaultExpanded >
                         <AccordionSummary
                             expandIcon={<ExpandMore style={{ color: "white" }} />}

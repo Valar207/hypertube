@@ -28,31 +28,11 @@
   .MuiTabs-indicator {
     background-color: #1de9b6;
   }
-  .font-size-20 {
-    font-size: 20px;
-  }
   .homepage__tabs {
     color: white;
     font-size: 20px !important;
     margin: 20px 0 20px 0;
     :focus {
-      outline: none;
-    }
-  }
-  .homepage__btn {
-    margin: 40px 0 0 0;
-    height: 65px;
-    width: 100%;
-    background: black;
-    border-radius: 50px;
-    color: white;
-    transition: 0.7s;
-    &:hover {
-      transition: 0.5s;
-      background-color: #1de9b6;
-      color: #004d40;
-    }
-    &:focus {
       outline: none;
     }
   }
@@ -93,45 +73,6 @@
       width: 70px;
       bottom: 10px;
       left: 60px;
-    }
-  }
-
-  .homepage__form {
-    .MuiInputBase-root {
-      border-radius: 50px;
-    }
-    .MuiOutlinedInput-notchedOutline {
-      border-color: white !important;
-    }
-    .MuiOutlinedInput-input {
-      color: white;
-    }
-    .MuiFormLabel-root {
-      color: white;
-    }
-    .MuiFormHelperText-root {
-      color: white;
-      position: absolute;
-      top: 56px;
-    }
-    .MuiLink-root {
-      padding: 0;
-      margin-left: 10px;
-      color: #8c8c8c !important;
-    }
-    .errors {
-      color: red;
-      .MuiOutlinedInput-notchedOutline {
-        border-color: red !important;
-      }
-      .MuiFormLabel-root {
-        color: red;
-      }
-      .MuiFormHelperText-root {
-        color: red;
-        position: absolute;
-        top: 56px;
-      }
     }
   }
   .show-pwd {

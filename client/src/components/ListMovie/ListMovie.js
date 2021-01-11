@@ -55,14 +55,14 @@ export const ListMovie = () => {
   };
 
   return (
-    <div className="list-movie__body">
+    <div className="listMovie__body">
       <CssBaseline />
-      <div className="list-movie__settings">
+      <div className="listMovie__settings">
         <IconButton
           color="inherit"
           aria-label="open drawer"
           onClick={handleDrawerOpen}
-          className={clsx("list-movie__settings-btn icon-btn", open && "list-movie__settings-btn--hide")}
+          className={clsx("listMovie__settings-btn icon-btn", open && "listMovie__settings-btn--hide")}
         >
           <div className="filter-btn color-btn">
             <Tune style={{ height: 30, width: 30, margin: "0 5px 0 0" }} />
@@ -70,8 +70,8 @@ export const ListMovie = () => {
           </div>
         </IconButton>
 
-        <Drawer className="list-movie__drawer" variant="persistent" open={open}>
-          <div className="list-movie__drawer-header">
+        <Drawer className="listMovie__drawer" variant="persistent" open={open}>
+          <div className="listMovie__drawer-header">
             <Grid container direction="row" justify="space-between" alignItems="center">
               <h6> Filter :</h6>
               <IconButton onClick={handleDrawerClose} className="icon-btn">
@@ -80,9 +80,9 @@ export const ListMovie = () => {
             </Grid>
           </div>
           <Divider style={{ backgroundColor: "#4c4c4c" }} />
-          <List className="list-movie__drawer-body">
+          <List className="listMovie__drawer-body">
             <Grow in={checked}>
-              <div className="list-movie__category">
+              <div className="listMovie__category">
                 <h5> Genre </h5>
                 <Grid className="">
                   <Grid>
@@ -102,7 +102,7 @@ export const ListMovie = () => {
               </div>
             </Grow>
             <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1000 } : {})}>
-              <div className="list-movie__sort">
+              <div className="listMovie__sort">
                 <h5> Sort by </h5>
                 <Grid className="">
                   <Grid>
@@ -121,10 +121,10 @@ export const ListMovie = () => {
               </div>
             </Grow>
             <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1500 } : {})}>
-              <div className="list-movie__filter">
+              <div className="listMovie__filter">
                 <h5> Filter by </h5>
                 <Grid>
-                  <Grid className="list-movie__filter-grid">
+                  <Grid className="listMovie__filter-grid">
                     Alphabetic : {String.fromCharCode(sliderValue.name)}
                     <Slider
                       value={sliderValue.name}
@@ -135,7 +135,7 @@ export const ListMovie = () => {
                       aria-labelledby="range-slider"
                     />
                   </Grid>
-                  <Grid className="list-movie__filter-grid">
+                  <Grid className="listMovie__filter-grid">
                     Years : {sliderValue.years[0]} - {sliderValue.years[1]}
                     <Slider
                       value={sliderValue.years}
@@ -144,7 +144,7 @@ export const ListMovie = () => {
                       aria-labelledby="range-slider"
                     />
                   </Grid>
-                  <Grid className="list-movie__filter-grid">
+                  <Grid className="listMovie__filter-grid">
                     Evaluation : {sliderValue.rate[0]} - {sliderValue.rate[1]}
                     <Slider
                       value={sliderValue.rate}
@@ -159,7 +159,7 @@ export const ListMovie = () => {
           </List>
         </Drawer>
       </div>
-      <div className={clsx("list-movie__items--before", open && "list-movie__items--after")}>
+      <div className={clsx("listMovie__items--before", open && "listMovie__items--after")}>
         <GridList>
           <GridListTile to="/playerpage/joker" style={{ height: "400px", width: "270px", margin: "10px" }}>
             <Link to="/playerpage/joker" className="items-img">

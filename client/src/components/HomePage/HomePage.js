@@ -1,9 +1,8 @@
-import React, { UseState } from "react";
+import React from "react";
 import { Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
-import { Teste } from "./teste";
 import { Link } from "react-router-dom";
 // import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 // import { Carousel } from 'react-responsive-carousel';
@@ -15,20 +14,20 @@ export const HomePage = () => {
   // const parent = { width: `60em`, height: `200%` }
 
   return (
-    <div className="HomePage__body">
-      <div className="HomePage__section">
+    <div className="homePage__body">
+      <div className="homePage__section">
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <h2>
               Horror
-              <Link to={`/ListMovie/${gender}`} className="HomePage__section-link">
+              <Link to={`/ListMovie/${gender}`} className="homePage__section-link">
                 see more <ChevronRight />
               </Link>
             </h2>
           </Grid>
 
           {/* <Teste /> */}
-          <div className="HomePage__section-items">
+          <div className="homePage__section-items">
             <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
               <Grid item xs={12}>
                 <GridList id="items" >
