@@ -108,7 +108,7 @@ exports.createUser = async (req, res, next) => {
 
     //CHECK IF USER EXIST IN DB
     if (userEmailExist || userUsernameExist) {
-      return res.send({ status: "error", message: "Username or email already exist" });
+      return res.status(200).json({ status: "error", message: "Username or email already exist" });
     }
 
     const newUser = await User.insertUser(req.body);
