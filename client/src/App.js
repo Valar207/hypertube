@@ -6,9 +6,12 @@ import { ListMovie } from "./components/ListMovie/ListMovie";
 import { SignInUp } from "./components/SignInUp/SignInUp";
 import { PlayerPage } from "./components/PlayerPage/PlayerPage";
 import { Profil } from "./components/Profil/Profil";
-import { ActivateUser } from "./components/ActivateUser/ActivateUser";
+// import { ActivateUser } from "./components/ActivateUser/ActivateUser";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
+import { ResetPasswordEmail } from "./components/ResetPassword/ResetPasswordEmail";
+import { ResetPassword } from "./components/ResetPassword/ResetPassword";
+import { ErrorPage } from "./components/ErrorPage/ErrorPage"
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();
@@ -27,29 +30,47 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     checkAuth();
   }, []);
 
-  return (
-    <React.Fragment>
-      <Router>
-        <AppContext.Provider value={{logged, setLogged}}>
-          <Header />
-          <Switch>
-            <Route exact path="/" component={() => logged ? <HomePage /> : <SignInUp />} />
-            <Route exact path="/HomePage" component={() => <HomePage />} />
-            <Route path="/ListMovie" component={() => <ListMovie />} />
-            <Route path="/PlayerPage" component={() => logged ? <PlayerPage /> : <HomePage />} />
-            <Route exact path="/Profil" component={() => logged ? <Profil /> : <HomePage />} />
-            <Route exact path="/activateUser" component={() => logged ? <HomePage /> : <ActivateUser />} />
-          </Switch>
-        </AppContext.Provider>
-      </Router>
-    </React.Fragment>
-  );
+  if (logged)
+    return (
+      <React.Fragment>
+        <Router>
+          <AppContext.Provider value={{ logged, setLogged }}>
+            <Header />
+            <Switch>
+              <Route exact path="/HomePage" component={() => <HomePage />} />
+              <Route exact path="/ListMovie" component={() => <ListMovie />} />
+              <Route exact path="/PlayerPage" component={() => <PlayerPage />} />
+              <Route exact path="/Profil" component={() => <Profil />} />
+              <Route path="/ErrorPage" component={() => <ErrorPage />} />
+              <Route path="/" component={() => <HomePage />} />
+            </Switch>
+          </AppContext.Provider>
+        </Router>
+      </React.Fragment>
+    );
+  else {
+    return (
+      <React.Fragment>
+        <Router>
+          <AppContext.Provider value={{ logged, setLogged }}>
+            <Header />
+            <Switch>
+              <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />
+              <Route exact path="/ResetPassword" component={() => <ResetPassword />} />
+              <Route path="/" component={() => <SignInUp />} />
+              <Route path="/ErrorPage" component={() => <ErrorPage />} />
+            </Switch>
+          </AppContext.Provider>
+        </Router>
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;

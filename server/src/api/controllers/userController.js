@@ -1,6 +1,6 @@
-const { validateSignupInputs } = require("../utils/inputsValidator");
-const { sendSignUpMail } = require("../utils/sendMail");
-
+const { validateSignupInputs, validateNewPasswordInputs } = require("../utils/inputsValidator");
+const { sendSignUpMail, sendResetPasswordMail } = require("../utils/sendMail");
+const authHandler = require("../utils/authHandler");
 const errorHandler = require("../utils/errorHandler");
 const User = require("../models/User");
 
@@ -22,10 +22,10 @@ exports.updateUser = async (req, res) => {
     const user_id = user._id;
     const body = req.body;
     await User.updateUser(user_id, body);
-    return res.status(200).json({ status: 'success', message: 'profile modifié avec succes'});
+    return res.status(200).json({ status: "success", message: "profile modifié avec succes" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ err: error })
+    return res.status(500).json({ err: error });
   }
 };
 
@@ -37,7 +37,7 @@ exports.deleteUser = (request, response, next) => {
 
 // Connecte un utilisateur inscrit
 exports.postLogin = (request, response, next) => {
-  return response.status(200).json({ status:"success", message:"OK" });
+  return response.status(200).json({ status: "success", message: "OK" });
 };
 
 // Mets a jour la langue par defaut de l'utilisateur
@@ -47,10 +47,10 @@ exports.updateLanguage = async (req, res) => {
     const user_id = user._id;
     user.language = req.params.language;
     await User.updateUser(user_id, user);
-    return res.status(200).json({ status: 'success', message: 'langue changé avec succes'});
+    return res.status(200).json({ status: "success", message: "langue changé avec succes" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error })
+    res.status(500).json({ message: error });
   }
 };
 
@@ -60,14 +60,13 @@ exports.getUserByLogin = async (req, res, next) => {
   try {
     const { userLogin } = req.params;
     const user = await User.findUserByUsername(userLogin);
-    if (!user)
-      return res.status(200).json({ status: "error", message: "Utilisateur introuvable" })
-    const result = { 
+    if (!user) return res.status(200).json({ status: "error", message: "Utilisateur introuvable" });
+    const result = {
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
       imgProfile: user.imgProfile,
-    }
+    };
     return res.status(200).json(result);
   } catch (error) {
     console.error(error);
@@ -80,15 +79,14 @@ exports.getUserById = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const user = await User.findUserById(userId);
-    if (!user)
-      return res.status(200).json({ status:"error", message:"Utilisateur introuvable" })
-    const result = { 
+    if (!user) return res.status(200).json({ status: "error", message: "Utilisateur introuvable" });
+    const result = {
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
       imgProfile: user.imgProfile,
-    }
-    return res.status(200).json({status:"success", user: result});
+    };
+    return res.status(200).json({ status: "success", user: result });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: JSON.stringify(error) });
@@ -131,14 +129,14 @@ exports.createUser = async (req, res, next) => {
 
 exports.activateUser = async (req, res, next) => {
   const username = req.body.search.split("&")[0].split("=")[1];
-  const user = await User.findUserByUsername(username);
   const urlToken = req.body.search.split("&")[1].split("=")[1];
+  const user = await User.findUserByUsername(username);
   if (user) {
     const bddToken = user.vkey;
     if (urlToken === bddToken) {
       console.log("token match");
       User.updateUser(user.id, { vkey: "" });
-      res.send({ status: "success", msg: "Compte activé !" });
+      res.send({ status: "success", message: "Account activated !" });
     } else {
       console.log("token doesnt match");
       return res.send({ status: "error", message: "incorrect token" });
@@ -146,4 +144,68 @@ exports.activateUser = async (req, res, next) => {
   } else {
     return res.send({ status: "error", message: "incorrect username" });
   }
+};
+
+exports.resetPasswordEmail = async (req, res, next) => {
+  const email = req.body.email;
+  const user = await User.findUserByEmail(email);
+
+  if (email) {
+    if (user) {
+      let fkey;
+      fkey = await authHandler.generateToken(user); //génère un token pour reset le password
+      User.updateUser(user.id, { fkey: fkey });
+      sendResetPasswordMail(email, fkey);
+      return res.send({ status: "success", message: "A reset email has been sent to you" });
+    } else {
+      return res.send({ status: "error", message: "This email is not registered" });
+    }
+  }
+};
+
+//CHECK IF THE USER IS ALLOWED ON RESET PASSWORD PAGE
+exports.resetPasswordPage = async (req, res, next) => {
+  const email = req.body.search.split("&")[0].split("=")[1];
+  const urlToken = req.body.search.split("&")[1].split("=")[1];
+  const user = await User.findUserByEmail(email);
+
+  if (user) {
+    const bddForgotToken = user.fkey;
+    if (urlToken === bddForgotToken) {
+      //TOKEN CORRECT
+      return res.send({ status: "success" });
+    } else {
+      //TOKEN INCORRECT
+      return res.send({ status: "error" });
+    }
+  } else {
+    return res.send({ status: "error" });
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  const { newPassword, confirmNewPassword } = req.body.password;
+  const email = req.body.url.search.split("&")[0].split("=")[1];
+  const user = await User.findUserByEmail(email);
+
+  if (!newPassword || !confirmNewPassword) {
+    return res.send({ status: "error", message: "please fill in all inputs" });
+  }
+
+  if (newPassword.length < 8) {
+    return res.send({
+      status: "error",
+      message: "Password must be at least 8 characters",
+      param: "newPassword",
+    });
+  }
+
+  if (newPassword !== confirmNewPassword) {
+    return res.send({ status: "error", message: "Passwords don't match", param: "confirmNewPassword" });
+  }
+
+  let hashedPassword = null;
+  hashedPassword = await authHandler.hashPassword(newPassword);
+  User.updateUser(user._id, { password: hashedPassword });
+  return res.send({ status: "success", message: "Password has been modified" });
 };

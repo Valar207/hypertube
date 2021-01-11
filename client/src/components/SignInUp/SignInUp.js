@@ -1,11 +1,12 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useLocation, useHistory, Link } from "react-router-dom";
+
 import {
   TextField,
   Container,
   Tabs,
   Tab,
   Grid,
-  Link,
   Button,
   Box,
   IconButton,
@@ -14,15 +15,33 @@ import {
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
 import axios from "axios";
-import SimpleSnackbar from "./SnackBar";
+import SimpleSnackbar from "../SnackBar/SnackBar";
 import { AppContext } from "../../App";
-
 
 function TabPanel(props) {
   const { children, value, index } = props;
   return <div>{value === index && <Box p={3}>{children}</Box>}</div>;
 }
 export const SignInUp = (props) => {
+  const url = useLocation();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (url.search) {
+      axios.post("user/activateUser", url).then((res) => {
+        if (res.data.status === "error") {
+          history.push("/");
+        } else if (res.data.status === "success") {
+          setAlert({
+            open: true,
+            message: res.data.message,
+            status: res.data.status,
+          });
+        }
+      });
+    }
+  }, []);
+
   const [userSignUp, setUserSignUp] = useState({
     imgProfile: "",
     firstname: "",
@@ -48,7 +67,7 @@ export const SignInUp = (props) => {
   });
   const [errors, setErrors] = useState();
 
-  const {logged, setLogged} = useContext(AppContext);
+  const { logged, setLogged } = useContext(AppContext);
 
   const handleChangeSignUp = (e) => {
     setUserSignUp({
@@ -66,25 +85,36 @@ export const SignInUp = (props) => {
     e.preventDefault();
     const response = await axios.post("user/signin", userSignIn);
     const result = response.data;
-    if (result.status === "success")
-      setLogged(true);
+    if (result.status === "success") setLogged(true);
   };
   const handleSignUp = (e) => {
     e.preventDefault();
     axios.post("user/signup", userSignUp).then((res) => {
-      console.log(res);
-
       if (res.data.errors) {
         var errors = res.data.errors;
         var mapped = errors.map((item) => ({ [item.param]: item.msg }));
         var newObj = Object.assign({}, ...mapped);
         setErrors(newObj);
+        setAlert({
+          open: true,
+          message: "wrong input",
+          status: "error",
+          date: new Date(),
+        });
+      } else if (res.data.status === "error") {
+        setAlert({
+          open: true,
+          message: res.data.message,
+          status: "error",
+          date: new Date(),
+        });
       } else {
         setErrors("");
         setAlert({
           open: true,
-          message: "An email was sent to you",
+          message: "An email has been sent to you",
           status: "success",
+          date: new Date(),
         });
       }
     });
@@ -111,7 +141,6 @@ export const SignInUp = (props) => {
   const handleChangeTabs = (event, newValue) => {
     setTabsValue(newValue);
   };
-
   return (
     <Container className="homepage__body">
       <div id="background">
@@ -260,7 +289,7 @@ export const SignInUp = (props) => {
         </form>
       </TabPanel>
 
-      <TabPanel value={tabsValue} index={1} className="signin__body">
+      <TabPanel value={tabsValue} index={1}>
         <form onSubmit={handleSignIn}>
           <div className="homepage__profil-img">
             <img className="imgProfile" src="/img/img-default.jpg" alt="" />
@@ -305,13 +334,13 @@ export const SignInUp = (props) => {
                 type={userSignIn.showSigninPassword ? "text" : "password"}
               />
             </Grid>
-            <Grid item>
-              <Link href="#">Forgot password</Link>
-            </Grid>
-            <Button className="homepage__btn font-size-20" type="submit">
-              Sign In
-            </Button>
           </Grid>
+          <Grid style={{ textAlign: "start", marginTop: "18px" }}>
+            <Link to="/ResetPasswordEmail">Forgot password</Link>
+          </Grid>
+          <Button className="homepage__btn font-size-20" type="submit">
+            Sign In
+          </Button>
           <div className="separator"> OR </div>
           <Grid container className="homepage__omniauth">
             <Grid item xs={6}>
@@ -328,7 +357,9 @@ export const SignInUp = (props) => {
         </form>
       </TabPanel>
 
-      {alert.open && <SimpleSnackbar message={alert.message} />}
+      {alert.open && (
+        <SimpleSnackbar key={alert.date} message={alert.message} status={alert.status} teste={alert.open} />
+      )}
     </Container>
   );
 };
