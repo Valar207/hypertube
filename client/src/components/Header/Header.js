@@ -20,15 +20,12 @@ export const Header = () => {
   const closePopover = () => {
     setPopover(false);
   };
-
   const handleLogout = async () => {
     const response = await axios.get("/auth/logout");
     const result = response.data;
     if (result.status === "success") setLogged(false);
     history.push("/");
   };
-
-  console.log(logged);
 
   return (
     <div className="header__body">
@@ -51,26 +48,26 @@ export const Header = () => {
                 <Link to="/listmovie" className="header__icon">
                   <Movie />
                 </Link>
-                <Popover
-                  className="header_popover-profil"
-                  open={popover}
-                  anchorEl={popover}
-                  onClose={closePopover}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                  }}
-                >
-                  <Profil />
-                </Popover>
               </IconButton>
               <IconButton onClick={openPopover} className="header__icon">
                 <AccountCircle />
               </IconButton>
+              <Popover
+                className="header_popover-profil"
+                open={Boolean(popover)}
+                anchorEl={popover}
+                onClose={closePopover}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <Profil />
+              </Popover>
               <IconButton onClick={handleLogout} className="header__icon">
                 <ExitToApp />
               </IconButton>
