@@ -1,19 +1,19 @@
 exports.getSession = (req, res) => {
-    return res.status(200).json({ status: "success", message: true });
+  return res.status(200).json({ status: "success", message: true, user: req.user });
 };
 
 exports.getGoogleRedirect = (request, response, next) => {
-    response.status(200).json(request.user);
+  response.status(200).json(request.user);
 };
 
 exports.get42Redirect = (request, response, next) => {
-    response.status(200).json(request.user);
+  response.status(200).json(request.user);
 };
 
 exports.getLogout = (request, response) => {
-    if (request.isAuthenticated()) {
-      request.logout();
-      return response.status(200).json({ status: "success", message: "Logged out successfuly" });
-    }
-    return response.status(200).json({ status: "error", message: "User was not logged in" });
+  if (request.isAuthenticated()) {
+    request.logout();
+    return response.status(200).json({ status: "success", message: "Logged out successfuly" });
+  }
+  return response.status(200).json({ status: "error", message: "User was not logged in" });
 };

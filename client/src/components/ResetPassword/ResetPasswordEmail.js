@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Container, Grid, Button } from "@material-ui/core";
 import { LockOpen } from "@material-ui/icons";
 import "./ResetPassword.scss";
-import '../../assets/Style.scss'
+import "../../assets/Style.scss";
 import axios from "axios";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 
@@ -60,6 +60,7 @@ export const ResetPasswordEmail = () => {
               onChange={handleChange}
               label="Please enter your adress email"
               variant="outlined"
+              required
             />
           </Grid>
         </Grid>

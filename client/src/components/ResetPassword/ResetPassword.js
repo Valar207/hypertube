@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Container, Grid, Button } from "@material-ui/core";
 import axios from "axios";
 import "./ResetPassword.scss";
-import "../../assets/Style.scss"
+import "../../assets/Style.scss";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 
@@ -89,6 +89,7 @@ export const ResetPassword = () => {
               label="Please enter your new password"
               helperText="Must contain 8 characters, 1 letter, 1 number and 1 special character"
               variant="outlined"
+              required
             />
           </Grid>
           <Grid item xs={12}>
@@ -99,6 +100,7 @@ export const ResetPassword = () => {
               onChange={handleChange}
               label="Please confirm your new password"
               variant="outlined"
+              required
             />
           </Grid>
         </Grid>

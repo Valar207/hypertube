@@ -18,6 +18,8 @@ const {
   resetPasswordEmail,
   resetPasswordPage,
   resetPassword,
+  editPassword,
+  editProfil,
 } = require("../controllers/userController");
 
 const { checkLoggedIn } = require("../utils/authHandler");
@@ -56,5 +58,8 @@ router.post("/resetPasswordEmail", resetPasswordEmail);
 router.post("/resetPasswordPage", resetPasswordPage);
 //RESET PASSWORD
 router.post("/resetPassword", resetPassword);
-
+//EDIT PASSWORD
+router.post("/editPassword", editPassword);
+//EDIT PROFIL
+router.post("/editProfil", editProfil);
 module.exports = router;

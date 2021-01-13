@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
-import '../../assets/Style.scss'
+import "../../assets/Style.scss";
 import axios from "axios";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 import { AppContext } from "../../App";
@@ -86,7 +86,6 @@ export const SignInUp = (props) => {
     e.preventDefault();
     const response = await axios.post("user/signin", userSignIn);
     const result = response.data;
-    console.log(result);
     if (result.status === "success") setLogged(true);
     else if (result.status === "error") {
       setAlert({

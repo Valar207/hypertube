@@ -94,9 +94,6 @@ passport.use(
     if (!(await comparePassword(user.password, password))) {
       return done(null, false);
     }
-    if (user.vkey !== "") {
-      return done(null, false, { message: "Your account is not activated" });
-    }
     return done(null, user);
   })
 );

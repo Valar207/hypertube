@@ -11,9 +11,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./assets/Style.scss";
 import { ResetPasswordEmail } from "./components/ResetPassword/ResetPasswordEmail";
 import { ResetPassword } from "./components/ResetPassword/ResetPassword";
-import { ErrorPage } from "./components/ErrorPage/ErrorPage"
-import { EditProfil } from "./components/Profil/EditProfil"
-import { EditPassword } from "./components/Profil/EditPassword"
+import { ErrorPage } from "./components/ErrorPage/ErrorPage";
+import { EditProfil } from "./components/Profil/EditProfil";
+import { EditPassword } from "./components/Profil/EditPassword";
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();
@@ -23,12 +23,14 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [logged, setLogged] = useState(false);
+  const [userInfos, setUserInfos] = useState(false);
 
   const checkAuth = async () => {
     try {
       const response = await axios.get("/auth/is_logged");
       const auth = response.data;
       setLogged(auth.message);
+      setUserInfos(auth.user);
     } catch (error) {
       console.error(error);
     }
@@ -42,7 +44,7 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged }}>
+          <AppContext.Provider value={{ logged, setLogged, userInfos }}>
             <Header />
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />
@@ -62,7 +64,7 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged }}>
+          <AppContext.Provider value={{ logged, setLogged, userInfos }}>
             <Header />
             <Switch>
               <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />

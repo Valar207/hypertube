@@ -43,8 +43,12 @@ exports.postLogin = (req, res, next) => {
       return next(err); // will generate a 500 error
     }
     // Generate a JSON response reflecting authentication status
+
     if (!user) {
       return res.send({ status: "error", message: "Wrong username or password" });
+    }
+    if (user.vkey) {
+      return res.send({ status: "error", message: "Your account is not activated yet" });
     }
     req.login(user, (loginErr) => {
       if (loginErr) {
@@ -223,4 +227,51 @@ exports.resetPassword = async (req, res, next) => {
   hashedPassword = await authHandler.hashPassword(newPassword);
   User.updateUser(user._id, { password: hashedPassword });
   return res.send({ status: "success", message: "Password has been modified" });
+};
+
+exports.editPassword = async (req, res, next) => {
+  const { oldPassword, newPassword, confirmNewPassword } = req.body;
+  if (await authHandler.comparePassword(req.user.password, oldPassword)) {
+    if (newPassword.length < 8) {
+      return res.send({
+        status: "error",
+        message: "Your password must be at least 8 characters",
+        param: "newPassword",
+      });
+    }
+    if (newPassword === confirmNewPassword) {
+      let hash = await authHandler.hashPassword(newPassword);
+      User.updateUser(req.user.id, { password: hash });
+      return res.send({ status: "success", message: "Your password has been modified" });
+    }
+    return res.send({ status: "error", message: "passwords do not match", param: "newPassword" });
+  }
+  return res.send({ status: "error", message: "Wrong old password", param: "oldPassword" });
+};
+
+exports.editProfil = async (req, res, next) => {
+  const { imgProfile, firstname, lastname, username, email, language } = req.body;
+
+  console.log("username :" + username);
+  console.log("username requser :" + req.user.username);
+
+  if (
+    imgProfile !== req.user.imgProfile ||
+    firstname !== req.user.firstname ||
+    lastname !== req.user.lastname ||
+    username !== req.user.username ||
+    email !== req.user.email ||
+    language !== req.user.language
+  ) {
+    User.updateUser(req.user.id, {
+      imgProfile: imgProfile !== req.user.imgProfile ? imgProfile : req.user.imgProfile,
+      firstname: firstname !== req.user.firstname ? firstname : req.user.firstname,
+      lastname: lastname !== req.user.lastname ? lastname : req.user.lastname,
+      username: username !== req.user.username ? username : req.user.username,
+      email: email !== req.user.email ? email : req.user.email,
+      language: language !== req.user.language ? language : req.user.language,
+    });
+    return res.send({ status: "success", message: "Your profile has been edited" });
+  }
+  return res.send({ status: "error", message: "You haven't changed anything" });
 };
