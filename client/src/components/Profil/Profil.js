@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import { Container, Grid, IconButton, Menu, MenuItem, } from "@material-ui/core";
+import React, { useState, useContext } from "react";
+import { Container, Grid, IconButton, Menu, MenuItem } from "@material-ui/core";
 import { Settings } from "@material-ui/icons";
 import "./Profil.scss";
 import { NavLink } from "react-router-dom";
+import { AppContext } from "../../App";
 
 export const Profil = () => {
-  const [setting, setSetting] = useState(null)
+  const [setting, setSetting] = useState(null);
+  const { userInfos } = useContext(AppContext);
 
   const openSetting = (e) => {
-    setSetting(e.currentTarget)
-  }
+    setSetting(e.currentTarget);
+  };
   const closeSetting = () => {
-    setSetting(null)
-  }
+    setSetting(null);
+  };
 
   return (
     <Container className="profil__body">
@@ -30,18 +32,12 @@ export const Profil = () => {
           onClose={closeSetting}
         >
           <MenuItem onClick={closeSetting}>
-            <NavLink to="/EditProfil" >
-              Edit profil
-            </NavLink>
+            <NavLink to="/EditProfil">Edit profil</NavLink>
           </MenuItem>
           <MenuItem onClick={closeSetting}>
-            <NavLink to="/EditPassword">
-              Edit password
-            </NavLink>
+            <NavLink to="/EditPassword">Edit password</NavLink>
           </MenuItem>
         </Menu>
-
-
       </Grid>
       <Grid container direction="column" spacing={3}>
         <Grid item xs={12}>
@@ -49,7 +45,7 @@ export const Profil = () => {
         </Grid>
         <Grid container className="profil__grid">
           <Grid item xs={12}>
-            VasyMolo
+            {userInfos.username}
           </Grid>
         </Grid>
         <Grid container className="profil__grid">
