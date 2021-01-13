@@ -4,14 +4,9 @@ import { ChevronRight } from "@material-ui/icons";
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Link } from "react-router-dom";
-// import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-// import { Carousel } from 'react-responsive-carousel';
 
 export const HomePage = () => {
   const gender = "horror";
-
-  // const child = { width: `30em`, height: `100%` }
-  // const parent = { width: `60em`, height: `200%` }
 
   return (
     <div className="homePage__body">
@@ -32,77 +27,60 @@ export const HomePage = () => {
               <Grid item xs={12}>
                 <GridList id="items" >
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link to="">
+                    <Link to="/playerpage/joker">
                       <img src="/img/joker.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
+                    <Link to="/playerpage/parasite">
                       <img src="/img/parasite.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
+                    <Link to="/playerpage/gladiator">
                       <img src="/img/gladiator.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link to="">
+                    <Link to="/playerpage/joker">
                       <img src="/img/joker.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
+                    <Link to="/playerpage/parasite">
                       <img src="/img/parasite.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
+                    <Link to="/playerpage/gladiator">
                       <img src="/img/gladiator.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link to="">
+                    <Link to="/playerpage/joker">
                       <img src="/img/joker.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
+                    <Link to="/playerpage/parasite">
                       <img src="/img/parasite.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
                     </Link>
                   </GridListTile>
                   <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
+                    <Link to="/playerpage/gladiator">
                       <img src="/img/gladiator.jpg" alt="" className="items-img" />
                       <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
                     </Link>
                   </GridListTile>
-                  <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link to="">
-                      <img src="/img/joker.jpg" alt="" className="items-img" />
-                      <GridListTileBar className="items-title" title="Le Joker" subtitle="1h30" />
-                    </Link>
-                  </GridListTile>
-                  <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
-                      <img src="/img/parasite.jpg" alt="" className="items-img" />
-                      <GridListTileBar className="items-title" title="Parasite" subtitle="1h30" />
-                    </Link>
-                  </GridListTile>
-                  <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                    <Link>
-                      <img src="/img/gladiator.jpg" alt="" className="items-img" />
-                      <GridListTileBar className="items-title" title="Gladiator" subtitle="1h30" />
-                    </Link>
-                  </GridListTile>
+
 
                 </GridList>
               </Grid>
