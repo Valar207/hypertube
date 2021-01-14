@@ -22,6 +22,7 @@ axios.defaults.baseURL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
 
 function App() {
+  const [loaded, setLoaded] = useState(false);
   const [logged, setLogged] = useState(false);
   const [userInfos, setUserInfos] = useState("");
 
@@ -31,6 +32,7 @@ function App() {
       const auth = response.data;
       setUserInfos(auth.user);
       setLogged(auth.message);
+      setLoaded(true);
     } catch (error) {
       console.error(error);
     }
@@ -40,22 +42,30 @@ function App() {
     checkAuth();
   }, []);
 
-  console.log(logged);
-  console.log(userInfos);
-
-  if (logged)
+  if (!loaded) return <div>Loading...</div>;
+  else if (logged)
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos }}>
+          <AppContext.Provider
+            value={{ logged, setLogged, userInfos, setUserInfos }}
+          >
             <Header />
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />
               <Route path="/ListMovie" component={() => <ListMovie />} />
               <Route path="/PlayerPage" component={() => <PlayerPage />} />
               <Route exact path="/Profil" component={() => <Profil />} />
-              <Route exact path="/EditProfil" component={() => <EditProfil />} />
-              <Route exact path="/EditPassword" component={() => <EditPassword />} />
+              <Route
+                exact
+                path="/EditProfil"
+                component={() => <EditProfil />}
+              />
+              <Route
+                exact
+                path="/EditPassword"
+                component={() => <EditPassword />}
+              />
               <Route path="/ErrorPage" component={() => <ErrorPage />} />
               <Route path="/" component={() => <HomePage />} />
             </Switch>
@@ -67,11 +77,21 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos }}>
+          <AppContext.Provider
+            value={{ logged, setLogged, userInfos, setUserInfos }}
+          >
             <Header />
             <Switch>
-              <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />
-              <Route exact path="/ResetPassword" component={() => <ResetPassword />} />
+              <Route
+                exact
+                path="/ResetPasswordEmail"
+                component={() => <ResetPasswordEmail />}
+              />
+              <Route
+                exact
+                path="/ResetPassword"
+                component={() => <ResetPassword />}
+              />
               <Route path="/" component={() => <SignInUp />} />
               <Route path="/ErrorPage" component={() => <ErrorPage />} />
             </Switch>
