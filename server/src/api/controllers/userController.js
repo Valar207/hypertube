@@ -54,7 +54,7 @@ exports.postLogin = (req, res, next) => {
       if (loginErr) {
         return next(loginErr);
       }
-      return res.send({ status: "success", message: "authentication succeeded" });
+      return res.send({ status: "success", message: "authentication succeeded", user });
     });
   })(req, res, next);
 };

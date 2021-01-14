@@ -23,14 +23,14 @@ axios.defaults.withCredentials = true;
 
 function App() {
   const [logged, setLogged] = useState(false);
-  const [userInfos, setUserInfos] = useState(false);
+  const [userInfos, setUserInfos] = useState("");
 
   const checkAuth = async () => {
     try {
       const response = await axios.get("/auth/is_logged");
       const auth = response.data;
-      setLogged(auth.message);
       setUserInfos(auth.user);
+      setLogged(auth.message);
     } catch (error) {
       console.error(error);
     }
@@ -40,11 +40,14 @@ function App() {
     checkAuth();
   }, []);
 
+  console.log(logged);
+  console.log(userInfos);
+
   if (logged)
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged, userInfos }}>
+          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos }}>
             <Header />
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />
@@ -64,7 +67,7 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged, userInfos }}>
+          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos }}>
             <Header />
             <Switch>
               <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />

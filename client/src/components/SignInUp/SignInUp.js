@@ -68,7 +68,7 @@ export const SignInUp = (props) => {
   });
   const [errors, setErrors] = useState();
 
-  const { logged, setLogged } = useContext(AppContext);
+  const { logged, setLogged, userInfos, setUserInfos } = useContext(AppContext);
 
   const handleChangeSignUp = (e) => {
     setUserSignUp({
@@ -86,8 +86,11 @@ export const SignInUp = (props) => {
     e.preventDefault();
     const response = await axios.post("user/signin", userSignIn);
     const result = response.data;
-    if (result.status === "success") setLogged(true);
-    else if (result.status === "error") {
+
+    if (result.status === "success") {
+      setUserInfos(result.user);
+      setLogged(true);
+    } else if (result.status === "error") {
       setAlert({
         open: true,
         message: result.message,

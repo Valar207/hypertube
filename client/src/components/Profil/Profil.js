@@ -45,7 +45,7 @@ export const Profil = () => {
         </Grid>
         <Grid container className="profil__grid">
           <Grid item xs={12}>
-            {userInfos.username}
+            {userInfos?.username}
           </Grid>
         </Grid>
         <Grid container className="profil__grid">
