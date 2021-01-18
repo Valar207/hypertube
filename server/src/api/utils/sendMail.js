@@ -50,9 +50,9 @@ const sendSignUpMail = (to, username, validationToken) => {
                       <table class="button red" cellpadding="0" cellspacing="0" border="0" align="center">
                         <tbody>
                           <tr>
-                            <td align="center" style="color:rgb(255, 255, 255);font-size:14px;font-weight:bold;background-color:rgb(229, 9, 20);text-align:center;padding:3px 22px;border-radius:4px;max-width:250px;">
+                            <td align="center" style="font-size:14px;font-weight:bold;background-color:#1DE9B6;text-align:center;padding:3px 22px;border-radius:50px;max-width:260px;">
                             <p>
-                              <a href="http://localhost:3000/activateUser?username=${username}&token=${validationToken}" style="color:#ffffff;font-family: Helvetica, Arial, sans;font-size:14px;font-weight:bold;text-align:center;text-decoration:none;color:inherit;color:rgb(255, 255, 255);font-size:14px;font-weight:bold;text-align:center;text-decoration:none;font-family:Helvetica, Arial, sans;">
+                              <a href="http://localhost:3000/activateUser?username=${username}&token=${validationToken}" style="color:#004d40;font-family: Helvetica, Arial, sans;font-size:14px;font-weight:bold;text-align:center;text-decoration:none;color:inherit;;font-size:14px;font-weight:bold;text-align:center;text-decoration:none;font-family:Helvetica, Arial, sans;">
                                 Hypertube.com
                               </a>
                             </p>

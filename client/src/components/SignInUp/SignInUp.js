@@ -118,6 +118,10 @@ export const SignInUp = (props) => {
           date: new Date(),
         });
       } else {
+        const formData = new FormData();
+        formData.append("img", userSignUp.imgProfile);
+        formData.append("username", userSignUp.username);
+        axios.post("user/uploadImg", formData)
         setErrors("");
         setAlert({
           open: true,
@@ -143,13 +147,16 @@ export const SignInUp = (props) => {
   const uploadPhoto = (e) => {
     setUserSignUp({
       ...userSignUp,
-      imgProfile: URL.createObjectURL(e.target.files[0]),
+      imgProfile: e.target.files[0],
     });
   };
   const [tabsValue, setTabsValue] = useState(0);
   const handleChangeTabs = (event, newValue) => {
     setTabsValue(newValue);
   };
+
+  console.log(userSignUp.imgProfile);
+
   return (
     <Container className="homepage__body">
       <div id="background">
@@ -164,11 +171,11 @@ export const SignInUp = (props) => {
           <div className="homepage__profil-img">
             <img
               className="imgProfile"
-              src={userSignUp.imgProfile === "" ? "/img/img-default.jpg" : userSignUp.imgProfile}
+              src={userSignUp.imgProfile === "" ? "/img/img-default.jpg" : URL.createObjectURL(userSignUp.imgProfile)}
               alt="Image profil"
             />
             <input
-              accept="image/*"
+              accept="image/png, image/jpg, image/jpeg"
               style={{ display: "none" }}
               id="uploadImgProfile"
               multiple

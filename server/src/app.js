@@ -5,6 +5,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const fileUpload = require("express-fileupload");
 
 require('dotenv').config();
 
@@ -32,6 +33,7 @@ app.use(cookieSession({
 
 app.use(passport.initialize()); //Middleware qui initialise passport
 app.use(passport.session()); // Middleware qui prend l'objet request et ajoute un req.user
+app.use(fileUpload());
 
 
 app.get('/', (req, res) => res.json({
