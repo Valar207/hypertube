@@ -71,11 +71,12 @@ UserSchema.statics.insertUser = async function (userData) {
       password: hashedPassword,
       firstname: userData.firstname,
       lastname: userData.lastname,
-      imgProfile: userData.imgProfile,
+      imgProfile: `/img/img-default.jpg`,
       language: userData.language ? userData.language : "fr",
       vkey: vkey,
       history: [],
     };
+
 
     const newUser = new this(user);
     const result = await newUser.save();
@@ -89,6 +90,15 @@ UserSchema.statics.insertUser = async function (userData) {
 UserSchema.statics.updateUser = async function (userId, userData) {
   try {
     const result = await this.model("User").findByIdAndUpdate(userId, userData).exec();
+    return result;
+  } catch (error) {
+    console.error(`User model: ${error}`);
+  }
+};
+// Update un utilisateur via son username
+UserSchema.statics.updateUserByUsername = async function (userName, userData) {
+  try {
+    const result = await this.model("User").updateOne({ "username": userName }, { $set: userData }).exec();
     return result;
   } catch (error) {
     console.error(`User model: ${error}`);

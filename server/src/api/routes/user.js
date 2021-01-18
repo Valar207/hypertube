@@ -23,7 +23,7 @@ const {
 } = require("../controllers/userController");
 
 const { checkLoggedIn } = require("../utils/authHandler");
-
+const { uploadImg } = require("../utils/uploadImg");
 const router = express.Router();
 
 //GET ALL THE USERS
@@ -50,6 +50,7 @@ router.patch("/language/:language", checkLoggedIn, updateLanguage);
 
 //SIGNUP USER IN DB
 router.post("/signup", createUser);
+router.post("/uploadImg", uploadImg);
 //ACTIVATE USER ACCOUNT
 router.post("/activateUser", activateUser);
 //RESET PASSWORD EMAIL

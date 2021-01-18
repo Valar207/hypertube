@@ -8,7 +8,6 @@ import { AppContext } from "../../App";
 export const Profil = () => {
   const [setting, setSetting] = useState(null);
   const { userInfos } = useContext(AppContext);
-
   const openSetting = (e) => {
     setSetting(e.currentTarget);
   };
@@ -41,7 +40,7 @@ export const Profil = () => {
       </Grid>
       <Grid container direction="column" spacing={3}>
         <Grid item xs={12}>
-          <img className="imgProfile" src="/img/img-default.jpg" alt="" />
+          <img className="imgProfile" src={userInfos?.imgProfile} alt="" />
         </Grid>
         <Grid container className="profil__grid">
           <Grid item xs={12}>
