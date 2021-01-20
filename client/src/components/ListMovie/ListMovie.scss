@@ -13,9 +13,9 @@
       outline: none;
     }
   }
-  .MuiDrawer-paper {
+  .MuiDrawer-paper { //block filtre
     top: 70px;
-    width: 270px;
+    width: 300px;
     color: white;
     background-color: #1c1c1c;
     border: none;
@@ -69,7 +69,7 @@
       button {
         margin: 7px 3px;
         height: 50px;
-        width: 100px;
+        width: 115px;
         border-radius: 50px;
         color: white;
         &:hover {
@@ -106,7 +106,7 @@
     // transition: 0.2s;
   }
   .listMovie__items--after {
-    padding: 30px 80px 0 290px;
+    padding: 30px 80px 0 320px;
     // transition: 0.2s;
   }
   .items-img:hover {
