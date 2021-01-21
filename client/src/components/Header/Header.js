@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AppBar, Toolbar, IconButton, Grid, Popover, TextField } from "@material-ui/core";
 import { Link } from "react-router-dom";
-
+import "../../assets/Style.scss";
 import "./Header.scss";
 import { ExitToApp, Movie, AccountCircle } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
@@ -48,51 +48,53 @@ export const Header = () => {
           </Toolbar>
         </AppBar>
       ) : (
-        <AppBar position="fixed" color="primary">
-          <Toolbar>
-            <Link to="/HomePage" className="header__logo">
-              <img src="/img/hypertube-logo.svg" alt="" />
-            </Link>
-            <TextField
-              style={{ background: "white" }}
-              name="Search..."
-              onChange={handleSearch}
-              variant="outlined"
-              placeholder="Search..."
-              value={search}
-            />
-            <Grid item xs />
-            <IconButton className="header__icon">
-              <Link to="/listmovie" className="header__icon">
-                <Movie />
+          <AppBar position="fixed" color="primary">
+            <Toolbar>
+
+              <Link to="/HomePage" className="header__logo">
+                <img src="/img/hypertube-logo.svg" alt="" />
               </Link>
-            </IconButton>
-            <IconButton onClick={openPopover} className="header__icon">
-              <AccountCircle />
-            </IconButton>
-            <Popover
-              className="header_popover-profil"
-              open={Boolean(popover)}
-              anchorEl={popover}
-              onClose={closePopover}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <Profil />
-            </Popover>
-            <IconButton onClick={handleLogout} className="header__icon">
-              <ExitToApp />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      )}
-    </div>
+              <Grid item xs />
+              <TextField
+                className="header__search-bar custom__form"
+                name="Search..."
+                onChange={handleSearch}
+                variant="outlined"
+                placeholder="Search..."
+                value={search}
+              />
+              <IconButton className="header__icon">
+                <Link to="/listmovie" className="header__icon">
+                  <Movie />
+                </Link>
+              </IconButton>
+              <IconButton onClick={openPopover} className="header__icon">
+                <AccountCircle />
+              </IconButton>
+              <Popover
+                className="header_popover-profil"
+                open={Boolean(popover)}
+                anchorEl={popover}
+                onClose={closePopover}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+              >
+                <Profil />
+              </Popover>
+              <IconButton onClick={handleLogout} className="header__icon">
+                <ExitToApp />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        )
+      }
+    </div >
   );
 };
 
