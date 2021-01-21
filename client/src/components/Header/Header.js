@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { AppBar, Toolbar, IconButton, Grid, Popover } from "@material-ui/core";
+import React, { useState, useContext, useEffect } from "react";
+import { AppBar, Toolbar, IconButton, Grid, Popover, TextField } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 import "./Header.scss";
@@ -8,9 +8,10 @@ import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { fetchMovieSearch } from "../../service/tmdb";
 
 export const Header = () => {
-  const { logged, setLogged } = useContext(AppContext);
+  const { logged, setLogged, search, setSearch } = useContext(AppContext);
   const [popover, setPopover] = useState(false);
   const history = useHistory();
 
@@ -26,6 +27,15 @@ export const Header = () => {
     if (result.status === "success") setLogged(false);
     history.push("/");
   };
+  const handleSearch = async (e) => {
+    setSearch(e.target.value);
+  };
+
+  useEffect(() => {
+    if (search) {
+      history.push("/listmovie");
+    }
+  }, [search]);
 
   return (
     <div className="header__body">
@@ -38,42 +48,49 @@ export const Header = () => {
           </Toolbar>
         </AppBar>
       ) : (
-          <AppBar position="fixed" color="primary">
-            <Toolbar>
-              <Link to="/HomePage" className="header__logo">
-                <img src="/img/hypertube-logo.svg" alt="" />
+        <AppBar position="fixed" color="primary">
+          <Toolbar>
+            <Link to="/HomePage" className="header__logo">
+              <img src="/img/hypertube-logo.svg" alt="" />
+            </Link>
+            <TextField
+              style={{ background: "white" }}
+              name="Search..."
+              onChange={handleSearch}
+              variant="outlined"
+              placeholder="Search..."
+            />
+            <Grid item xs />
+            <IconButton className="header__icon">
+              <Link to="/listmovie" className="header__icon">
+                <Movie />
               </Link>
-              <Grid item xs />
-              <IconButton className="header__icon">
-                <Link to="/listmovie" className="header__icon">
-                  <Movie />
-                </Link>
-              </IconButton>
-              <IconButton onClick={openPopover} className="header__icon">
-                <AccountCircle />
-              </IconButton>
-              <Popover
-                className="header_popover-profil"
-                open={Boolean(popover)}
-                anchorEl={popover}
-                onClose={closePopover}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "center",
-                }}
-              >
-                <Profil />
-              </Popover>
-              <IconButton onClick={handleLogout} className="header__icon">
-                <ExitToApp />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-        )}
+            </IconButton>
+            <IconButton onClick={openPopover} className="header__icon">
+              <AccountCircle />
+            </IconButton>
+            <Popover
+              className="header_popover-profil"
+              open={Boolean(popover)}
+              anchorEl={popover}
+              onClose={closePopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <Profil />
+            </Popover>
+            <IconButton onClick={handleLogout} className="header__icon">
+              <ExitToApp />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      )}
     </div>
   );
 };
