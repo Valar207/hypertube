@@ -59,6 +59,7 @@ export const Header = () => {
               onChange={handleSearch}
               variant="outlined"
               placeholder="Search..."
+              value={search}
             />
             <Grid item xs />
             <IconButton className="header__icon">

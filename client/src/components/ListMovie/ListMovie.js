@@ -23,7 +23,7 @@ import "./ListMovie.scss";
 import "../../assets/Style.scss";
 
 export const ListMovie = () => {
-  const { search } = useContext(AppContext);
+  const { search, setSearch } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({
     name: 65,
@@ -42,6 +42,7 @@ export const ListMovie = () => {
     };
     const searchAPI = async () => {
       setMovieBySearch(await fetchMovieSearch(search));
+      setGenre(await fetchGenre());
     };
 
     if (search) {
@@ -68,6 +69,7 @@ export const ListMovie = () => {
 
   const handleGenreClick = async (genre_id) => {
     setMovieByGenre(await fetchMovieByGenre(genre_id));
+    setSearch("");
   };
 
   const movieSearch = movieBySearch.map((item, index) => {
@@ -84,10 +86,10 @@ export const ListMovie = () => {
   const movieList = movieByGenre.map((item, index) => {
     return (
       <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-        <Link to={`/playerpage/${item.title}`} className="items-img">
+        <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
           <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
         </Link>
-        <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+        <GridListTileBar className="items-title" title={encodeURIComponent(item.title)} subtitle={"Rate : " + item.rating} />
       </GridListTile>
     );
   });
