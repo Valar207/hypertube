@@ -78,7 +78,7 @@ export const ListMovie = () => {
         <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
           <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
         </Link>
-        <GridListTileBar className="items-title" title={encodeURIComponent(item.title)} subtitle={"Rate : " + item.rating} />
+        <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
       </GridListTile>
     );
   });
@@ -89,7 +89,7 @@ export const ListMovie = () => {
         <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
           <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
         </Link>
-        <GridListTileBar className="items-title" title={encodeURIComponent(item.title)} subtitle={"Rate : " + item.rating} />
+        <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
       </GridListTile>
     );
   });
