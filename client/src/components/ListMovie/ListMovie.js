@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import clsx from "clsx";
 import { Close, Tune } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -14,21 +14,16 @@ import {
   CssBaseline,
   List,
   Divider,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
-import {
-  fetchMovies,
-  fetchGenre,
-  fetchMovieByGenre,
-  fetchPersons,
-  fetchTopratedMovie,
-} from '../../service/tmdb'
-
+import { fetchMovies, fetchGenre, fetchMovieByGenre, fetchPersons, fetchTopratedMovie, fetchMovieSearch } from "../../service/tmdb";
+import { AppContext } from "../../App";
 
 import "./ListMovie.scss";
 import "../../assets/Style.scss";
 
 export const ListMovie = () => {
+  const { search, setSearch } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({
     name: 65,
@@ -38,14 +33,24 @@ export const ListMovie = () => {
   const [checked, setChecked] = React.useState(false);
   const [movieByGenre, setMovieByGenre] = useState([]);
   const [genre, setGenre] = useState([]);
+  const [movieBySearch, setMovieBySearch] = useState([]);
 
   useEffect(() => {
     const fetchAPI = async () => {
-      setMovieByGenre(await fetchMovieByGenre())
-      setGenre(await fetchGenre())
+      setMovieByGenre(await fetchMovieByGenre());
+      setGenre(await fetchGenre());
+    };
+    const searchAPI = async () => {
+      setMovieBySearch(await fetchMovieSearch(search));
+      setGenre(await fetchGenre());
+    };
+
+    if (search) {
+      searchAPI();
+    } else {
+      fetchAPI();
     }
-    fetchAPI();
-  }, []);
+  }, [search]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -64,28 +69,43 @@ export const ListMovie = () => {
 
   const handleGenreClick = async (genre_id) => {
     setMovieByGenre(await fetchMovieByGenre(genre_id));
+    setSearch("");
   };
+
+  const movieSearch = movieBySearch.map((item, index) => {
+    return (
+      <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
+        <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
+          <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
+        </Link>
+        <GridListTileBar className="items-title" title={encodeURIComponent(item.title)} subtitle={"Rate : " + item.rating} />
+      </GridListTile>
+    );
+  });
 
   const movieList = movieByGenre.map((item, index) => {
     return (
       <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-        <Link to={`/playerpage/${item.title}`} className="items-img">
+        <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
           <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
         </Link>
-        <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+        <GridListTileBar className="items-title" title={encodeURIComponent(item.title)} subtitle={"Rate : " + item.rating} />
       </GridListTile>
     );
   });
 
   const genreList = genre.map((item, index) => {
     return (
-      <Button key={index} onClick={() => {
-        handleGenreClick(item.id);
-      }}>
+      <Button
+        key={index}
+        onClick={() => {
+          handleGenreClick(item.id);
+        }}
+      >
         {item.name}
       </Button>
     );
-  })
+  });
 
   return (
     <div className="listMovie__body">
@@ -117,9 +137,7 @@ export const ListMovie = () => {
             <Grow in={checked}>
               <div className="listMovie__category">
                 <h5> Genre </h5>
-                <Grid className="">
-                  {genreList}
-                </Grid>
+                <Grid className="">{genreList}</Grid>
               </div>
             </Grow>
             <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1000 } : {})}>
@@ -167,12 +185,7 @@ export const ListMovie = () => {
                   </Grid>
                   <Grid className="listMovie__filter-grid">
                     Evaluation : {sliderValue.rate[0]} - {sliderValue.rate[1]}
-                    <Slider
-                      value={sliderValue.rate}
-                      max={5}
-                      onChange={handleChangeSlider("rate")}
-                      valueLabelDisplay="auto"
-                    />
+                    <Slider value={sliderValue.rate} max={5} onChange={handleChangeSlider("rate")} valueLabelDisplay="auto" />
                   </Grid>
                 </Grid>
               </div>
@@ -181,9 +194,7 @@ export const ListMovie = () => {
         </Drawer>
       </div>
       <div className={clsx("listMovie__items--before", open && "listMovie__items--after")}>
-        <GridList>
-          {movieList}
-        </GridList>
+        {search ? <GridList>{movieSearch}</GridList> : <GridList>{movieList}</GridList>}
       </div>
     </div>
   );

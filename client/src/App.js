@@ -25,6 +25,7 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const [logged, setLogged] = useState(false);
   const [userInfos, setUserInfos] = useState("");
+  const [search, setSearch] = useState("");
 
   const checkAuth = async () => {
     try {
@@ -47,25 +48,15 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider
-            value={{ logged, setLogged, userInfos, setUserInfos }}
-          >
+          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos, search, setSearch }}>
             <Header />
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />
               <Route path="/ListMovie" component={() => <ListMovie />} />
               <Route path="/PlayerPage" component={() => <PlayerPage />} />
               <Route exact path="/Profil" component={() => <Profil />} />
-              <Route
-                exact
-                path="/EditProfil"
-                component={() => <EditProfil />}
-              />
-              <Route
-                exact
-                path="/EditPassword"
-                component={() => <EditPassword />}
-              />
+              <Route exact path="/EditProfil" component={() => <EditProfil />} />
+              <Route exact path="/EditPassword" component={() => <EditPassword />} />
               <Route path="/ErrorPage" component={() => <ErrorPage />} />
               <Route path="/" component={() => <HomePage />} />
             </Switch>
@@ -77,21 +68,11 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider
-            value={{ logged, setLogged, userInfos, setUserInfos }}
-          >
+          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos }}>
             <Header />
             <Switch>
-              <Route
-                exact
-                path="/ResetPasswordEmail"
-                component={() => <ResetPasswordEmail />}
-              />
-              <Route
-                exact
-                path="/ResetPassword"
-                component={() => <ResetPassword />}
-              />
+              <Route exact path="/ResetPasswordEmail" component={() => <ResetPasswordEmail />} />
+              <Route exact path="/ResetPassword" component={() => <ResetPassword />} />
               <Route path="/" component={() => <SignInUp />} />
               <Route path="/ErrorPage" component={() => <ErrorPage />} />
             </Switch>
