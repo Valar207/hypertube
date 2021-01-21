@@ -6,6 +6,16 @@
   .header__logo img {
     height: 45px;
   }
+  .header__search-bar{
+    margin: 0 20px;
+    width: 250px;
+    .MuiOutlinedInput-notchedOutline {
+      border-color: #1DE9B6  !important;
+    }
+    .MuiOutlinedInput-input{
+      height: 5px;
+    }
+  }
   .header__icon {
     .MuiSvgIcon-root {
       color: white;
