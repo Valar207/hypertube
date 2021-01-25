@@ -17,7 +17,9 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { fetchMovies, fetchGenre, fetchMovieByGenre, fetchPersons, fetchTopratedMovie, fetchMovieSearch } from "../../service/tmdb";
+import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
 import { AppContext } from "../../App";
+import axios from "axios";
 
 import "./ListMovie.scss";
 import "../../assets/Style.scss";
@@ -35,22 +37,26 @@ export const ListMovie = () => {
   const [genre, setGenre] = useState([]);
   const [movieBySearch, setMovieBySearch] = useState([]);
 
-  useEffect(() => {
-    const fetchAPI = async () => {
-      setMovieByGenre(await fetchMovieByGenre());
-      setGenre(await fetchGenre());
-    };
-    const searchAPI = async () => {
-      setMovieBySearch(await fetchMovieSearch(search));
-      setGenre(await fetchGenre());
-    };
+  const fetchAPI = async () => {
+    setMovieByGenre(await fetchMoviesYTS());
+    setGenre(await fetchGenre());
+  };
+  const searchAPI = async () => {
+    setMovieBySearch(await fetchMovieSearchYTS(search));
+    setGenre(await fetchGenre());
+  };
 
+  useEffect(() => {
     if (search) {
       searchAPI();
     } else {
       fetchAPI();
     }
   }, [search]);
+
+  // useEffect(() => {
+  //   fetchMoviesYTS();
+  // }, []);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -72,7 +78,7 @@ export const ListMovie = () => {
     setSearch("");
   };
 
-  const movieSearch = movieBySearch.map((item, index) => {
+  const movieSearch = movieBySearch?.map((item, index) => {
     return (
       <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
         <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
@@ -83,7 +89,7 @@ export const ListMovie = () => {
     );
   });
 
-  const movieList = movieByGenre.map((item, index) => {
+  const movieList = movieByGenre?.map((item, index) => {
     return (
       <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
         <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
