@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef, useCallback } from "react";
 import clsx from "clsx";
 import { Close, Tune } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -17,7 +17,9 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { fetchMovies, fetchGenre, fetchMovieByGenre, fetchPersons, fetchTopratedMovie, fetchMovieSearch } from "../../service/tmdb";
+import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
 import { AppContext } from "../../App";
+import axios from "axios";
 
 import "./ListMovie.scss";
 import "../../assets/Style.scss";
@@ -31,26 +33,66 @@ export const ListMovie = () => {
     rate: [0, 5],
   });
   const [checked, setChecked] = React.useState(false);
-  const [movieByGenre, setMovieByGenre] = useState([]);
   const [genre, setGenre] = useState([]);
-  const [movieBySearch, setMovieBySearch] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const [movies, setMovies] = useState([]);
+
+  const fetchAPI = async () => {
+    const newMovies = await fetchMoviesYTS(pageNumber);
+    if (newMovies) {
+      setMovies([...new Set([...movies, ...newMovies])]);
+      setLoading(false);
+    }
+
+    setGenre(await fetchGenre());
+  };
+  const searchAPI = async () => {
+    let newMovies = await fetchMovieSearchYTS(search, pageNumber);
+
+    if (newMovies) {
+      setMovies([...new Set([...movies, ...newMovies])]);
+      setLoading(false);
+    }
+
+    // setMovies(await fetchMovieSearchYTS(search, pageNumber));
+    setGenre(await fetchGenre());
+  };
+
+  //Pour savoir si le dernier élément est à l'écran
+  const observer = useRef();
+  const lastMovieElement = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting) {
+          setPageNumber((previousPageNumber) => previousPageNumber + 1);
+          setLoading(false);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore]
+  );
 
   useEffect(() => {
-    const fetchAPI = async () => {
-      setMovieByGenre(await fetchMovieByGenre());
-      setGenre(await fetchGenre());
-    };
-    const searchAPI = async () => {
-      setMovieBySearch(await fetchMovieSearch(search));
-      setGenre(await fetchGenre());
-    };
+    setLoading(true);
 
     if (search) {
       searchAPI();
     } else {
       fetchAPI();
     }
-  }, [search]);
+  }, [search, pageNumber]);
+
+  useEffect(() => {
+    // console.log(movies);
+    // console.log(pageNumber);
+    console.log(loading);
+  }, [loading]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -68,30 +110,30 @@ export const ListMovie = () => {
   };
 
   const handleGenreClick = async (genre_id) => {
-    setMovieByGenre(await fetchMovieByGenre(genre_id));
+    setMovies(await fetchMovieByGenre(genre_id));
     setSearch("");
   };
 
-  const movieSearch = movieBySearch.map((item, index) => {
-    return (
-      <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-        <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
-          <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
-        </Link>
-        <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
-      </GridListTile>
-    );
-  });
-
-  const movieList = movieByGenre.map((item, index) => {
-    return (
-      <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-        <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
-          <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
-        </Link>
-        <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
-      </GridListTile>
-    );
+  const movieList = movies?.map((item, index) => {
+    if (movies.length === index + 1) {
+      return (
+        <GridListTile ref={lastMovieElement} key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
+          <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
+            <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
+          </Link>
+          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+        </GridListTile>
+      );
+    } else {
+      return (
+        <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
+          <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
+            <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
+          </Link>
+          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+        </GridListTile>
+      );
+    }
   });
 
   const genreList = genre.map((item, index) => {
@@ -194,7 +236,8 @@ export const ListMovie = () => {
         </Drawer>
       </div>
       <div className={clsx("listMovie__items--before", open && "listMovie__items--after")}>
-        {search ? <GridList>{movieSearch}</GridList> : <GridList>{movieList}</GridList>}
+        {<GridList>{movieList}</GridList>}
+        <GridList>{loading ? <h1>Loading...</h1> : ""}</GridList>
       </div>
     </div>
   );
