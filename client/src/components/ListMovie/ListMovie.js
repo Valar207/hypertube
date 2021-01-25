@@ -16,8 +16,9 @@ import {
   Divider,
   IconButton,
 } from "@material-ui/core";
-import { fetchMovies, fetchGenre, fetchMovieByGenre, fetchPersons, fetchTopratedMovie, fetchMovieSearch } from "../../service/tmdb";
+import { fetchMoviesTMDB, fetchGenreTMDB, fetchMovieByGenreTMDB, fetchPersonsTMDB, fetchTopratedMovie, fetchMovieSearchTMDB } from "../../service/tmdb";
 import { AppContext } from "../../App";
+import { fetchMoviesYTS, fetchMovieSearchYTS, fetchMoviesByGenreYTS } from "../../service/yts";
 
 import "./ListMovie.scss";
 import "../../assets/Style.scss";
@@ -36,13 +37,22 @@ export const ListMovie = () => {
   const [movieBySearch, setMovieBySearch] = useState([]);
 
   useEffect(() => {
+    // const fetchAPI = async () => {
+    //   setMovieByGenre(await fetchMovieByGenreTMDB(""));
+    //   setGenre(await fetchGenreTMDB());
+    // };
+    // const searchAPI = async () => {
+    //   setMovieBySearch(await fetchMovieSearch(search));
+    //   setGenre(await fetchGenre());
+    // };
+
     const fetchAPI = async () => {
-      setMovieByGenre(await fetchMovieByGenre());
-      setGenre(await fetchGenre());
+      setMovieByGenre(await fetchMoviesYTS(""));
+      setGenre(await fetchGenreTMDB());
     };
     const searchAPI = async () => {
-      setMovieBySearch(await fetchMovieSearch(search));
-      setGenre(await fetchGenre());
+      setMovieBySearch(await fetchMovieSearchYTS(search));
+      setGenre(await fetchGenreTMDB());
     };
 
     if (search) {
@@ -67,8 +77,8 @@ export const ListMovie = () => {
     });
   };
 
-  const handleGenreClick = async (genre_id) => {
-    setMovieByGenre(await fetchMovieByGenre(genre_id));
+  const handleGenreClick = async (genre) => {
+    setMovieByGenre(await fetchMoviesYTS(genre));
     setSearch("");
   };
 
@@ -76,7 +86,7 @@ export const ListMovie = () => {
     return (
       <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
         <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
-          <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
+          <img src={item.poster} alt="" style={{ height: "400px", width: "270px" }} />
         </Link>
         <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
       </GridListTile>
@@ -87,7 +97,7 @@ export const ListMovie = () => {
     return (
       <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
         <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
-          <img src={item.poster} alt="" style={{ height: "400px", width: "270px", margin: "10px" }} />
+          <img src={item.poster} alt="" style={{ height: "400px", width: "270px" }} />
         </Link>
         <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
       </GridListTile>
@@ -99,7 +109,7 @@ export const ListMovie = () => {
       <Button
         key={index}
         onClick={() => {
-          handleGenreClick(item.id);
+          handleGenreClick(item.name);
         }}
       >
         {item.name}

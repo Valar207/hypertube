@@ -10,7 +10,7 @@ const moviesUrl = `${url}/discover/movie`;
 const personUrl = `${url}/trending/person/week`;
 const searchUrl = `${url}/search/movie`;
 
-export const fetchMovieSearch = async (movie) => {
+export const fetchMovieSearchTMDB = async (movie) => {
   try {
     const { data } = await axios.get(searchUrl, {
       params: {
@@ -33,10 +33,10 @@ export const fetchMovieSearch = async (movie) => {
     }));
 
     return modifiedData;
-  } catch (error) {}
+  } catch (error) { }
 };
 
-export const fetchMovies = async () => {
+export const fetchMoviesTMDB = async () => {
   try {
     const { data } = await axios.get(nowPlayingUrl, {
       params: {
@@ -58,10 +58,10 @@ export const fetchMovies = async () => {
       rating: m["vote_average"],
     }));
     return modifiedData;
-  } catch (error) {}
+  } catch (error) { }
 };
 
-export const fetchGenre = async () => {
+export const fetchGenreTMDB = async () => {
   try {
     const { data } = await axios.get(genreUrl, {
       params: {
@@ -76,10 +76,10 @@ export const fetchGenre = async () => {
       name: g["name"],
     }));
     return modifiedData;
-  } catch (error) {}
+  } catch (error) { }
 };
 
-export const fetchMovieByGenre = async (genre_id) => {
+export const fetchMovieByGenreTMDB = async (genre_id) => {
   try {
     const { data } = await axios.get(moviesUrl, {
       params: {
@@ -102,17 +102,17 @@ export const fetchMovieByGenre = async (genre_id) => {
     }));
 
     return modifiedData;
-  } catch (error) {}
+  } catch (error) { }
 };
 
-export const fetchPersons = async () => {};
+export const fetchPersons = async () => { };
 
-export const fetchTopratedMovie = async () => {};
+export const fetchTopratedMovie = async () => { };
 
-export const fetchMovieDetail = async (id) => {};
+export const fetchMovieDetail = async (id) => { };
 
-export const fetchMovieVideos = async (id) => {};
+export const fetchMovieVideos = async (id) => { };
 
-export const fetchCasts = async (id) => {};
+export const fetchCasts = async (id) => { };
 
-export const fetchSimilarMovie = async (id) => {};
+export const fetchSimilarMovie = async (id) => { };
