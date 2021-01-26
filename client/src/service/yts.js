@@ -28,15 +28,15 @@ export const fetchMovieSearchYTS = async (movie, pageNumber) => {
   } catch (error) {}
 };
 
-export const fetchMoviesYTS = async (pageNumber) => {
+export const fetchMoviesYTS = async (genre, pageNumber) => {
   try {
     const { data } = await axios.get(list, {
       params: {
         page: pageNumber,
+        genre: genre,
       },
       withCredentials: false,
     });
-    console.log(data);
 
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],

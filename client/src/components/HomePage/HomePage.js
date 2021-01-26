@@ -4,21 +4,18 @@ import { ChevronRight } from "@material-ui/icons";
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Link } from "react-router-dom";
-import {
-  fetchMovies,
-  fetchGenre,
-  fetchMovieByGenre,
-  fetchPersons,
-  fetchTopratedMovie,
-} from '../../service/tmdb'
+import { fetchMoviesTMDB, fetchGenreTMDB, fetchMovieByGenreTMDB, fetchPersonsTMDB, fetchTopratedMovieTMDB } from "../../service/tmdb";
+import { fetchMoviesYTS, fetchMovieSearchYTS, fetchMoviesByGenreYTS } from "../../service/yts";
 
 export const HomePage = () => {
   const [movieByGenre, setMovieByGenre] = useState([]);
+  const [genre, setGenre] = useState([]);
 
   useEffect(() => {
     const fetchAPI = async () => {
-      setMovieByGenre(await fetchMovieByGenre())
-    }
+      setMovieByGenre(await fetchMoviesYTS(""));
+      setGenre(await fetchGenreTMDB());
+    };
     fetchAPI();
   }, []);
 
@@ -35,28 +32,28 @@ export const HomePage = () => {
 
   return (
     <div className="homePage__body">
-      <div className="homePage__section">
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <h2>
-              Horror
-              <Link to={`/ListMovie/`} className="homePage__section-link">
-                see more <ChevronRight />
-              </Link>
-            </h2>
+      {genre.map((item, index) => (
+        <div className="homePage__section">
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <h2>
+                {item.name}
+                <Link to={`/ListMovie/${item.name}`} className="homePage__section-link">
+                  see more <ChevronRight />
+                </Link>
+              </h2>
+            </Grid>
+            <div className="homePage__section-items">
+              <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
+                <Grid item xs={12}>
+                  <GridList id="items">{movieList}</GridList>
+                </Grid>
+                <div></div>
+              </HorizontalScroll>
+            </div>
           </Grid>
-          <div className="homePage__section-items">
-            <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
-              <Grid item xs={12}>
-                <GridList id="items" >
-                  {movieList}
-                </GridList>
-              </Grid>
-              <div></div>
-            </HorizontalScroll>
-          </div>
-        </Grid>
-      </div>
+        </div>
+      ))}
     </div>
   );
 };

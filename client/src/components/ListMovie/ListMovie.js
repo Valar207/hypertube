@@ -16,7 +16,14 @@ import {
   Divider,
   IconButton,
 } from "@material-ui/core";
-import { fetchMovies, fetchGenre, fetchMovieByGenre, fetchPersons, fetchTopratedMovie, fetchMovieSearch } from "../../service/tmdb";
+import {
+  fetchMoviesTMDB,
+  fetchGenreTMDB,
+  fetchMovieByGenreTMDB,
+  fetchPersonsTMDB,
+  fetchTopratedMovie,
+  fetchMovieSearchTMDB,
+} from "../../service/tmdb";
 import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
 import { AppContext } from "../../App";
 import axios from "axios";
@@ -37,33 +44,30 @@ export const ListMovie = () => {
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-
   const [loadingDisplay, setLoadingDisplay] = useState(true);
 
   const [movies, setMovies] = useState([]);
 
   const fetchAPI = async () => {
-    const newMovies = await fetchMoviesYTS(pageNumber);
-    if (newMovies) {
-      setMovies([...new Set([...movies, ...newMovies])]);
-      setLoading(false);
-    }
-
-    setGenre(await fetchGenre());
-  };
-  const searchAPI = async () => {
-    let newMovies = await fetchMovieSearchYTS(search, pageNumber);
-
+    const newMovies = await fetchMoviesYTS("", pageNumber);
     if (newMovies) {
       setMovies([...new Set([...movies, ...newMovies])]);
       setLoading(false);
     } else {
-      console.log("y a plus");
       setLoadingDisplay(false);
     }
+    setGenre(await fetchGenreTMDB());
+  };
 
-    // setMovies(await fetchMovieSearchYTS(search, pageNumber));
-    setGenre(await fetchGenre());
+  const searchAPI = async () => {
+    let newMovies = await fetchMovieSearchYTS(search, pageNumber);
+    if (newMovies) {
+      setMovies([...new Set([...movies, ...newMovies])]);
+      setLoading(false);
+    } else {
+      setLoadingDisplay(false);
+    }
+    setGenre(await fetchGenreTMDB());
   };
 
   //Pour savoir si le dernier élément est à l'écran
@@ -94,10 +98,10 @@ export const ListMovie = () => {
   }, [search, pageNumber]);
 
   useEffect(() => {
-    // console.log(movies);
+    console.log(movies);
     // console.log(pageNumber);
-    console.log(loading);
-  }, [loading]);
+    // console.log(loading);
+  }, [movies]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -114,8 +118,9 @@ export const ListMovie = () => {
     });
   };
 
-  const handleGenreClick = async (genre_id) => {
-    setMovies(await fetchMovieByGenre(genre_id));
+  const handleGenreClick = async (genre) => {
+    setPageNumber(1);
+    setMovies(await fetchMoviesYTS(genre, pageNumber));
     setSearch("");
   };
 
@@ -146,7 +151,7 @@ export const ListMovie = () => {
       <Button
         key={index}
         onClick={() => {
-          handleGenreClick(item.id);
+          handleGenreClick(item.name);
         }}
       >
         {item.name}
