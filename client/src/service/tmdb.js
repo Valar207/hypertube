@@ -10,7 +10,7 @@ const moviesUrl = `${url}/discover/movie`;
 const personUrl = `${url}/trending/person/week`;
 const searchUrl = `${url}/search/movie`;
 
-export const fetchMovieSearch = async (movie) => {
+export const fetchMovieSearchTMDB = async (movie) => {
   try {
     const { data } = await axios.get(searchUrl, {
       params: {
@@ -36,7 +36,7 @@ export const fetchMovieSearch = async (movie) => {
   } catch (error) {}
 };
 
-export const fetchMovies = async () => {
+export const fetchMoviesTMDB = async () => {
   try {
     const { data } = await axios.get(nowPlayingUrl, {
       params: {
@@ -61,7 +61,7 @@ export const fetchMovies = async () => {
   } catch (error) {}
 };
 
-export const fetchGenre = async () => {
+export const fetchGenreTMDB = async () => {
   try {
     const { data } = await axios.get(genreUrl, {
       params: {
@@ -79,7 +79,7 @@ export const fetchGenre = async () => {
   } catch (error) {}
 };
 
-export const fetchMovieByGenre = async (genre_id) => {
+export const fetchMovieByGenreTMDB = async (genre_id) => {
   try {
     const { data } = await axios.get(moviesUrl, {
       params: {
