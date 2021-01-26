@@ -38,6 +38,8 @@ export const ListMovie = () => {
   const [hasMore, setHasMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
 
+  const [loadingDisplay, setLoadingDisplay] = useState(true);
+
   const [movies, setMovies] = useState([]);
 
   const fetchAPI = async () => {
@@ -55,6 +57,9 @@ export const ListMovie = () => {
     if (newMovies) {
       setMovies([...new Set([...movies, ...newMovies])]);
       setLoading(false);
+    } else {
+      console.log("y a plus");
+      setLoadingDisplay(false);
     }
 
     // setMovies(await fetchMovieSearchYTS(search, pageNumber));
@@ -237,7 +242,7 @@ export const ListMovie = () => {
       </div>
       <div className={clsx("listMovie__items--before", open && "listMovie__items--after")}>
         {<GridList>{movieList}</GridList>}
-        <GridList>{loading ? <h1>Loading...</h1> : ""}</GridList>
+        <GridList>{loadingDisplay ? <h1>Loading...</h1> : ""}</GridList>
       </div>
     </div>
   );
