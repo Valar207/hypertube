@@ -19,7 +19,7 @@ export const HomePage = () => {
     fetchAPI();
   }, []);
 
-  const movieList = movieByGenre.slice(0, 10).map((item, index) => {
+  const movieList = movieByGenre.slice(0, 15).map((item, index) => {
     return (
       <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
         <Link to={`/playerpage/${item.title}`}>
