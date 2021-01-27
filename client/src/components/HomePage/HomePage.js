@@ -46,7 +46,14 @@ export const HomePage = () => {
             <div className="homePage__section-items">
               <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
                 <Grid item xs={12}>
-                  <GridList id="items">{movieList}</GridList>
+                  <GridList id="items">
+                    {movieList}
+                    <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
+                      <Link to={`/listMovie/${item.name}`}>
+                        <img src="/img/seemore.jpg" alt="" className="items-img" />
+                      </Link>
+                    </GridListTile>
+                  </GridList>
                 </Grid>
                 <div></div>
               </HorizontalScroll>
