@@ -40,7 +40,11 @@ export const ListMovie = () => {
     rate: [0, 5],
   });
   const [checked, setChecked] = React.useState(false);
-  const [genre, setGenre] = useState([]);
+  const [genreList, setGenreList] = useState([]);
+
+  const [genre, setGenre] = useState("");
+
+  const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
@@ -49,14 +53,14 @@ export const ListMovie = () => {
   const [movies, setMovies] = useState([]);
 
   const fetchAPI = async () => {
-    const newMovies = await fetchMoviesYTS("", pageNumber);
+    const newMovies = await fetchMoviesYTS(genre, pageNumber, sort);
     if (newMovies) {
       setMovies([...new Set([...movies, ...newMovies])]);
       setLoading(false);
     } else {
       setLoadingDisplay(false);
     }
-    setGenre(await fetchGenreTMDB());
+    setGenreList(await fetchGenreTMDB());
   };
 
   const searchAPI = async () => {
@@ -67,7 +71,7 @@ export const ListMovie = () => {
     } else {
       setLoadingDisplay(false);
     }
-    setGenre(await fetchGenreTMDB());
+    setGenreList(await fetchGenreTMDB());
   };
 
   //Pour savoir si le dernier élément est à l'écran
@@ -98,10 +102,11 @@ export const ListMovie = () => {
   }, [search, pageNumber]);
 
   useEffect(() => {
-    console.log(movies);
-    // console.log(pageNumber);
+    // console.log(movies);
+    console.log(pageNumber);
     // console.log(loading);
-  }, [movies]);
+    console.log(sort);
+  }, [pageNumber, movies, sort]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -111,6 +116,7 @@ export const ListMovie = () => {
     setOpen(false);
     setChecked(false);
   };
+
   const handleChangeSlider = (name) => (e, newValue) => {
     setSliderValue({
       ...sliderValue,
@@ -120,7 +126,16 @@ export const ListMovie = () => {
 
   const handleGenreClick = async (genre) => {
     setPageNumber(1);
-    setMovies(await fetchMoviesYTS(genre, pageNumber));
+    setGenre(genre);
+    setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
+    setSearch("");
+  };
+
+  const handleSortMovie = async (e) => {
+    // let sort = e.currentTarget.value;
+    setSort(e.currentTarget.value);
+    setPageNumber(1);
+    setMovies(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value));
     setSearch("");
   };
 
@@ -146,7 +161,7 @@ export const ListMovie = () => {
     }
   });
 
-  const genreList = genre.map((item, index) => {
+  const genreListFunc = genreList.map((item, index) => {
     return (
       <Button
         key={index}
@@ -189,7 +204,7 @@ export const ListMovie = () => {
             <Grow in={checked}>
               <div className="listMovie__category">
                 <h5> Genre </h5>
-                <Grid className="">{genreList}</Grid>
+                <Grid className="">{genreListFunc}</Grid>
               </div>
             </Grow>
             <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1000 } : {})}>
@@ -197,16 +212,17 @@ export const ListMovie = () => {
                 <h5> Sort by </h5>
                 <Grid className="">
                   <Grid>
-                    <Button>Horror</Button>
-                    <Button>Horror</Button>
+                    <Button value="year" onClick={handleSortMovie}>
+                      Year
+                    </Button>
+                    <Button value="title" onClick={handleSortMovie}>
+                      Title
+                    </Button>
                   </Grid>
                   <Grid>
-                    <Button>Horror</Button>
-                    <Button>Horror</Button>
-                  </Grid>
-                  <Grid>
-                    <Button>Horror</Button>
-                    <Button>Horror</Button>
+                    <Button value="rating" onClick={handleSortMovie}>
+                      Rating
+                    </Button>
                   </Grid>
                 </Grid>
               </div>
