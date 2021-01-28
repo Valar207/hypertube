@@ -70,9 +70,14 @@ body {
     outline: none;
   }
 }
-
+.icon-btn {
+  color: white;
+  &:focus {
+    outline: none;
+  }
+}
 ::-webkit-scrollbar {
-  width: 30px;
+  width: 28px;
   height: 3px;
 }
 ::-webkit-scrollbar-track {
@@ -86,26 +91,12 @@ body {
   border-color: #1c1c1c;
 }
 
-// ::-webkit-scrollbar {
-// 	width: 20px;
-//   border-width: 5px;
-// }
-
-// ::-webkit-scrollbar-track-piece {
-// 	background-color: #757575;
-//   border-color: var(--container-background-color);
-//   border-width: 2px 9px 2px 9px;
-//   border-style: solid;
-// }
-
-// ::-webkit-scrollbar-thumb {
-// 	border-radius: 7px;
-// 	background-color: #1de9b6;
-//   // border-color: var(--container-background-color);
-//   border-style: solid;
-//   // border-width: 1px 7px 1px 7px;
-// }
-
 .MuiSvgIcon-root {
   color: white;
+}
+
+.loading {
+  .MuiGridList-root{
+    justify-content: center;
+  }
 }

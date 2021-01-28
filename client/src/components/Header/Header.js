@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AppBar, Toolbar, IconButton, Grid, Popover, TextField } from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Grid, Popover, TextField, InputAdornment } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import "../../assets/Style.scss";
 import "./Header.scss";
-import { ExitToApp, Movie, AccountCircle } from "@material-ui/icons";
+import { ExitToApp, Movie, AccountCircle, Close } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
@@ -30,6 +30,9 @@ export const Header = () => {
   const handleSearch = async (e) => {
     setSearch(e.target.value);
   };
+  const handleClickShowClearSearch = () => {
+    setSearch("")
+  }
 
   useEffect(() => {
     if (search) {
@@ -62,6 +65,19 @@ export const Header = () => {
                 variant="outlined"
                 placeholder="Search..."
                 value={search}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment>
+                      {search ?
+                        <IconButton
+                          onClick={handleClickShowClearSearch}
+                          className="icon-btn"
+                        >
+                          <Close />
+                        </IconButton> : ""}
+                    </InputAdornment>
+                  ),
+                }}
               />
               <IconButton className="header__icon">
                 <Link to="/listmovie" className="header__icon">

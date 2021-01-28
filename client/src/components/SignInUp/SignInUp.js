@@ -267,7 +267,7 @@ export const SignInUp = (props) => {
                       <IconButton
                         name="showSignUpPassword"
                         onClick={handleClickShowSignUpPassword}
-                        className="show-pwd"
+                        className="icon-btn"
                       >
                         {userSignUp.showSignUpPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
@@ -296,7 +296,7 @@ export const SignInUp = (props) => {
                       <IconButton
                         name="showConfirmPassword"
                         onClick={handleClickShowSignUpPassword}
-                        className="show-pwd"
+                        className="icon-btn"
                       >
                         {userSignUp.showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
@@ -350,7 +350,7 @@ export const SignInUp = (props) => {
                       <IconButton
                         name="showSigninPassword"
                         onClick={handleClickShowSignInPassword}
-                        className="show-pwd"
+                        className="icon-btn"
                       >
                         {userSignIn.showSignInPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
