@@ -4,6 +4,7 @@
 //   }
 body {
   background-color: #2c2c2c !important;
+  height: 100%;
 }
 .color-btn {
   background-color: #1DE9B6;
@@ -71,15 +72,39 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 30px;
   height: 3px;
 }
 ::-webkit-scrollbar-track {
-  background: #333333;
+  background: #1c1c1c;
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
   background: #1de9b6;
+  border-width: 0px 0px 0px 23px;
+  border-style: solid;
+  border-color: #1c1c1c;
 }
+
+// ::-webkit-scrollbar {
+// 	width: 20px;
+//   border-width: 5px;
+// }
+
+// ::-webkit-scrollbar-track-piece {
+// 	background-color: #757575;
+//   border-color: var(--container-background-color);
+//   border-width: 2px 9px 2px 9px;
+//   border-style: solid;
+// }
+
+// ::-webkit-scrollbar-thumb {
+// 	border-radius: 7px;
+// 	background-color: #1de9b6;
+//   // border-color: var(--container-background-color);
+//   border-style: solid;
+//   // border-width: 1px 7px 1px 7px;
+// }
 
 .MuiSvgIcon-root {
   color: white;
