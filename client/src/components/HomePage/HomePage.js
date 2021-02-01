@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
+import { Box, Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
+import Skeleton from '@material-ui/lab/Skeleton';
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Link } from "react-router-dom";
@@ -10,23 +11,27 @@ import { fetchMoviesYTS, fetchMovieSearchYTS, fetchMoviesByGenreYTS } from "../.
 export const HomePage = () => {
   const [movieByGenre, setMovieByGenre] = useState([]);
   const [genre, setGenre] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   const fetchGenre = async () => {
     setGenre(await fetchGenreTMDB());
   }
   const setMovie = async () => {
-    const teste = []
+    const movie = []
     for await (const g of genre) {
-      teste.push(await fetchMoviesYTS(g.name));
+      movie.push(await fetchMoviesYTS(g.name));
     }
-    setMovieByGenre(teste)
+    setMovieByGenre(movie)
+    setLoading(false)
   }
 
   useEffect(() => {
     fetchGenre();
   }, []);
   useEffect(() => {
-    setMovie();
+    setLoading(true);
+    setMovie()
   }, [genre]);
 
   return (
@@ -46,21 +51,33 @@ export const HomePage = () => {
               <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
                 <Grid item xs={12}>
                   <GridList id="items" key={index}>
-                    {movieByGenre[index]?.slice(0, 15).map((movie, index) => {
-                      return (
-                        <GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                          <Link to={`/playerpage/${movie.title}`}>
-                            <img src={movie.poster} alt="" className="items-img" />
-                            <GridListTileBar key={index} className="items-title" title={movie.title} subtitle={"Rate : " + movie.rating} />
-                          </Link>
+                    {loading ? (
+                      Array.from(new Array(15)).map(() => (
+                        < GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
+                          <Skeleton animation={'pulse'} variant="rect" width={200} height={240} style={{ backgroundColor: "gray", marginBottom: "5px" }} />
+                          <Skeleton style={{ backgroundColor: "gray" }} />
+                          <Skeleton width="70%" style={{ backgroundColor: "gray" }} />
                         </GridListTile>
-                      );
-                    })}
-                    <GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-                      <Link to={`/listMovie/${item.name}`}>
-                        <img src="/img/seemore.jpg" alt="" className="items-img" />
-                      </Link>
-                    </GridListTile>
+                      ))
+                    ) : (
+                        movieByGenre[index]?.slice(0, 15).map((movie, index) => {
+                          return (
+                            <GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
+                              <Link to={`/playerpage/${movie.title}`}>
+                                <img src={movie.poster} alt="" className="items-img" />
+                                <GridListTileBar key={index} className="items-title" title={movie.title} subtitle={"Rate : " + movie.rating} />
+                              </Link>
+                            </GridListTile>
+                          );
+                        })
+                      )}
+                    {!loading && (
+                      < GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
+                        <Link to={`/listMovie/${item.name}`}>
+                          <img src="/img/seemore.jpg" alt="" className="items-img" />
+                        </Link>
+                      </GridListTile>
+                    )}
                   </GridList>
                 </Grid>
                 <div></div>
