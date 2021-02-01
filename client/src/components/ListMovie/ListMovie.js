@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 import clsx from "clsx";
 import "../../assets/Style.scss";
 import { Close, Tune } from "@material-ui/icons";
@@ -27,7 +33,8 @@ import {
 } from "../../service/tmdb";
 import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
 import { AppContext } from "../../App";
-import axios from "axios";
+
+import { distinctObjectArray } from "../../utils/arrayFunctions";
 
 import "./ListMovie.scss";
 import "../../assets/Style.scss";
@@ -56,7 +63,9 @@ export const ListMovie = () => {
   const fetchAPI = async () => {
     const newMovies = await fetchMoviesYTS(genre, pageNumber, sort);
     if (newMovies) {
-      setMovies([...new Set([...movies, ...newMovies])]);
+      const tableau = [...movies, ...newMovies];
+      const result = distinctObjectArray(tableau);
+      setMovies(result);
       setLoading(false);
     } else {
       setLoadingDisplay(false);
@@ -143,20 +152,49 @@ export const ListMovie = () => {
   const movieList = movies?.map((item, index) => {
     if (movies.length === index + 1) {
       return (
-        <GridListTile ref={lastMovieElement} key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-          <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
-            <img src={item.poster} alt="" style={{ height: "400px", width: "270px" }} />
+        <GridListTile
+          ref={lastMovieElement}
+          key={index}
+          style={{ height: "400px", width: "270px", margin: "10px" }}
+        >
+          <Link
+            to={`/playerpage/${encodeURIComponent(item.title)}`}
+            className="items-img"
+          >
+            <img
+              src={item.poster}
+              alt=""
+              style={{ height: "400px", width: "270px" }}
+            />
           </Link>
-          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+          <GridListTileBar
+            className="items-title"
+            title={item.title}
+            subtitle={"Rate : " + item.rating}
+          />
         </GridListTile>
       );
     } else {
       return (
-        <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-          <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
-            <img src={item.poster} alt="" style={{ height: "400px", width: "100%" }} />
+        <GridListTile
+          key={index}
+          style={{ height: "400px", width: "270px", margin: "10px" }}
+        >
+          <Link
+            to={`/playerpage/${encodeURIComponent(item.title)}`}
+            className="items-img"
+          >
+            <img
+              src={item.poster}
+              alt=""
+              style={{ height: "400px", width: "100%" }}
+            />
           </Link>
-          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+          <GridListTileBar
+            className="items-title"
+            title={item.title}
+            subtitle={"Rate : " + item.rating}
+          />
         </GridListTile>
       );
     }
@@ -184,19 +222,38 @@ export const ListMovie = () => {
           disableRipple
           aria-label="open drawer"
           onClick={handleDrawerOpen}
-          className={clsx("listMovie__settings-btn icon-btn", open && "listMovie__settings-btn--hide")}
+          className={clsx(
+            "listMovie__settings-btn icon-btn",
+            open && "listMovie__settings-btn--hide"
+          )}
         >
           <div className="filter-btn color-btn">
-            <Tune style={{ height: 30, width: 30, margin: "0 5px 0 0", color: "#004d40" }} />
+            <Tune
+              style={{
+                height: 30,
+                width: 30,
+                margin: "0 5px 0 0",
+                color: "#004d40",
+              }}
+            />
             <h6> Filter </h6>
           </div>
         </IconButton>
 
         <Drawer className="listMovie__drawer" variant="persistent" open={open}>
           <div className="listMovie__drawer-header">
-            <Grid container direction="row" justify="space-between" alignItems="center">
+            <Grid
+              container
+              direction="row"
+              justify="space-between"
+              alignItems="center"
+            >
               <h6> Filter :</h6>
-              <IconButton onClick={handleDrawerClose} className="icon-btn" style={{ left: "30px" }}>
+              <IconButton
+                onClick={handleDrawerClose}
+                className="icon-btn"
+                style={{ left: "30px" }}
+              >
                 <Close />
               </IconButton>
             </Grid>
@@ -209,7 +266,11 @@ export const ListMovie = () => {
                 <Grid className="">{genreListFunc}</Grid>
               </div>
             </Grow>
-            <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1000 } : {})}>
+            <Grow
+              in={checked}
+              style={{ transformOrigin: "0 0 0" }}
+              {...(checked ? { timeout: 1000 } : {})}
+            >
               <div className="listMovie__sort">
                 <h5> Sort by </h5>
                 <Grid className="">
@@ -229,7 +290,11 @@ export const ListMovie = () => {
                 </Grid>
               </div>
             </Grow>
-            <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1500 } : {})}>
+            <Grow
+              in={checked}
+              style={{ transformOrigin: "0 0 0" }}
+              {...(checked ? { timeout: 1500 } : {})}
+            >
               <div className="listMovie__filter">
                 <h5> Filter by </h5>
                 <Grid>
@@ -255,7 +320,12 @@ export const ListMovie = () => {
                   </Grid>
                   <Grid className="listMovie__filter-grid">
                     Evaluation : {sliderValue.rate[0]} - {sliderValue.rate[1]}
-                    <Slider value={sliderValue.rate} max={5} onChange={handleChangeSlider("rate")} valueLabelDisplay="auto" />
+                    <Slider
+                      value={sliderValue.rate}
+                      max={5}
+                      onChange={handleChangeSlider("rate")}
+                      valueLabelDisplay="auto"
+                    />
                   </Grid>
                 </Grid>
               </div>
@@ -263,9 +333,23 @@ export const ListMovie = () => {
           </List>
         </Drawer>
       </div>
-      <div className={clsx("listMovie__items--before", open && "listMovie__items--after")}>
+      <div
+        className={clsx(
+          "listMovie__items--before",
+          open && "listMovie__items--after"
+        )}
+      >
         {<GridList>{movieList}</GridList>}
-        <GridList style={{ justifyContent: "center" }}>{loadingDisplay ? <img src="/img/loading.gif" style={{ height: "200px", width: "200px" }} /> : ""}</GridList>
+        <GridList style={{ justifyContent: "center" }}>
+          {loadingDisplay ? (
+            <img
+              src="/img/loading.gif"
+              style={{ height: "200px", width: "200px" }}
+            />
+          ) : (
+            ""
+          )}
+        </GridList>
       </div>
     </div>
   );

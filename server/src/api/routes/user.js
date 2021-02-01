@@ -40,6 +40,7 @@ router.patch("/", checkLoggedIn, updateUser);
 //DELETE A USER
 router.delete("/:userId", deleteUser);
 
+//LOGIN A USER
 router.post("/signin", postLogin);
 
 router.get("/errorLogin", (res, req) => {
