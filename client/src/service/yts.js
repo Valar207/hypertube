@@ -23,7 +23,7 @@ export const fetchMovieSearchYTS = async (movie, pageNumber) => {
     }));
 
     return modifiedData;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
@@ -31,8 +31,8 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
     const { data } = await axios.get(list, {
       params: {
         page: pageNumber,
-        genre: genre,
-        sort_by: sort,
+        genre: genre ? genre : null,
+        sort_by: sort ? sort : null,
       },
       withCredentials: false,
     });
@@ -47,5 +47,5 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
     }));
 
     return modifiedData;
-  } catch (error) { }
+  } catch (error) {}
 };
