@@ -31,8 +31,8 @@ export const Header = () => {
     setSearch(e.target.value);
   };
   const handleClickShowClearSearch = () => {
-    setSearch("")
-  }
+    setSearch("");
+  };
 
   useEffect(() => {
     if (search) {
@@ -51,66 +51,64 @@ export const Header = () => {
           </Toolbar>
         </AppBar>
       ) : (
-          <AppBar position="fixed" color="primary">
-            <Toolbar>
-
-              <Link to="/HomePage" className="header__logo">
-                <img src="/img/hypertube-logo.svg" alt="" />
+        <AppBar position="fixed" color="primary">
+          <Toolbar>
+            <Link to="/HomePage" className="header__logo">
+              <img src="/img/hypertube-logo.svg" alt="" />
+            </Link>
+            <Grid item xs />
+            <TextField
+              className="header__search-bar custom__form"
+              name="Search..."
+              onChange={handleSearch}
+              variant="outlined"
+              placeholder="Search..."
+              value={search}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    {search ? (
+                      <IconButton onClick={handleClickShowClearSearch} className="icon-btn">
+                        <Close />
+                      </IconButton>
+                    ) : (
+                      ""
+                    )}
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <IconButton className="header__icon">
+              <Link to="/listmovie" className="header__icon">
+                <Movie />
               </Link>
-              <Grid item xs />
-              <TextField
-                className="header__search-bar custom__form"
-                name="Search..."
-                onChange={handleSearch}
-                variant="outlined"
-                placeholder="Search..."
-                value={search}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment>
-                      {search ?
-                        <IconButton
-                          onClick={handleClickShowClearSearch}
-                          className="icon-btn"
-                        >
-                          <Close />
-                        </IconButton> : ""}
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <IconButton className="header__icon">
-                <Link to="/listmovie" className="header__icon">
-                  <Movie />
-                </Link>
-              </IconButton>
-              <IconButton onClick={openPopover} className="header__icon">
-                <AccountCircle />
-              </IconButton>
-              <Popover
-                className="header_popover-profil"
-                open={Boolean(popover)}
-                anchorEl={popover}
-                onClose={closePopover}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "center",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "center",
-                }}
-              >
-                <Profil />
-              </Popover>
-              <IconButton onClick={handleLogout} className="header__icon">
-                <ExitToApp />
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-        )
-      }
-    </div >
+            </IconButton>
+            <IconButton onClick={openPopover} className="header__icon">
+              <AccountCircle />
+            </IconButton>
+            <Popover
+              className="header_popover-profil"
+              open={Boolean(popover)}
+              anchorEl={popover}
+              onClose={closePopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <Profil />
+            </Popover>
+            <IconButton onClick={handleLogout} className="header__icon">
+              <ExitToApp />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      )}
+    </div>
   );
 };
 

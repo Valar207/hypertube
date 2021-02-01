@@ -1,17 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useHistory, Link } from "react-router-dom";
 
-import {
-  TextField,
-  Container,
-  Tabs,
-  Tab,
-  Grid,
-  Button,
-  Box,
-  IconButton,
-  InputAdornment,
-} from "@material-ui/core";
+import { TextField, Container, Tabs, Tab, Grid, Button, Box, IconButton, InputAdornment } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import "./SignInUp.scss";
 import "../../assets/Style.scss";
@@ -124,7 +114,7 @@ export const SignInUp = (props) => {
         const formData = new FormData();
         formData.append("img", userSignUp.imgProfile);
         formData.append("username", userSignUp.username);
-        axios.post("user/uploadImg", formData)
+        axios.post("user/uploadImg", formData);
         setErrors("");
         setAlert({
           open: true,

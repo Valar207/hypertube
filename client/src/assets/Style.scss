@@ -7,8 +7,8 @@ body {
   height: 100%;
 }
 .color-btn {
-  background-color: #1DE9B6;
-  color: #004D40;
+  background-color: #1de9b6;
+  color: #004d40;
 }
 .font-size-20 {
   font-size: 20px !important;
@@ -63,7 +63,7 @@ body {
   transition: 0.7s !important;
   &:hover {
     transition: 0.5s !important;
-    background-color: #1DE9B6 !important;
+    background-color: #1de9b6 !important;
     color: #004d40 !important;
   }
   &:focus {
@@ -96,7 +96,7 @@ body {
 }
 
 .loading {
-  .MuiGridList-root{
+  .MuiGridList-root {
     justify-content: center;
   }
 }

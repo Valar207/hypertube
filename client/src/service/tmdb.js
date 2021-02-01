@@ -33,7 +33,7 @@ export const fetchMovieSearchTMDB = async (movie) => {
     }));
 
     return modifiedData;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const fetchMoviesTMDB = async () => {
@@ -58,7 +58,7 @@ export const fetchMoviesTMDB = async () => {
       rating: m["vote_average"],
     }));
     return modifiedData;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const fetchGenreTMDB = async () => {
@@ -75,10 +75,10 @@ export const fetchGenreTMDB = async () => {
       id: g["id"],
       name: g["name"],
     }));
-    modifiedData[14].name = "Sci-fi"
-    modifiedData[15].name = "Reality-TV"
+    modifiedData[14].name = "Sci-fi";
+    modifiedData[15].name = "Reality-TV";
     return modifiedData;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const fetchMovieByGenreTMDB = async (genre_id) => {
@@ -104,17 +104,17 @@ export const fetchMovieByGenreTMDB = async (genre_id) => {
     }));
 
     return modifiedData;
-  } catch (error) { }
+  } catch (error) {}
 };
 
-export const fetchPersons = async () => { };
+export const fetchPersons = async () => {};
 
-export const fetchTopratedMovie = async () => { };
+export const fetchTopratedMovie = async () => {};
 
-export const fetchMovieDetail = async (id) => { };
+export const fetchMovieDetail = async (id) => {};
 
-export const fetchMovieVideos = async (id) => { };
+export const fetchMovieVideos = async (id) => {};
 
-export const fetchCasts = async (id) => { };
+export const fetchCasts = async (id) => {};
 
-export const fetchSimilarMovie = async (id) => { };
+export const fetchSimilarMovie = async (id) => {};

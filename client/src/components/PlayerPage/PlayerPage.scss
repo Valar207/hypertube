@@ -1,41 +1,45 @@
 .playerPage__body {
+  color: white;
+  .playerPage__player {
+    border: 1px solid white;
+    width: 100%;
+    height: 500px;
+  }
+  .playerPage__header {
+    width: 100%;
+    height: 50px;
+  }
+  .MuiPaper-root,
+  .MuiAccordion-root,
+  .MuiAccordion-rounded,
+  .MuiPaper-elevation1,
+  .MuiPaper-rounded {
+    background-color: transparent;
     color: white;
-    .playerPage__player {
-        border: 1px solid white;
-        width: 100%;
-        height: 500px;
+    box-shadow: none;
+  }
+  .playerPage__information {
+    width: 100%;
+    img {
+      width: 100%;
     }
-    .playerPage__header {
-        width: 100%;
-        height: 50px;
+  }
+  .playerPage__comments {
+    width: 100%;
+    .MuiInputBase-root {
+      border-radius: 50px;
     }
-    .MuiPaper-root, .MuiAccordion-root ,.MuiAccordion-rounded ,.MuiPaper-elevation1 ,.MuiPaper-rounded {
-        background-color: transparent;
-        color: white;
-        box-shadow: none
+    .MuiOutlinedInput-notchedOutline {
+      border-color: white !important;
     }
-    .playerPage__information {
-        width: 100%;
-        img {
-            width: 100%;
-        }
+    .MuiOutlinedInput-input {
+      color: white;
     }
-    .playerPage__comments {
-        width: 100%;
-        .MuiInputBase-root{
-            border-radius: 50px;
-          }
-          .MuiOutlinedInput-notchedOutline{
-            border-color: white !important;
-          }
-          .MuiOutlinedInput-input {
-            color: white ;
-          }
-          .MuiFormLabel-root {
-            color: white ;
-          }
-          .MuiFormHelperText-root {
-            color: white;
-          }
+    .MuiFormLabel-root {
+      color: white;
     }
+    .MuiFormHelperText-root {
+      color: white;
+    }
+  }
 }

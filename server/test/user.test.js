@@ -22,11 +22,7 @@ describe("/api/v1/user", () => {
   });
 
   it("GET: returns a list of user with status code 200", (done) => {
-    request(app)
-      .get("/api/v1/user")
-      .set("Accept", "application/json")
-      .expect("Content-Type", /json/)
-      .expect(200, done);
+    request(app).get("/api/v1/user").set("Accept", "application/json").expect("Content-Type", /json/).expect(200, done);
   });
 
   afterAll(async (done) => {

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Grid,
-  GridList,
-  GridListTileBar,
-  GridListTile,
-} from "@material-ui/core";
+import { Box, Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
 import Skeleton from "@material-ui/lab/Skeleton";
 import "./HomePage.scss";
@@ -18,11 +12,7 @@ import {
   fetchPersonsTMDB,
   fetchTopratedMovieTMDB,
 } from "../../service/tmdb";
-import {
-  fetchMoviesYTS,
-  fetchMovieSearchYTS,
-  fetchMoviesByGenreYTS,
-} from "../../service/yts";
+import { fetchMoviesYTS, fetchMovieSearchYTS, fetchMoviesByGenreYTS } from "../../service/yts";
 
 import textToImage from "text-to-image";
 
@@ -72,19 +62,13 @@ export const HomePage = () => {
             <Grid item xs={12}>
               <h2>
                 {item.name}
-                <Link
-                  to={`/ListMovie/${item.name}`}
-                  className="homePage__section-link"
-                >
+                <Link to={`/ListMovie/${item.name}`} className="homePage__section-link">
                   see more <ChevronRight />
                 </Link>
               </h2>
             </Grid>
             <div className="homePage__section-items">
-              <HorizontalScroll
-                reverseScroll={true}
-                style={{ position: "inherit" }}
-              >
+              <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
                 <Grid item xs={12}>
                   <GridList id="items" key={index}>
                     {loading
@@ -107,43 +91,36 @@ export const HomePage = () => {
                               }}
                             />
                             <Skeleton style={{ backgroundColor: "gray" }} />
-                            <Skeleton
-                              width="70%"
-                              style={{ backgroundColor: "gray" }}
-                            />
+                            <Skeleton width="70%" style={{ backgroundColor: "gray" }} />
                           </GridListTile>
                         ))
-                      : movieByGenre[index]
-                          ?.slice(0, 15)
-                          .map((movie, index) => {
-                            return (
-                              <GridListTile
-                                key={index}
-                                style={{
-                                  height: "300px",
-                                  width: "200px",
-                                  margin: "10px 5px",
-                                }}
-                              >
-                                <Link to={`/playerpage/${movie.title}`}>
-                                  <img
-                                    src={movie.poster}
-                                    alt=""
-                                    className="items-img"
-                                    onError={(e) =>
-                                      handleImageError(e, movie.title)
-                                    }
-                                  />
-                                  <GridListTileBar
-                                    key={index}
-                                    className="items-title"
-                                    title={movie.title}
-                                    subtitle={"Rate : " + movie.rating}
-                                  />
-                                </Link>
-                              </GridListTile>
-                            );
-                          })}
+                      : movieByGenre[index]?.slice(0, 15).map((movie, index) => {
+                          return (
+                            <GridListTile
+                              key={index}
+                              style={{
+                                height: "300px",
+                                width: "200px",
+                                margin: "10px 5px",
+                              }}
+                            >
+                              <Link to={`/playerpage/${movie.title}`}>
+                                <img
+                                  src={movie.poster}
+                                  alt=""
+                                  className="items-img"
+                                  onError={(e) => handleImageError(e, movie.title)}
+                                />
+                                <GridListTileBar
+                                  key={index}
+                                  className="items-title"
+                                  title={movie.title}
+                                  subtitle={"Rate : " + movie.rating}
+                                />
+                              </Link>
+                            </GridListTile>
+                          );
+                        })}
                     {!loading && (
                       <GridListTile
                         key={index}
@@ -154,11 +131,7 @@ export const HomePage = () => {
                         }}
                       >
                         <Link to={`/listMovie/${item.name}`}>
-                          <img
-                            src="/img/seemore.jpg"
-                            alt=""
-                            className="items-img"
-                          />
+                          <img src="/img/seemore.jpg" alt="" className="items-img" />
                         </Link>
                       </GridListTile>
                     )}

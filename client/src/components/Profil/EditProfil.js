@@ -1,15 +1,5 @@
 import React, { useState, useContext } from "react";
-import {
-  TextField,
-  Container,
-  Tabs,
-  Tab,
-  Grid,
-  Button,
-  Box,
-  IconButton,
-  InputAdornment,
-} from "@material-ui/core";
+import { TextField, Container, Tabs, Tab, Grid, Button, Box, IconButton, InputAdornment } from "@material-ui/core";
 import "./EditProfil.scss";
 import "../../assets/Style.scss";
 import axios from "axios";

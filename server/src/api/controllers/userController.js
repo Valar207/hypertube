@@ -1,7 +1,4 @@
-const {
-  validateSignupInputs,
-  validateNewPasswordInputs,
-} = require("../utils/inputsValidator");
+const { validateSignupInputs, validateNewPasswordInputs } = require("../utils/inputsValidator");
 const { sendSignUpMail, sendResetPasswordMail } = require("../utils/sendMail");
 const authHandler = require("../utils/authHandler");
 const errorHandler = require("../utils/errorHandler");
@@ -26,9 +23,7 @@ exports.updateUser = async (req, res) => {
     const user_id = user._id;
     const body = req.body;
     await User.updateUser(user_id, body);
-    return res
-      .status(200)
-      .json({ status: "success", message: "profile modifié avec succes" });
+    return res.status(200).json({ status: "success", message: "profile modifié avec succes" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ err: error });
@@ -81,9 +76,7 @@ exports.updateLanguage = async (req, res) => {
     const user_id = user._id;
     user.language = req.params.language;
     await User.updateUser(user_id, user);
-    return res
-      .status(200)
-      .json({ status: "success", message: "langue changé avec succes" });
+    return res.status(200).json({ status: "success", message: "langue changé avec succes" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error });
@@ -96,10 +89,7 @@ exports.getUserByLogin = async (req, res, next) => {
   try {
     const { userLogin } = req.params;
     const user = await User.findUserByUsername(userLogin);
-    if (!user)
-      return res
-        .status(200)
-        .json({ status: "error", message: "Utilisateur introuvable" });
+    if (!user) return res.status(200).json({ status: "error", message: "Utilisateur introuvable" });
     const result = {
       username: user.username,
       firstname: user.firstname,
@@ -118,10 +108,7 @@ exports.getUserById = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const user = await User.findUserById(userId);
-    if (!user)
-      return res
-        .status(200)
-        .json({ status: "error", message: "Utilisateur introuvable" });
+    if (!user) return res.status(200).json({ status: "error", message: "Utilisateur introuvable" });
     const result = {
       username: user.username,
       firstname: user.firstname,
@@ -242,10 +229,7 @@ exports.resetPassword = async (req, res, next) => {
   const email = req.body.url.search.split("&")[0].split("=")[1];
   const user = await User.findUserByEmail(email);
 
-  if (!user.password)
-    return res
-      .status(200)
-      .json({ status: "error", message: "You are logged via omniauth" });
+  if (!user.password) return res.status(200).json({ status: "error", message: "You are logged via omniauth" });
 
   if (!newPassword || !confirmNewPassword) {
     return res.send({
@@ -311,14 +295,7 @@ exports.editPassword = async (req, res, next) => {
 };
 
 exports.editProfil = async (req, res, next) => {
-  const {
-    imgProfile,
-    firstname,
-    lastname,
-    username,
-    email,
-    language,
-  } = req.body;
+  const { imgProfile, firstname, lastname, username, email, language } = req.body;
 
   console.log("username :" + username);
   console.log("username requser :" + req.user.username);
@@ -332,10 +309,8 @@ exports.editProfil = async (req, res, next) => {
     language !== req.user.language
   ) {
     User.updateUser(req.user.id, {
-      imgProfile:
-        imgProfile !== req.user.imgProfile ? imgProfile : req.user.imgProfile,
-      firstname:
-        firstname !== req.user.firstname ? firstname : req.user.firstname,
+      imgProfile: imgProfile !== req.user.imgProfile ? imgProfile : req.user.imgProfile,
+      firstname: firstname !== req.user.firstname ? firstname : req.user.firstname,
       lastname: lastname !== req.user.lastname ? lastname : req.user.lastname,
       username: username !== req.user.username ? username : req.user.username,
       email: email !== req.user.email ? email : req.user.email,

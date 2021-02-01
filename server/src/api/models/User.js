@@ -77,7 +77,6 @@ UserSchema.statics.insertUser = async function (userData) {
       history: [],
     };
 
-
     const newUser = new this(user);
     const result = await newUser.save();
     return result;
@@ -98,7 +97,7 @@ UserSchema.statics.updateUser = async function (userId, userData) {
 // Update un utilisateur via son username
 UserSchema.statics.updateUserByUsername = async function (userName, userData) {
   try {
-    const result = await this.model("User").updateOne({ "username": userName }, { $set: userData }).exec();
+    const result = await this.model("User").updateOne({ username: userName }, { $set: userData }).exec();
     return result;
   } catch (error) {
     console.error(`User model: ${error}`);

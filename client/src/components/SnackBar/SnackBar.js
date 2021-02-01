@@ -3,7 +3,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
 export default function SimpleSnackbar({ status, message }) {
-  const teste = true
+  const teste = true;
   const [open, setOpen] = useState(true);
   // useEffect(
   //   () => {
@@ -17,7 +17,7 @@ export default function SimpleSnackbar({ status, message }) {
       return;
     }
     setOpen(false);
-  }
+  };
 
   return (
     <div>
