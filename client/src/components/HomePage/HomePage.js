@@ -11,39 +11,23 @@ export const HomePage = () => {
   const [movieByGenre, setMovieByGenre] = useState([]);
   const [genre, setGenre] = useState([]);
 
-
   const fetchGenre = async () => {
     setGenre(await fetchGenreTMDB());
   }
-
   const setMovie = async () => {
     const teste = []
-    // genre.map(async (genre, index) => {
-    //   teste[index] = await fetchMoviesYTS(genre.name);
-    // })
-    // setMovieByGenre(teste)
-    for (const g of genre)
+    for await (const g of genre) {
       teste.push(await fetchMoviesYTS(g.name));
-    return teste
-  }
-
-  const teste = () => {
-    fetchGenre().then(() => {
-      setMovie().then((teste) => {
-        setMovieByGenre(teste)
-      })
-    });
+    }
+    setMovieByGenre(teste)
   }
 
   useEffect(() => {
-    teste();
+    fetchGenre();
   }, []);
-
-
-  // useEffect(() => {
-  // }, []);
-
-
+  useEffect(() => {
+    setMovie();
+  }, [genre]);
 
   return (
     <div className="homePage__body">

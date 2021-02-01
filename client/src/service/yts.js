@@ -12,8 +12,6 @@ export const fetchMovieSearchYTS = async (movie, pageNumber) => {
       },
       withCredentials: false,
     });
-    console.log(data);
-
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],
       backPoster: m["large_cover_image"],
@@ -38,7 +36,6 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
       },
       withCredentials: false,
     });
-    console.log(data);
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],
       backPoster: m["medium_cover_image"],
