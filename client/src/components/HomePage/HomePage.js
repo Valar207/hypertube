@@ -11,30 +11,34 @@ export const HomePage = () => {
   const [movieByGenre, setMovieByGenre] = useState([]);
   const [genre, setGenre] = useState([]);
 
+
+  const fetchGenre = async () => {
+    setGenre(await fetchGenreTMDB());
+  }
+  const setMovie = () => {
+    const teste = []
+    genre.map(async (genre, index) => {
+      teste[index] = await fetchMoviesYTS(genre.name);
+    })
+    console.log(teste);
+    setMovieByGenre(teste)
+  }
+
   useEffect(() => {
-    const fetchAPI = async () => {
-      setMovieByGenre(await fetchMoviesYTS(""));
-      setGenre(await fetchGenreTMDB());
-    };
-    fetchAPI();
+    fetchGenre();
+    setMovie()
   }, []);
 
-  const movieList = movieByGenre.slice(0, 15).map((item, index) => {
-    return (
-      <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
-        <Link to={`/playerpage/${item.title}`}>
-          <img src={item.poster} alt="" className="items-img" />
-          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
-        </Link>
-      </GridListTile>
-    );
-  });
+  useEffect(() => {
+    console.log(movieByGenre);
+  }, [movieByGenre]);
+
 
   return (
     <div className="homePage__body">
-      {genre.map((item, index) => (
-        <div className="homePage__section">
-          <Grid container spacing={1}>
+      {genre?.map((item, index) => (
+        < div className="homePage__section" >
+          <Grid container spacing={1} key={index}>
             <Grid item xs={12}>
               <h2>
                 {item.name}
@@ -46,9 +50,18 @@ export const HomePage = () => {
             <div className="homePage__section-items">
               <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
                 <Grid item xs={12}>
-                  <GridList id="items">
-                    {movieList}
-                    <GridListTile style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
+                  <GridList id="items" key={index}>
+                    {movieByGenre[index]?.slice(0, 15).map((movie, index) => {
+                      return (
+                        <GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
+                          <Link to={`/playerpage/${movie.title}`}>
+                            <img src={movie.poster} alt="" className="items-img" />
+                            <GridListTileBar key={index} className="items-title" title={movie.title} subtitle={"Rate : " + movie.rating} />
+                          </Link>
+                        </GridListTile>
+                      );
+                    })}
+                    <GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px 5px" }}>
                       <Link to={`/listMovie/${item.name}`}>
                         <img src="/img/seemore.jpg" alt="" className="items-img" />
                       </Link>
@@ -60,8 +73,9 @@ export const HomePage = () => {
             </div>
           </Grid>
         </div>
-      ))}
-    </div>
+      ))
+      }
+    </div >
   );
 };
 export default HomePage;
