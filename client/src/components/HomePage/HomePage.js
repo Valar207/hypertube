@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+
 import {
-  Box,
   Grid,
   GridList,
   GridListTileBar,
@@ -34,22 +34,16 @@ export const HomePage = () => {
   const fetchGenre = async () => {
     setGenre(await fetchGenreTMDB());
   };
+
   const setMovie = async () => {
     const movie = [];
+    const teste = [];
     for await (const g of genre) {
       movie.push(await fetchMoviesYTS(g.name));
     }
     setMovieByGenre(movie);
     setLoading(false);
   };
-
-  useEffect(() => {
-    fetchGenre();
-  }, []);
-  useEffect(() => {
-    setLoading(true);
-    setMovie();
-  }, [genre]);
 
   const handleImageError = async (event, title) => {
     event.preventDefault();
@@ -63,6 +57,15 @@ export const HomePage = () => {
     const dataUri = await textToImage.generate(title, options);
     image.src = dataUri;
   };
+
+  useEffect(() => {
+    fetchGenre();
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    setMovie();
+  }, [genre]);
 
   return (
     <div className="homePage__body">
@@ -130,9 +133,6 @@ export const HomePage = () => {
                                     src={movie.poster}
                                     alt=""
                                     className="items-img"
-                                    onError={(e) =>
-                                      handleImageError(e, movie.title)
-                                    }
                                   />
                                   <GridListTileBar
                                     key={index}
@@ -162,6 +162,51 @@ export const HomePage = () => {
                         </Link>
                       </GridListTile>
                     )}
+                    {movieByGenre[index]?.slice(0, 15).map((movie, index) => {
+                      return (
+                        <GridListTile
+                          key={index}
+                          style={{
+                            height: "300px",
+                            width: "200px",
+                            margin: "10px 5px",
+                          }}
+                        >
+                          <Link to={`/playerpage/${movie.title}`}>
+                            <img
+                              src={movie.poster}
+                              alt={movie.title}
+                              onError={(event) =>
+                                handleImageError(event, movie.title)
+                              }
+                              className="items-img"
+                            />
+                            <GridListTileBar
+                              key={index}
+                              className="items-title"
+                              title={movie.title}
+                              subtitle={"Rate : " + movie.rating}
+                            />
+                          </Link>
+                        </GridListTile>
+                      );
+                    })}
+                    <GridListTile
+                      key={index}
+                      style={{
+                        height: "300px",
+                        width: "200px",
+                        margin: "10px 5px",
+                      }}
+                    >
+                      <Link to={`/listMovie/${item.name}`}>
+                        <img
+                          src="/img/seemore.jpg"
+                          alt=""
+                          className="items-img"
+                        />
+                      </Link>
+                    </GridListTile>
                   </GridList>
                 </Grid>
                 <div></div>
@@ -173,4 +218,5 @@ export const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;
