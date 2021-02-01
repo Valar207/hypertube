@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import clsx from "clsx";
+import textToImage from "text-to-image";
 import "../../assets/Style.scss";
 import { Close, Tune } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -111,12 +112,12 @@ export const ListMovie = () => {
     }
   }, [search, pageNumber]);
 
-  useEffect(() => {
-    // console.log(movies);
-    console.log(pageNumber);
-    // console.log(loading);
-    console.log(sort);
-  }, [pageNumber, movies, sort]);
+  // useEffect(() => {
+  //   // console.log(movies);
+  //   console.log(pageNumber);
+  //   // console.log(loading);
+  //   console.log(sort);
+  // }, [pageNumber, movies, sort]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -149,6 +150,19 @@ export const ListMovie = () => {
     setSearch("");
   };
 
+  const handleImageError = async (event, title) => {
+    event.preventDefault();
+    const image = event.target;
+    const options = {
+      customHeight: 200,
+      textAlign: "center",
+      lineHeight: 200,
+      fontSize: 25,
+    };
+    const dataUri = await textToImage.generate(title, options);
+    image.src = dataUri;
+  };
+
   const movieList = movies?.map((item, index) => {
     if (movies.length === index + 1) {
       return (
@@ -163,7 +177,8 @@ export const ListMovie = () => {
           >
             <img
               src={item.poster}
-              alt=""
+              alt={item.title}
+              onError={(event) => handleImageError(event, item.title)}
               style={{ height: "400px", width: "270px" }}
             />
           </Link>
@@ -186,7 +201,8 @@ export const ListMovie = () => {
           >
             <img
               src={item.poster}
-              alt=""
+              alt={item.title}
+              onError={(event) => handleImageError(event, item.title)}
               style={{ height: "400px", width: "100%" }}
             />
           </Link>
