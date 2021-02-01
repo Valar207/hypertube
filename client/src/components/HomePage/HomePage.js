@@ -15,23 +15,34 @@ export const HomePage = () => {
   const fetchGenre = async () => {
     setGenre(await fetchGenreTMDB());
   }
-  const setMovie = () => {
+
+  const setMovie = async () => {
     const teste = []
-    genre.map(async (genre, index) => {
-      teste[index] = await fetchMoviesYTS(genre.name);
-    })
-    console.log(teste);
-    setMovieByGenre(teste)
+    // genre.map(async (genre, index) => {
+    //   teste[index] = await fetchMoviesYTS(genre.name);
+    // })
+    // setMovieByGenre(teste)
+    for (const g of genre)
+      teste.push(await fetchMoviesYTS(g.name));
+    return teste
+  }
+
+  const teste = () => {
+    fetchGenre().then(() => {
+      setMovie().then((teste) => {
+        setMovieByGenre(teste)
+      })
+    });
   }
 
   useEffect(() => {
-    fetchGenre();
-    setMovie()
+    teste();
   }, []);
 
-  useEffect(() => {
-    console.log(movieByGenre);
-  }, [movieByGenre]);
+
+  // useEffect(() => {
+  // }, []);
+
 
 
   return (
