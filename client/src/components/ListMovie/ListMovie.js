@@ -39,8 +39,8 @@ export const ListMovie = () => {
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({
     name: 65,
-    years: [0, 100],
-    rate: [0, 5],
+    years: [1900, new Date().getFullYear()],
+    rate: [0, 10],
   });
   const [checked, setChecked] = React.useState(false);
   const [genreList, setGenreList] = useState([]);
@@ -55,11 +55,27 @@ export const ListMovie = () => {
 
   const [movies, setMovies] = useState([]);
 
+  const filterMovie = (movies) => {
+    const filterMovie = [];
+    movies.map((m) => {
+      if (
+        m.rating <= sliderValue.rate[1] &&
+        m.rating >= sliderValue.rate[0] &&
+        m.year <= sliderValue.years[1] &&
+        m.year >= sliderValue.years[0]
+      ) {
+        filterMovie.push(m);
+      }
+    });
+    return filterMovie;
+  };
+
   const fetchAPI = async () => {
     const newMovies = await fetchMoviesYTS(genre, pageNumber, sort);
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
-      const result = distinctObjectArray(tableau);
+      const result = filterMovie(distinctObjectArray(tableau));
+
       setMovies(result);
       setLoading(false);
     } else {
@@ -98,7 +114,6 @@ export const ListMovie = () => {
 
   useEffect(() => {
     setLoading(true);
-
     if (search) {
       searchAPI();
     } else {
@@ -106,12 +121,13 @@ export const ListMovie = () => {
     }
   }, [search, pageNumber]);
 
-  // useEffect(() => {
-  //   // console.log(movies);
-  //   console.log(pageNumber);
-  //   // console.log(loading);
-  //   console.log(sort);
-  // }, [pageNumber, movies, sort]);
+  useEffect(() => {
+    console.log("--------------------------------------");
+    setMovies([]);
+    setPageNumber(1);
+
+    fetchAPI();
+  }, [sliderValue]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -268,30 +284,20 @@ export const ListMovie = () => {
                 <h5> Filter by </h5>
                 <Grid>
                   <Grid className="listMovie__filter-grid">
-                    Alphabetic : {String.fromCharCode(sliderValue.name)}
-                    <Slider
-                      value={sliderValue.name}
-                      min={65}
-                      max={90}
-                      onChange={handleChangeSlider("name")}
-                      // valueLabelDisplay="auto"
-                      aria-labelledby="range-slider"
-                    />
-                  </Grid>
-                  <Grid className="listMovie__filter-grid">
                     Years : {sliderValue.years[0]} - {sliderValue.years[1]}
                     <Slider
                       value={sliderValue.years}
                       onChange={handleChangeSlider("years")}
-                      // valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
+                      min={1900}
+                      max={new Date().getFullYear()}
                     />
                   </Grid>
                   <Grid className="listMovie__filter-grid">
-                    Evaluation : {sliderValue.rate[0]} - {sliderValue.rate[1]}
+                    Ratings : {sliderValue.rate[0]} - {sliderValue.rate[1]}
                     <Slider
                       value={sliderValue.rate}
-                      max={5}
+                      max={10}
                       onChange={handleChangeSlider("rate")}
                       valueLabelDisplay="auto"
                     />
