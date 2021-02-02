@@ -68,7 +68,7 @@ export const HomePage = () => {
               </h2>
             </Grid>
             <div className="homePage__section-items">
-              <HorizontalScroll reverseScroll={true} style={{ position: "inherit" }}>
+              <HorizontalScroll reverseScroll={true}>
                 <Grid item xs={12}>
                   <GridList id="items" key={index}>
                     {loading
