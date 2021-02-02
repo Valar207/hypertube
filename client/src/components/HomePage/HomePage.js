@@ -115,7 +115,9 @@ export const HomePage = () => {
                                   key={index}
                                   className="items-title"
                                   title={movie.title}
-                                  subtitle={"Rate : " + movie.rating}
+                                  subtitle={
+                                    `Rate: ${movie.rating}` + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0" + `Year: ${movie.year}`
+                                  }
                                 />
                               </Link>
                             </GridListTile>

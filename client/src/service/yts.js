@@ -61,6 +61,7 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
       poster: m["medium_cover_image"],
       overview: m["summary"],
       rating: m["rating"],
+      year: m["year"],
     }));
 
     return modifiedData;
