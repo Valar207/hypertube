@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import { Accordion, AccordionDetails, AccordionSummary, Container, Divider, Grid, TextField } from "@material-ui/core";
 import { Comment, ExpandMore, Info, AccountCircle } from "@material-ui/icons";
+import { fetchMovieDetailsYTS } from "../../service/yts";
 
 import "./PlayerPage.scss";
 
-export const PlayerPage = () => {
+export const PlayerPage = (props) => {
+  const { id } = useParams();
+
+  const [movieDetails, setMovieDetails] = useState({
+    title: "",
+    rating: 0,
+    runtime: 0,
+    medium_cover_image: "",
+    cast: [],
+    genres: [],
+    description_full: "",
+  });
+
+  const fetchDetails = async (movie_id) => {
+    const response = await fetchMovieDetailsYTS(movie_id);
+    const movie = response.data;
+    const { title, rating, runtime, medium_cover_image, cast, genres, description_full } = movie;
+    setMovieDetails({ title, rating, runtime, medium_cover_image, cast, genres, description_full }); //runtime retour parfois 0
+    console.log(movie);
+  };
+
+  useEffect(() => {
+    fetchDetails(id);
+  }, [id]);
+
   return (
     <Container className="playerPage__body">
       <Grid container>

@@ -161,7 +161,7 @@ export const ListMovie = () => {
     if (movies.length === index + 1) {
       return (
         <GridListTile ref={lastMovieElement} key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-          <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
+          <Link to={`/playerpage/${encodeURIComponent(item.id)}`} className="items-img">
             <img
               src={item.poster}
               alt={item.title}
@@ -175,7 +175,7 @@ export const ListMovie = () => {
     } else {
       return (
         <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
-          <Link to={`/playerpage/${encodeURIComponent(item.title)}`} className="items-img">
+          <Link to={`/playerpage/${encodeURIComponent(item.id)}`} className="items-img">
             <img
               src={item.poster}
               alt={item.title}

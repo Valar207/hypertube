@@ -104,7 +104,7 @@ export const HomePage = () => {
                                 margin: "10px 5px",
                               }}
                             >
-                              <Link to={`/playerpage/${movie.title}`}>
+                              <Link to={`/playerpage/${movie.id}`}>
                                 <img
                                   src={movie.poster}
                                   alt=""

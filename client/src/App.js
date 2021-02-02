@@ -53,7 +53,7 @@ function App() {
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />
               <Route path="/ListMovie" component={() => <ListMovie />} />
-              <Route path="/PlayerPage" component={() => <PlayerPage />} />
+              <Route path="/PlayerPage/:id" component={() => <PlayerPage />} />
               <Route exact path="/Profil" component={() => <Profil />} />
               <Route exact path="/EditProfil" component={() => <EditProfil />} />
               <Route exact path="/EditPassword" component={() => <EditPassword />} />

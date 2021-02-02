@@ -2,6 +2,23 @@ import axios from "axios";
 
 const url = "https://yts.unblockedproxy.biz/api/v2";
 const list = url + "/list_movies.json";
+const details = url + "/movie_details.json";
+
+export const fetchMovieDetailsYTS = async (movie_id) => {
+  try {
+    const { data } = await axios.get(details, {
+      params: {
+        movie_id,
+        with_images: true,
+        with_cast: true,
+      },
+      withCredentials: false,
+    });
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const fetchMovieSearchYTS = async (movie, pageNumber) => {
   try {
