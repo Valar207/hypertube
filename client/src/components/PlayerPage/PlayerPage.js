@@ -1,70 +1,85 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Accordion, AccordionDetails, AccordionSummary, Container, Divider, Grid, TextField } from "@material-ui/core";
-import { Comment, ExpandMore, Info, AccountCircle } from "@material-ui/icons";
+import { Comment, ExpandMore, Info, AccountCircle, Timer, StarRate, LocalMovies } from "@material-ui/icons";
 import { fetchMovieDetailsYTS } from "../../service/yts";
 
 import "./PlayerPage.scss";
 
 export const PlayerPage = (props) => {
   const { id } = useParams();
+  const [movieDetails, setMovieDetails] = useState([]);
 
-  const [movieDetails, setMovieDetails] = useState({
-    title: "",
-    rating: 0,
-    runtime: 0,
-    medium_cover_image: "",
-    cast: [],
-    genres: [],
-    description_full: "",
-  });
-
+  const minToHour = (min) => {
+    min = Number(min);
+    var hour = Math.floor(min / 60);
+    var minute = Math.floor(min - (hour * 3600) / 60);
+    var displayHour = hour > 0 ? hour + "H" : "";
+    var displayMinute = minute > 0 ? minute : "";
+    return displayHour + displayMinute;
+  };
   const fetchDetails = async (movie_id) => {
     const response = await fetchMovieDetailsYTS(movie_id);
     const movie = response.data;
-    const { title, rating, runtime, medium_cover_image, cast, genres, description_full } = movie;
-    setMovieDetails({ title, rating, runtime, medium_cover_image, cast, genres, description_full }); //runtime retour parfois 0
-    console.log(movie);
+    console.log(response.data);
+    const { title, rating, runtime, medium_cover_image, cast, genres, description_full } = movie.movie;
+    setMovieDetails({ title, rating, runtime: minToHour(runtime), medium_cover_image, cast, genres, description_full }); //runtime retour parfois 0
   };
 
   useEffect(() => {
     fetchDetails(id);
   }, [id]);
-
+  console.log(movieDetails);
   return (
     <Container className="playerPage__body">
       <Grid container>
         <Grid className="playerPage__player"></Grid>
-        <Grid container className="playerPage__header">
-          <h5>titre</h5>
+        <Grid container className="playerPage__header" alignItems="center">
+          <LocalMovies />
+          <h3>{movieDetails.title}</h3>
           <Grid item xs />
-          <h5>note</h5>
-          <h5>duree</h5>
+          <StarRate />
+          <h3>{movieDetails.rating}</h3>
+          <Timer style={{ marginLeft: "25px" }} />
+          <h3>{movieDetails.runtime}</h3>
         </Grid>
+
         <Grid className="playerPage__information">
           <Divider style={{ backgroundColor: "#6c6c6c" }} />
-          <Accordion>
+          <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
-              <Info style={{ margin: "0 10px 0 0" }} />
-              <h5> Informations :</h5>
+              <Info style={{ margin: "4px 5px 0 0" }} />
+              <h3> Informations :</h3>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={5}>
                 <Grid item xs={3}>
-                  <img src="/img/joker.jpg" alt="" />
+                  <img src={movieDetails.medium_cover_image} alt="" />
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={9} direction="row">
                   <Grid item xs={12}>
-                    Distribution :
+                    <h5>Title :</h5>
+                    <p>{movieDetails.title}</p>
                   </Grid>
                   <Grid item xs={12}>
-                    Genre :
+                    <h5>Genre :</h5>
+                    <p>
+                      {movieDetails.genres?.map((genre) => {
+                        return " " + genre + ", ";
+                      })}
+                    </p>
                   </Grid>
                   <Grid item xs={12}>
-                    Actor :
+                    <h5>Cast :</h5>
+                    <p>
+                      {movieDetails.cast?.map((cast) => {
+                        return " " + cast.name + ", ";
+                      })}
+                    </p>
                   </Grid>
                   <Grid item xs={12}>
-                    synopsis :
+                    <h5>Synopsis :</h5>
+                    <p>{movieDetails.description_full}</p>
                   </Grid>
                 </Grid>
               </Grid>
@@ -75,8 +90,8 @@ export const PlayerPage = (props) => {
         <Grid className="playerPage__comments">
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
-              <Comment style={{ margin: "0 10px 0 0" }} />
-              <h5> Comments :</h5>
+              <Comment style={{ margin: "4px 5px 0 0" }} />
+              <h3> Comments :</h3>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={5}>
