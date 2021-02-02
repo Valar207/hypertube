@@ -87,7 +87,10 @@ export const ListMovie = () => {
   const searchAPI = async () => {
     let newMovies = await fetchMovieSearchYTS(search, pageNumber);
     if (newMovies) {
-      setMovies([...new Set([...movies, ...newMovies])]);
+      const tableau = [...movies, ...newMovies];
+      const result = filterMovie(distinctObjectArray(tableau));
+
+      setMovies(result);
       setLoading(false);
     } else {
       setLoadingDisplay(false);
@@ -122,12 +125,19 @@ export const ListMovie = () => {
   }, [search, pageNumber]);
 
   useEffect(() => {
-    console.log("--------------------------------------");
+    setLoading(true);
     setMovies([]);
     setPageNumber(1);
-
-    fetchAPI();
+    if (search) {
+      searchAPI();
+    } else {
+      fetchAPI();
+    }
   }, [sliderValue]);
+
+  useEffect(() => {
+    console.log(movies);
+  }, [movies]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -156,7 +166,8 @@ export const ListMovie = () => {
     // let sort = e.currentTarget.value;
     setSort(e.currentTarget.value);
     setPageNumber(1);
-    setMovies(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value));
+    setMovies([]);
+    setMovies(filterMovie(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value)));
     setSearch("");
   };
 
