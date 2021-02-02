@@ -2,55 +2,13 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 const MovieSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  year: {
-    type: Number,
-  },
-  note: {
+  movie_id: {
     type: Number,
     required: true,
-  },
-  cover: {
-    type: String,
-    required: true,
-  },
-  genres: [
-    {
-      type: String,
-      required: true,
-    },
-  ],
-  synopsis: {
-    type: String,
-    required: true,
-  },
-  duration: {
-    type: Number,
-    required: true,
-  },
-  casting: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Casting",
   },
   comments: [
     {
-      user_username: {
-        type: String,
-        required: true,
-      },
-      content: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
-  subtitles: [
-    {
-      language: {
+      user_login: {
         type: String,
         required: true,
       },
@@ -61,6 +19,40 @@ const MovieSchema = new Schema({
     },
   ],
 });
+
+//Recuperer un film et ses commentaires via l'id du film
+MovieSchema.statics.getMovie = async (movie_id) => {
+  try {
+    const movie = await this.model("Movie").findById(movie_id).exec();
+    return movie;
+  } catch (error) {
+    console.error(`Movie model: ${error}`);
+  }
+};
+
+//Inserer/Mettre a jour un film et ses commentaires
+MovieSchema.statics.insertMovie = async (movieData) => {
+  try {
+    const movie = { comments: movieData.comments };
+    const result = await this.model("Movie").findOneAndUpdate({ movie_id: movieData.id }, movie, {
+      new: true,
+      upsert: true,
+    });
+    return result;
+  } catch (error) {
+    console.error(`Movie model: ${error}`);
+  }
+};
+
+//Supprimer un film et ses commentaires via l'id du film
+MovieSchema.statics.deleteMovie = async (movie_id) => {
+  try {
+    const result = await this.model("Movie").findByIdAndRemove(movie_id).exec();
+    return result;
+  } catch (error) {
+    console.error(`Movie model: ${error}`);
+  }
+};
 
 const Movie = mongoose.model("Movie", MovieSchema, "Movie");
 
