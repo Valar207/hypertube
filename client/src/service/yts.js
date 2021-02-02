@@ -20,12 +20,13 @@ export const fetchMovieDetailsYTS = async (movie_id) => {
   }
 };
 
-export const fetchMovieSearchYTS = async (movie, pageNumber) => {
+export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
   try {
     const { data } = await axios.get(list, {
       params: {
         query_term: movie,
         page: pageNumber,
+        sort_by: sort ? sort : null,
       },
       withCredentials: false,
     });
