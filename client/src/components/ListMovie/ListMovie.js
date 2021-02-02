@@ -57,7 +57,7 @@ export const ListMovie = () => {
 
   const filterMovie = (movies) => {
     const filterMovie = [];
-    movies.map((m) => {
+    movies?.map((m) => {
       if (
         m.rating <= sliderValue.rate[1] &&
         m.rating >= sliderValue.rate[0] &&
@@ -167,8 +167,12 @@ export const ListMovie = () => {
     setSort(e.currentTarget.value);
     setPageNumber(1);
     setMovies([]);
-    setMovies(filterMovie(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value)));
-    setSearch("");
+    if (search) {
+      console.log("search sort");
+      setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
+    } else {
+      setMovies(filterMovie(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value)));
+    }
   };
 
   const handleImageError = async (event, title) => {
