@@ -6,10 +6,10 @@ const router = express.Router();
 
 const { getMovie, postMovie, deleteMovie } = require("../controllers/movieController");
 
-router.get("/:movie", checkLoggedIn, getMovie);
+router.get("/:movie_id", checkLoggedIn, getMovie);
 
 router.post("/", checkLoggedIn, postMovie);
 
-router.delete("/:movie", checkLoggedIn, deleteMovie);
+router.delete("/:movie_id", checkLoggedIn, deleteMovie);
 
 module.exports = router;

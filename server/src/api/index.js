@@ -2,6 +2,7 @@ const express = require("express");
 
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
+const movieRoutes = require("./routes/movie");
 
 const router = express.Router();
 
@@ -17,5 +18,8 @@ router.use("/auth", authRoutes);
 
 // Routes pour user
 router.use("/user", userRoutes);
+
+//Routes pour movies
+router.use("/movie", movieRoutes);
 
 module.exports = router;

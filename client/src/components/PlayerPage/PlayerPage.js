@@ -1,14 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-import { Accordion, AccordionDetails, AccordionSummary, Container, Divider, Grid, TextField } from "@material-ui/core";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Container,
+  Divider,
+  Grid,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import { Comment, ExpandMore, Info, AccountCircle, Timer, StarRate, LocalMovies } from "@material-ui/icons";
+import { withStyles } from "@material-ui/core/styles";
+import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
+import { fetchMovieDetails, postMovieDetails } from "../../service/movie";
+import { AppContext } from "../../App";
 
 import "./PlayerPage.scss";
+
+const GreenButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green[500]),
+    backgroundColor: "#1de9b6",
+    "&:hover": {
+      backgroundColor: "#68f3d0",
+    },
+  },
+}))(Button);
 
 export const PlayerPage = (props) => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [commentInput, setCommentInput] = useState("");
+
+  const context = useContext(AppContext);
+  const { username } = context.userInfos;
 
   const minToHour = (min) => {
     min = Number(min);
@@ -18,18 +46,48 @@ export const PlayerPage = (props) => {
     var displayMinute = minute > 0 ? minute : "";
     return displayHour + displayMinute;
   };
+
+  const handleCommentChange = (event) => {
+    event.preventDefault();
+    setCommentInput(event.target.value);
+  };
+
   const fetchDetails = async (movie_id) => {
     const response = await fetchMovieDetailsYTS(movie_id);
+    if (response === "error") return;
     const movie = response.data;
-    console.log(response.data);
     const { title, rating, runtime, medium_cover_image, cast, genres, description_full } = movie.movie;
     setMovieDetails({ title, rating, runtime: minToHour(runtime), medium_cover_image, cast, genres, description_full }); //runtime retour parfois 0
+  };
+
+  const fetchComments = async (movie_id) => {
+    const response = await fetchMovieDetails(movie_id);
+    const comments = response.comments;
+    setComments(comments);
+  };
+
+  const handleSendComment = async (event) => {
+    event.preventDefault();
+    if (commentInput === "") return;
+    const newComments = [...comments, { user_login: username, content: commentInput }];
+    const response = await postMovieDetails({
+      id,
+      comments: newComments,
+    });
+    if (response.status === "success") {
+      setCommentInput("");
+      setComments(newComments);
+    }
   };
 
   useEffect(() => {
     fetchDetails(id);
   }, [id]);
-  console.log(movieDetails);
+
+  useEffect(() => {
+    fetchComments(id);
+  }, []);
+
   return (
     <Container className="playerPage__body">
       <Grid container>
@@ -98,17 +156,34 @@ export const PlayerPage = (props) => {
                 <Grid item xs={2}>
                   <AccountCircle style={{ width: "75px", height: "75px" }} />
                 </Grid>
-                <Grid item xs={10} style={{ alignSelf: "center" }}>
+                <Grid item xs={9} style={{ alignSelf: "center" }}>
                   <TextField
                     fullWidth
                     name=""
-                    // onChange={ }
-                    // value={ }
+                    onChange={handleCommentChange}
+                    value={commentInput}
                     label="Write a comments"
                     variant="outlined"
                     rows="3"
                   />
                 </Grid>
+                <Grid item xs={1} style={{ alignSelf: "center" }}>
+                  <GreenButton variant="contained" color="primary" onClick={handleSendComment}>
+                    Envoyer
+                  </GreenButton>
+                </Grid>
+              </Grid>
+              <Grid>
+                {comments.map((commentData) => {
+                  return (
+                    <ul>
+                      <li>
+                        <h1>{commentData.user_login}</h1>
+                        <p>{commentData.content}</p>
+                      </li>
+                    </ul>
+                  );
+                })}
               </Grid>
             </AccordionDetails>
           </Accordion>

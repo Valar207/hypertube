@@ -14,7 +14,8 @@ export const fetchMovieDetailsYTS = async (movie_id) => {
       },
       withCredentials: false,
     });
-    return data;
+    if (data) return data;
+    return "error";
   } catch (error) {
     console.error(error);
   }

@@ -21,9 +21,9 @@ const MovieSchema = new Schema({
 });
 
 //Recuperer un film et ses commentaires via l'id du film
-MovieSchema.statics.getMovie = async (movie_id) => {
+MovieSchema.statics.getMovie = async function (movie_id) {
   try {
-    const movie = await this.model("Movie").findById(movie_id).exec();
+    const movie = await this.model("Movie").findOne({ movie_id }).exec();
     return movie;
   } catch (error) {
     console.error(`Movie model: ${error}`);
@@ -31,7 +31,7 @@ MovieSchema.statics.getMovie = async (movie_id) => {
 };
 
 //Inserer/Mettre a jour un film et ses commentaires
-MovieSchema.statics.insertMovie = async (movieData) => {
+MovieSchema.statics.insertMovie = async function (movieData) {
   try {
     const movie = { comments: movieData.comments };
     const result = await this.model("Movie").findOneAndUpdate({ movie_id: movieData.id }, movie, {
@@ -45,7 +45,7 @@ MovieSchema.statics.insertMovie = async (movieData) => {
 };
 
 //Supprimer un film et ses commentaires via l'id du film
-MovieSchema.statics.deleteMovie = async (movie_id) => {
+MovieSchema.statics.deleteMovie = async function (movie_id) {
   try {
     const result = await this.model("Movie").findByIdAndRemove(movie_id).exec();
     return result;
