@@ -178,7 +178,11 @@ export const ListMovie = () => {
       console.log("search sort");
       setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
     } else {
-      setMovies(filterMovie(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value)));
+      setMovies(
+        filterMovie(
+          await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
+        ),
+      );
     }
   };
 
