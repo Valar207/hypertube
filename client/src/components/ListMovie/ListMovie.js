@@ -4,6 +4,7 @@ import textToImage from "text-to-image";
 import "../../assets/Style.scss";
 import { Close, Tune } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router";
 import {
   Button,
   Grow,
@@ -35,6 +36,12 @@ import "./ListMovie.scss";
 import "../../assets/Style.scss";
 
 export const ListMovie = () => {
+  const location = useLocation();
+
+  const [genreFromHomePage, setGenreFromHomePage] = useState(location.state?.genre);
+
+  console.log(genreFromHomePage);
+
   const { search, setSearch } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({
@@ -71,7 +78,7 @@ export const ListMovie = () => {
   };
 
   const fetchAPI = async () => {
-    const newMovies = await fetchMoviesYTS(genre, pageNumber, sort);
+    const newMovies = await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, sort);
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
@@ -115,8 +122,10 @@ export const ListMovie = () => {
     [loading, hasMore],
   );
 
-  useEffect(() => {
+  useEffect(async () => {
     setLoading(true);
+    setGenreList(await fetchGenreTMDB());
+
     if (search) {
       searchAPI();
     } else {
@@ -124,20 +133,18 @@ export const ListMovie = () => {
     }
   }, [search, pageNumber]);
 
-  useEffect(() => {
+  useEffect(async () => {
     setLoading(true);
     setMovies([]);
     setPageNumber(1);
+    setGenreList(await fetchGenreTMDB());
+
     if (search) {
       searchAPI();
     } else {
       fetchAPI();
     }
   }, [sliderValue]);
-
-  useEffect(() => {
-    console.log(movies);
-  }, [movies]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -160,10 +167,10 @@ export const ListMovie = () => {
     setGenre(genre);
     setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
     setSearch("");
+    setGenreFromHomePage("");
   };
 
   const handleSortMovie = async (e) => {
-    // let sort = e.currentTarget.value;
     setSort(e.currentTarget.value);
     setPageNumber(1);
     setMovies([]);
@@ -171,7 +178,11 @@ export const ListMovie = () => {
       console.log("search sort");
       setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
     } else {
-      setMovies(filterMovie(await fetchMoviesYTS(genre, pageNumber, e.currentTarget.value)));
+      setMovies(
+        filterMovie(
+          await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
+        ),
+      );
     }
   };
 

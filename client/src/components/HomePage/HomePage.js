@@ -62,7 +62,7 @@ export const HomePage = () => {
             <Grid item xs={12}>
               <h2>
                 {item.name}
-                <Link to={`/ListMovie/${item.name}`} className="homePage__section-link">
+                <Link to={{ pathname: `/ListMovie`, state: { genre: item.name } }} className="homePage__section-link">
                   see more <ChevronRight />
                 </Link>
               </h2>
