@@ -148,7 +148,15 @@ export const SignInUp = (props) => {
     setTabsValue(newValue);
   };
 
-  console.log(userSignUp.imgProfile);
+  const handleGoogleOauth = async (event) => {
+    event.preventDefault();
+    window.open("http://localhost:5000/api/v1/auth/google", "_self");
+  };
+
+  const handleFortyTwoOauth = (event) => {
+    event.preventDefault();
+    window.open("http://localhost:5000/api/v1/auth/42", "_self");
+  };
 
   return (
     <Container className="homepage__body">
@@ -361,12 +369,12 @@ export const SignInUp = (props) => {
           <div className="separator"> OR </div>
           <Grid container className="homepage__omniauth">
             <Grid item xs={6}>
-              <IconButton>
+              <IconButton onClick={handleFortyTwoOauth}>
                 <img src="/img/icons/42-logo.svg" alt="42-logo" />
               </IconButton>
             </Grid>
             <Grid item xs={6}>
-              <IconButton>
+              <IconButton onClick={handleGoogleOauth}>
                 <img src="/img/icons/googleplus-logo.svg" alt="googleplus-logo" />
               </IconButton>
             </Grid>
