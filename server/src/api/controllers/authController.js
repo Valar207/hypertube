@@ -1,13 +1,12 @@
 exports.getSession = (req, res) => {
-  return res.status(200).json({ status: "success", message: true, user: req.user });
+  return res.status(200).json({ status: "success", message: "user authenticated", user: req.user });
 };
 
-exports.getGoogleRedirect = (request, response, next) => {
-  response.status(200).json(request.user);
-};
-
-exports.get42Redirect = (request, response, next) => {
-  response.status(200).json(request.user);
+exports.getLoginFailed = (request, response, next) => {
+  return response.status(401).json({
+    success: false,
+    message: "user failed to authenticate",
+  });
 };
 
 exports.getLogout = (request, response) => {
