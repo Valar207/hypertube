@@ -16,6 +16,7 @@ import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
 import { fetchMovieDetails, postMovieDetails } from "../../service/movie";
 import { AppContext } from "../../App";
+import { WebTorrent } from "webtorrent";
 
 import "./PlayerPage.scss";
 
@@ -30,6 +31,31 @@ const GreenButton = withStyles((theme) => ({
 }))(Button);
 
 export const PlayerPage = (props) => {
+  // var client = new WebTorrent();
+  // var magnetURI =
+  //   "magnet:?xt=urn:btih:A753EA13F243EF9C4006D103DCBDBC7CABAD8A01&amp;dn=Spider-Man:+Into+the+Spider-Verse+%282018%29+%5B1080p%5D+%5BYTS.LT%5D&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337";
+
+  // client.add(magnetURI, function (torrent) {
+  //   // Got torrent metadata!
+  //   console.log("Client is downloading:", torrent.infoHash);
+
+  //   torrent.files.forEach(function (file) {
+  //     // Display the file by appending it to the DOM. Supports video, audio, images, and
+  //     // more. Specify a container element (CSS selector or reference to DOM node).
+  //     file.appendTo("body");
+  //   });
+  // });
+
+  // var engine = torrentStream();
+
+  // engine.on("ready", function () {
+  //   engine.files.forEach(function (file) {
+  //     console.log("filename:", file.name);
+  //     var stream = file.createReadStream();
+  //     // stream is readable stream to containing the file content
+  //   });
+  // });
+
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
   const [comments, setComments] = useState([]);
