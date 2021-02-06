@@ -43,10 +43,6 @@ router.delete("/:userId", deleteUser);
 //LOGIN A USER
 router.post("/signin", postLogin);
 
-router.get("/errorLogin", (res, req) => {
-  console.log("TEESST");
-});
-
 router.patch("/language/:language", checkLoggedIn, updateLanguage);
 
 //SIGNUP USER IN DB

@@ -14,5 +14,5 @@ exports.getLogout = (request, response) => {
     request.logout();
     return response.status(200).json({ status: "success", message: "Logged out successfuly" });
   }
-  return response.status(200).json({ status: "error", message: "User was not logged in" });
+  return response.status(401).json({ status: "error", message: "User was not logged in" });
 };
