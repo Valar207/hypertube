@@ -4,7 +4,7 @@ require("dotenv").config();
 
 //Check si un user est connecté
 exports.checkLoggedIn = (req, res, next) => {
-  if (!req.user) return res.status(401).json({ status: "error", message: false });
+  if (!req.user) return res.status(200).json({ status: "error", message: false });
   next();
 };
 
