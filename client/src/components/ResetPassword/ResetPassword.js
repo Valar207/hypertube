@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Container, Grid, Button } from "@material-ui/core";
+import { TextField, Container, Grid, Button, InputAdornment, IconButton } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import axios from "axios";
 import "./ResetPassword.scss";
 import "../../assets/Style.scss";
@@ -9,10 +10,21 @@ import SimpleSnackbar from "../SnackBar/SnackBar";
 export const ResetPassword = () => {
   const url = useLocation();
   const history = useHistory();
+
   const [alert, setAlert] = useState({
     open: false,
     msg: "",
     status: "",
+  });
+
+  const [password, setPassword] = useState({
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+
+  const [showPassword, setShowPassword] = useState({
+    newPassword: false,
+    confirmNewPassword: false,
   });
 
   useEffect(() => {
@@ -36,11 +48,6 @@ export const ResetPassword = () => {
     }
   }, []);
 
-  const [password, setPassword] = useState({
-    newPassword: "",
-    confirmNewPassword: "",
-  });
-
   const handleChange = (e) => {
     setPassword({
       ...password,
@@ -51,8 +58,6 @@ export const ResetPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post("user/resetPassword", { password, url }).then((res) => {
-      console.log(res.data);
-
       if (res.data.status === "error") {
         setAlert({
           open: true,
@@ -69,6 +74,11 @@ export const ResetPassword = () => {
         });
       }
     });
+  };
+
+  const handleClickShowPassword = (e) => {
+    e.preventDefault();
+    setShowPassword({ [e.currentTarget.name]: !showPassword[e.currentTarget.name] });
   };
 
   return (
@@ -89,6 +99,16 @@ export const ResetPassword = () => {
               label="Please enter your new password"
               helperText="Must contain 8 characters, 1 letter, 1 number and 1 special character"
               variant="outlined"
+              type={showPassword.newPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <IconButton name="newPassword" onClick={handleClickShowPassword} className="icon-btn">
+                      {showPassword.newPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               required
             />
           </Grid>
@@ -100,6 +120,16 @@ export const ResetPassword = () => {
               onChange={handleChange}
               label="Please confirm your new password"
               variant="outlined"
+              type={showPassword.confirmNewPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment>
+                    <IconButton name="confirmNewPassword" onClick={handleClickShowPassword} className="icon-btn">
+                      {showPassword.confirmNewPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               required
             />
           </Grid>
