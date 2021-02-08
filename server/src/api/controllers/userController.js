@@ -228,7 +228,7 @@ exports.resetPassword = async (req, res, next) => {
   const email = req.body.url.search.split("&")[0].split("=")[1];
   const user = await User.findUserByEmail(email);
 
-  if (!user.password) return res.status(400).json({ status: "error", message: "You are logged via omniauth" });
+  if (!user.password) return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
 
   if (!newPassword || !confirmNewPassword) {
     return res.send({
@@ -264,6 +264,8 @@ exports.resetPassword = async (req, res, next) => {
 
 exports.editPassword = async (req, res, next) => {
   const { oldPassword, newPassword, confirmNewPassword } = req.body;
+  // if (!user.password) return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
+
   if (await authHandler.comparePassword(req.user.password, oldPassword)) {
     if (newPassword.length < 8) {
       return res.send({
