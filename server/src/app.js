@@ -7,6 +7,8 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const fileUpload = require("express-fileupload");
 const torrentStream = require("torrent-stream");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../Hypertube.v1.json");
 
 require("dotenv").config();
 
@@ -43,6 +45,8 @@ app.get("/", (req, res) =>
     message: "Hey",
   }),
 );
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/v1", api);
 

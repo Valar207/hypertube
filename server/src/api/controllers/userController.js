@@ -89,7 +89,7 @@ exports.getUserByLogin = async (req, res, next) => {
   try {
     const { userLogin } = req.params;
     const user = await User.findUserByUsername(userLogin);
-    if (!user) return res.status(200).json({ status: "error", message: "Utilisateur introuvable" });
+    if (!user) return res.status(404).json({ status: "error", message: "Utilisateur introuvable" });
     const result = {
       username: user.username,
       firstname: user.firstname,
@@ -173,7 +173,6 @@ exports.activateUser = async (req, res, next) => {
       User.updateUser(user.id, { vkey: "" });
       res.send({ status: "success", message: "Account activated !" });
     } else {
-      console.log("token doesnt match");
       return res.send({ status: "error", message: "incorrect token" });
     }
   } else {
@@ -229,7 +228,7 @@ exports.resetPassword = async (req, res, next) => {
   const email = req.body.url.search.split("&")[0].split("=")[1];
   const user = await User.findUserByEmail(email);
 
-  if (!user.password) return res.status(200).json({ status: "error", message: "You are logged via omniauth" });
+  if (!user.password) return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
 
   if (!newPassword || !confirmNewPassword) {
     return res.send({
@@ -265,6 +264,9 @@ exports.resetPassword = async (req, res, next) => {
 
 exports.editPassword = async (req, res, next) => {
   const { oldPassword, newPassword, confirmNewPassword } = req.body;
+  if (!req.user.password)
+    return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
+
   if (await authHandler.comparePassword(req.user.password, oldPassword)) {
     if (newPassword.length < 8) {
       return res.send({
