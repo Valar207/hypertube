@@ -103,14 +103,14 @@ export const PlayerPage = (props) => {
 
   useEffect(() => {
     fetchComments(id);
+    // axios.get("http://localhost:5000/api/v1/movie/streamMovie/25946");
   }, []);
-
-  useEffect(() => {
-    console.log(movieDetails);
-  }, [movieDetails]);
 
   return (
     <Container className="playerPage__body">
+      <video id="videoPlayer" width="650" controls muted="muted" autoplay>
+        <source src={"http://localhost:5000/api/v1/movie/streamMovie/" + id} type="video/mp4" />
+      </video>
       <Grid container>
         <Grid className="playerPage__player"></Grid>
         <Grid container className="playerPage__header" alignItems="center">

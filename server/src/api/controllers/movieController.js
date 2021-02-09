@@ -1,5 +1,7 @@
 const Movie = require("../models/Movie");
 const torrentStream = require("torrent-stream");
+var fs = require("fs");
+var path = require("path");
 
 // controller fetch movie (GET)
 exports.getMovie = async (req, res, next) => {
@@ -104,7 +106,51 @@ exports.downloadMovie = async (req, res, next) => {
 
 exports.streamMovie = async (req, res, next) => {
   try {
-    return res.status(200).json({ status: "success", message: "Film/Commentaires supprimés" });
+    var range = req.headers.range;
+    var pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
+
+    fs.readdir(pathMovie, (err, file) => {
+      if (err) console.log(err);
+      else {
+        var fullPath = pathMovie + "/" + file[0];
+        fs.readdir(pathMovie + "/" + file[0], (err, f) => {
+          f.forEach((el) => {
+            if (path.extname(el) == ".mp4") {
+              // get video stats (about 61MB)
+              const videoPath = path.resolve(fullPath, el);
+              const videoSize = fs.statSync(videoPath).size;
+
+              console.log(videoPath);
+              console.log(videoSize);
+
+              // Parse Range
+              // Example: "bytes=32324-"
+              const CHUNK_SIZE = 10 ** 6; // 1MB
+              const start = Number(range.replace(/\D/g, ""));
+              const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+              // Create headers
+              const contentLength = end - start + 1;
+              const headers = {
+                "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+                "Accept-Ranges": "bytes",
+                "Content-Length": contentLength,
+                "Content-Type": "video/mp4",
+              };
+
+              // HTTP Status 206 for Partial Content
+              res.writeHead(206, headers);
+
+              // create video read stream for this particular chunk
+              const videoStream = fs.createReadStream(videoPath, { start, end });
+
+              // Stream the video chunk to the client
+              videoStream.pipe(res);
+            }
+          });
+        });
+      }
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server internal error" });
