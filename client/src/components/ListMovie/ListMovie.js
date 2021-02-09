@@ -40,8 +40,6 @@ export const ListMovie = () => {
 
   const [genreFromHomePage, setGenreFromHomePage] = useState(location.state?.genre);
 
-  console.log(genreFromHomePage);
-
   const { search, setSearch } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({

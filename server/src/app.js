@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const fileUpload = require("express-fileupload");
+const torrentStream = require("torrent-stream");
 
 require("dotenv").config();
 
