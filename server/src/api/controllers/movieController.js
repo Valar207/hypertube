@@ -47,7 +47,7 @@ exports.downloadMovie = async (req, res, next) => {
     const options = {
       connections: 100,
       uploads: 10,
-      path: process.cwd() + "/Movies/torrents", // Where to save the files. Overrides `tmp`.
+      path: process.cwd() + "/Movies/" + movieDetails.id,
       verify: true,
       tracker: true, // Whether or not to use trackers from torrent file or magnet link
       // Defaults to true
@@ -92,12 +92,21 @@ exports.downloadMovie = async (req, res, next) => {
       });
     });
     engine.on("idle", (end) => {
-      console.log(end);
+      console.log("fin du téléchargement");
     });
 
     return res.json({ status: "success", message: "Movie Downloaded" });
   } catch (error) {
     console.error(error);
     // return res.status(500).json({ error: "Server internal error" });
+  }
+};
+
+exports.streamMovie = async (req, res, next) => {
+  try {
+    return res.status(200).json({ status: "success", message: "Film/Commentaires supprimés" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server internal error" });
   }
 };

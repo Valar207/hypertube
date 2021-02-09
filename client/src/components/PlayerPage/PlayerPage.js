@@ -61,7 +61,7 @@ export const PlayerPage = (props) => {
 
     console.log(movie);
 
-    const { title, rating, runtime, medium_cover_image, cast, genres, description_full, torrents } = movie.movie;
+    const { title, rating, runtime, medium_cover_image, cast, genres, description_full, torrents, id } = movie.movie;
     setMovieDetails({
       title,
       rating,
@@ -71,6 +71,7 @@ export const PlayerPage = (props) => {
       genres,
       description_full,
       torrents,
+      id,
     }); //runtime retour parfois 0
 
     //download movie in server
