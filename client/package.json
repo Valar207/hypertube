@@ -22,7 +22,8 @@
     "text-to-image": "^2.4.4",
     "torrent-stream": "^1.2.1",
     "web-vitals": "^0.2.4",
-    "webtorrent": "^0.113.0"
+    "webtorrent": "^0.113.0",
+    "webtorrent-hybrid": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",

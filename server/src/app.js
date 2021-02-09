@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const fileUpload = require("express-fileupload");
+const torrentStream = require("torrent-stream");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../Hypertube.v1.json");
 

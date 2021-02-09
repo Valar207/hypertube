@@ -264,7 +264,8 @@ exports.resetPassword = async (req, res, next) => {
 
 exports.editPassword = async (req, res, next) => {
   const { oldPassword, newPassword, confirmNewPassword } = req.body;
-  // if (!user.password) return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
+  if (!req.user.password)
+    return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
 
   if (await authHandler.comparePassword(req.user.password, oldPassword)) {
     if (newPassword.length < 8) {

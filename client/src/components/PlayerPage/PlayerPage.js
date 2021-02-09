@@ -14,9 +14,10 @@ import { Comment, ExpandMore, Info, AccountCircle, Timer, StarRate, LocalMovies 
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
-import { fetchMovieDetails, postMovieDetails } from "../../service/movie";
+import { fetchMovieDetails, postMovieDetails, downloadMovieInServer } from "../../service/movie";
 import { AppContext } from "../../App";
-import { WebTorrent } from "webtorrent";
+import axios from "axios";
+// import * as WebTorrent from "webtorrent-hybrid";
 
 import "./PlayerPage.scss";
 
@@ -31,31 +32,6 @@ const GreenButton = withStyles((theme) => ({
 }))(Button);
 
 export const PlayerPage = (props) => {
-  // var client = new WebTorrent();
-  // var magnetURI =
-  //   "magnet:?xt=urn:btih:A753EA13F243EF9C4006D103DCBDBC7CABAD8A01&amp;dn=Spider-Man:+Into+the+Spider-Verse+%282018%29+%5B1080p%5D+%5BYTS.LT%5D&amp;tr=udp://glotorrents.pw:6969/announce&amp;tr=udp://tracker.openbittorrent.com:80&amp;tr=udp://tracker.coppersurfer.tk:6969&amp;tr=udp://p4p.arenabg.ch:1337&amp;tr=udp://tracker.internetwarriors.net:1337";
-
-  // client.add(magnetURI, function (torrent) {
-  //   // Got torrent metadata!
-  //   console.log("Client is downloading:", torrent.infoHash);
-
-  //   torrent.files.forEach(function (file) {
-  //     // Display the file by appending it to the DOM. Supports video, audio, images, and
-  //     // more. Specify a container element (CSS selector or reference to DOM node).
-  //     file.appendTo("body");
-  //   });
-  // });
-
-  // var engine = torrentStream();
-
-  // engine.on("ready", function () {
-  //   engine.files.forEach(function (file) {
-  //     console.log("filename:", file.name);
-  //     var stream = file.createReadStream();
-  //     // stream is readable stream to containing the file content
-  //   });
-  // });
-
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
   const [comments, setComments] = useState([]);
@@ -82,8 +58,22 @@ export const PlayerPage = (props) => {
     const response = await fetchMovieDetailsYTS(movie_id);
     if (response === "error") return;
     const movie = response.data;
-    const { title, rating, runtime, medium_cover_image, cast, genres, description_full } = movie.movie;
-    setMovieDetails({ title, rating, runtime: minToHour(runtime), medium_cover_image, cast, genres, description_full }); //runtime retour parfois 0
+
+    console.log(movie);
+
+    const { title, rating, runtime, medium_cover_image, cast, genres, description_full, torrents } = movie.movie;
+    setMovieDetails({
+      title,
+      rating,
+      runtime: minToHour(runtime),
+      medium_cover_image,
+      cast,
+      genres,
+      description_full,
+      torrents,
+    }); //runtime retour parfois 0
+
+    //download movie in server
   };
 
   const fetchComments = async (movie_id) => {
@@ -113,6 +103,10 @@ export const PlayerPage = (props) => {
   useEffect(() => {
     fetchComments(id);
   }, []);
+
+  useEffect(() => {
+    console.log(movieDetails);
+  }, [movieDetails]);
 
   return (
     <Container className="playerPage__body">
@@ -171,6 +165,25 @@ export const PlayerPage = (props) => {
           </Accordion>
           <Divider style={{ backgroundColor: "#6c6c6c" }} />
         </Grid>
+
+        <Grid className="playerPage__quality">
+          <Accordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
+              <Info style={{ margin: "4px 5px 0 0" }} />
+              <h3> Video quality :</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              {movieDetails.torrents?.map((torrent) => (
+                <>
+                  <Button onClick={() => downloadMovieInServer(movieDetails, torrent)}>{torrent.quality}</Button>
+                  <p>{torrent.size}</p>
+                </>
+              ))}
+            </AccordionDetails>
+          </Accordion>
+          <Divider style={{ backgroundColor: "#6c6c6c" }} />
+        </Grid>
+
         <Grid className="playerPage__comments">
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
