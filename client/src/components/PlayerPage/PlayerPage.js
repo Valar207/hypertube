@@ -14,8 +14,10 @@ import { Comment, ExpandMore, Info, AccountCircle, Timer, StarRate, LocalMovies 
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
-import { fetchMovieDetails, postMovieDetails } from "../../service/movie";
+import { fetchMovieDetails, postMovieDetails, downloadMovieInServer } from "../../service/movie";
 import { AppContext } from "../../App";
+import axios from "axios";
+// import * as WebTorrent from "webtorrent-hybrid";
 
 import "./PlayerPage.scss";
 
@@ -56,8 +58,22 @@ export const PlayerPage = (props) => {
     const response = await fetchMovieDetailsYTS(movie_id);
     if (response === "error") return;
     const movie = response.data;
-    const { title, rating, runtime, medium_cover_image, cast, genres, description_full } = movie.movie;
-    setMovieDetails({ title, rating, runtime: minToHour(runtime), medium_cover_image, cast, genres, description_full }); //runtime retour parfois 0
+
+    console.log(movie);
+
+    const { title, rating, runtime, medium_cover_image, cast, genres, description_full, torrents } = movie.movie;
+    setMovieDetails({
+      title,
+      rating,
+      runtime: minToHour(runtime),
+      medium_cover_image,
+      cast,
+      genres,
+      description_full,
+      torrents,
+    }); //runtime retour parfois 0
+
+    //download movie in server
   };
 
   const fetchComments = async (movie_id) => {
@@ -87,6 +103,10 @@ export const PlayerPage = (props) => {
   useEffect(() => {
     fetchComments(id);
   }, []);
+
+  useEffect(() => {
+    console.log(movieDetails);
+  }, [movieDetails]);
 
   return (
     <Container className="playerPage__body">
@@ -145,6 +165,25 @@ export const PlayerPage = (props) => {
           </Accordion>
           <Divider style={{ backgroundColor: "#6c6c6c" }} />
         </Grid>
+
+        <Grid className="playerPage__quality">
+          <Accordion defaultExpanded>
+            <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
+              <Info style={{ margin: "4px 5px 0 0" }} />
+              <h3> Video quality :</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              {movieDetails.torrents?.map((torrent) => (
+                <>
+                  <Button onClick={() => downloadMovieInServer(movieDetails, torrent)}>{torrent.quality}</Button>
+                  <p>{torrent.size}</p>
+                </>
+              ))}
+            </AccordionDetails>
+          </Accordion>
+          <Divider style={{ backgroundColor: "#6c6c6c" }} />
+        </Grid>
+
         <Grid className="playerPage__comments">
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
