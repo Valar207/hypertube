@@ -77,8 +77,8 @@ export const PlayerPage = (props) => {
 
   const fetchComments = async (movie_id) => {
     const response = await fetchMovieDetails(movie_id);
-    const comments = response.comments;
-    setComments(comments);
+    const comments = response?.comments;
+    if (comments) setComments(comments);
   };
 
   const handleSendComment = async (event) => {
@@ -97,7 +97,7 @@ export const PlayerPage = (props) => {
 
   const handleDownloadMovie = async (torrent) => {
     const response = await downloadMovieInServer(movieDetails, torrent);
-    if (response.status === "success") setVideoReady(true);
+    if (response?.status === "success") setVideoReady(true);
   };
 
   useEffect(() => {
