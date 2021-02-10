@@ -6,7 +6,7 @@ const router = express.Router();
 
 const { getMovie, postMovie, deleteMovie, downloadMovie, streamMovie } = require("../controllers/movieController");
 
-router.get("/getMovie/:movie_id", checkLoggedIn, getMovie);
+router.get("/:movie_id", checkLoggedIn, getMovie);
 
 //DL movie
 router.post("/downloadMovie", checkLoggedIn, downloadMovie);

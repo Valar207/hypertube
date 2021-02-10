@@ -16,8 +16,7 @@ import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
 import { fetchMovieDetails, postMovieDetails, downloadMovieInServer } from "../../service/movie";
 import { AppContext } from "../../App";
-import axios from "axios";
-// import * as WebTorrent from "webtorrent-hybrid";
+import { VideoPlayer } from "../VideoPlayer/VideoPlayer";
 
 import "./PlayerPage.scss";
 
@@ -36,6 +35,7 @@ export const PlayerPage = (props) => {
   const [movieDetails, setMovieDetails] = useState([]);
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
+  const [videoReady, setVideoReady] = useState(false);
 
   const context = useContext(AppContext);
   const { username } = context.userInfos;
@@ -58,8 +58,6 @@ export const PlayerPage = (props) => {
     const response = await fetchMovieDetailsYTS(movie_id);
     if (response === "error") return;
     const movie = response.data;
-
-    console.log(movie);
 
     const { title, rating, runtime, medium_cover_image, cast, genres, description_full, torrents, id } = movie.movie;
     setMovieDetails({
@@ -97,6 +95,11 @@ export const PlayerPage = (props) => {
     }
   };
 
+  const handleDownloadMovie = async (torrent) => {
+    const response = await downloadMovieInServer(movieDetails, torrent);
+    if (response.status === "success") setVideoReady(true);
+  };
+
   useEffect(() => {
     fetchDetails(id);
   }, [id]);
@@ -108,11 +111,10 @@ export const PlayerPage = (props) => {
 
   return (
     <Container className="playerPage__body">
-      <video id="videoPlayer" width="650" controls muted="muted" autoplay>
-        <source src={"http://localhost:5000/api/v1/movie/streamMovie/" + id} type="video/mp4" />
-      </video>
       <Grid container>
-        <Grid className="playerPage__player"></Grid>
+        <Grid className="playerPage__player">
+          {videoReady ? <VideoPlayer src={`http://localhost:5000/api/v1/movie/streamMovie/${id}`} /> : null}
+        </Grid>
         <Grid container className="playerPage__header" alignItems="center">
           <LocalMovies />
           <h3>{movieDetails.title}</h3>
@@ -176,7 +178,7 @@ export const PlayerPage = (props) => {
             <AccordionDetails>
               {movieDetails.torrents?.map((torrent) => (
                 <>
-                  <Button onClick={() => downloadMovieInServer(movieDetails, torrent)}>{torrent.quality}</Button>
+                  <Button onClick={() => handleDownloadMovie(torrent)}>{torrent.quality}</Button>
                   <p>{torrent.size}</p>
                 </>
               ))}

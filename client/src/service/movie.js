@@ -5,7 +5,7 @@ const movie = url + "/movie";
 
 export const fetchMovieDetails = async (movie_id) => {
   try {
-    const { data } = await axios.get(movie + `/getMovie/${movie_id}`, {
+    const { data } = await axios.get(movie + `/${movie_id}`, {
       withCredentials: true,
     });
     return data;

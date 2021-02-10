@@ -1,7 +1,10 @@
-const Movie = require("../models/Movie");
+const fs = require("fs");
+const path = require("path");
+
 const torrentStream = require("torrent-stream");
-var fs = require("fs");
-var path = require("path");
+
+const Movie = require("../models/Movie");
+const torrentConfig = require("../config/torrentConfig");
 
 // controller fetch movie (GET)
 exports.getMovie = async (req, res, next) => {
@@ -46,82 +49,68 @@ exports.downloadMovie = async (req, res, next) => {
   try {
     const { movieDetails, torrent } = req.body;
 
-    const options = {
-      connections: 100,
-      uploads: 10,
-      path: process.cwd() + "/Movies/" + movieDetails.id,
-      verify: true,
-      tracker: true, // Whether or not to use trackers from torrent file or magnet link
-      // Defaults to true
-      trackers: [
-        "udp://tracker.openbittorrent.com:80",
-        "udp://tracker.ccc.de:80",
-        "udp://tracker.leechers-paradise.org:6969/announce",
-        "udp://tracker.pirateparty.gr:6969/announce",
-        "udp://tracker.coppersurfer.tk:6969/announce",
-        "http://asnet.pw:2710/announce",
-        "http://tracker.opentrackr.org:1337/announce",
-        "udp://tracker.opentrackr.org:1337/announce",
-        "udp://tracker1.xku.tv:6969/announce",
-        "udp://tracker1.wasabii.com.tw:6969/announce",
-        "udp://tracker.zer0day.to:1337/announce",
-        "udp://p4p.arenabg.com:1337/announce",
-        "http://tracker.internetwarriors.net:1337/announce",
-        "udp://tracker.internetwarriors.net:1337/announce",
-        "udp://allesanddro.de:1337/announce",
-        "udp://9.rarbg.com:2710/announce",
-        "udp://tracker.dler.org:6969/announce",
-        "http://mgtracker.org:6969/announce",
-        "http://tracker.mg64.net:6881/announce",
-        "http://tracker.devil-torrents.pl:80/announce",
-        "http://ipv4.tracker.harry.lu:80/announce",
-        "http://tracker.electro-torrent.pl:80/announce",
-      ],
-    };
+    const options = torrentConfig(movieDetails.id);
 
-    var magnetURI = "magnet:?xt=urn:btih:" + torrent.hash + "&dn=" + movieDetails.title + "_" + torrent.quality;
+    const magnetURI = "magnet:?xt=urn:btih:" + torrent.hash + "&dn=" + movieDetails.title + "_" + torrent.quality;
 
-    console.log(magnetURI);
+    const engine = torrentStream(magnetURI, options);
 
-    var engine = torrentStream(magnetURI, options);
+    let piecesNumber;
+    let piecesDowloaded;
 
-    engine.on("ready", function () {
-      engine.files.forEach(function (file) {
-        // console.log("filename:", file.name);
-        // console.log("files:", file);
-        var stream = file.createReadStream();
-        // stream is readable stream to containing the file content
-      });
-    });
-    engine.on("idle", (end) => {
-      console.log("fin du téléchargement");
+    engine.on("ready", () => {
+      let stream;
+      for (const file of engine.files) {
+        stream = file.createReadStream();
+        // console.log(file);
+        // console.log(stream);
+        // console.log(file.length);
+      }
     });
 
-    return res.json({ status: "success", message: "Movie Downloaded" });
+    engine.on("torrent", (torrent) => {
+      piecesNumber = torrent.pieces.length;
+      // piecesDowloaded = Math.ceil(piecesNumber / 100);
+      // console.log(piecesNumber);
+      // console.log(piecesDowloaded);
+    });
+
+    engine.on("download", (pieceIndex) => {
+      // console.log(pieceIndex);
+      if (pieceIndex === Math.ceil(piecesNumber / 200)) {
+        res.status(200).json({ status: "success", message: "Movie Downloaded" });
+
+        // console.log("fichier créé");
+      }
+    });
+
+    // engine.on("upload", (pieceIndex, offset, length) => {
+    //   console.log("UPLOADED", pieceIndex, offset, length);
+    // });
   } catch (error) {
     console.error(error);
-    // return res.status(500).json({ error: "Server internal error" });
+    return res.status(500).json({ error: "Server internal error" });
   }
 };
 
 exports.streamMovie = async (req, res, next) => {
   try {
-    var range = req.headers.range;
-    var pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
+    const range = req.headers.range;
+    const pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
 
     fs.readdir(pathMovie, (err, file) => {
       if (err) console.log(err);
       else {
-        var fullPath = pathMovie + "/" + file[0];
-        fs.readdir(pathMovie + "/" + file[0], (err, f) => {
+        const fullPath = pathMovie + "/" + file[0];
+        fs.readdir(fullPath, (err, f) => {
           f.forEach((el) => {
             if (path.extname(el) == ".mp4") {
               // get video stats (about 61MB)
               const videoPath = path.resolve(fullPath, el);
               const videoSize = fs.statSync(videoPath).size;
 
-              console.log(videoPath);
-              console.log(videoSize);
+              // console.log(videoPath);
+              // console.log(videoSize);
 
               // Parse Range
               // Example: "bytes=32324-"
