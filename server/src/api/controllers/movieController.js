@@ -49,9 +49,13 @@ exports.downloadMovie = async (req, res, next) => {
   try {
     const { movieDetails, torrent } = req.body;
 
-    const options = torrentConfig(movieDetails.id);
+    const pathMovie = process.cwd() + "/Movies/" + movieDetails.id;
 
-    const moviesDownload = {};
+    if (fs.existsSync(pathMovie)) {
+      return res.status(200).json({ status: "success", message: "Movie Downloaded" });
+    }
+
+    const options = torrentConfig(movieDetails.id);
 
     const magnetURI = "magnet:?xt=urn:btih:" + torrent.hash + "&dn=" + movieDetails.title + "_" + torrent.quality;
 
@@ -65,36 +69,20 @@ exports.downloadMovie = async (req, res, next) => {
       console.log("re");
       for (const file of engine.files) {
         stream = file.createReadStream();
-        // console.log(file);
-        // console.log(stream);
-        // console.log(file.length);
       }
     });
 
     engine.on("torrent", (torrent) => {
       console.log("torrent parsed");
       piecesTotalNumber = torrent.pieces.length;
-      // piecesDowloaded = Math.ceil(piecesTotalNumber / 100);
-      // console.log(piecesTotalNumber);
-      // console.log(piecesDowloaded);
     });
 
     engine.on("download", (pieceIndex) => {
-      // {27042: 94, 390: 130}
-      // moviesDownload[movieDetails.id]++;
-      // console.log(moviesDownload);
       piecesNumber++;
-      console.log(piecesNumber);
       if (piecesNumber === Math.ceil(piecesTotalNumber / 100)) {
         res.status(200).json({ status: "success", message: "Movie Downloaded" });
-
-        // console.log("fichier créé");
       }
     });
-
-    // engine.on("upload", (pieceIndex, offset, length) => {
-    //   console.log("UPLOADED", pieceIndex, offset, length);
-    // });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Server internal error" });
