@@ -51,15 +51,18 @@ exports.downloadMovie = async (req, res, next) => {
 
     const options = torrentConfig(movieDetails.id);
 
+    const moviesDownload = {};
+
     const magnetURI = "magnet:?xt=urn:btih:" + torrent.hash + "&dn=" + movieDetails.title + "_" + torrent.quality;
 
     const engine = torrentStream(magnetURI, options);
 
-    let piecesNumber;
-    let piecesDowloaded;
+    let piecesTotalNumber;
+    let piecesNumber = 0;
 
     engine.on("ready", () => {
       let stream;
+      console.log("re");
       for (const file of engine.files) {
         stream = file.createReadStream();
         // console.log(file);
@@ -69,15 +72,20 @@ exports.downloadMovie = async (req, res, next) => {
     });
 
     engine.on("torrent", (torrent) => {
-      piecesNumber = torrent.pieces.length;
-      // piecesDowloaded = Math.ceil(piecesNumber / 100);
-      // console.log(piecesNumber);
+      console.log("torrent parsed");
+      piecesTotalNumber = torrent.pieces.length;
+      // piecesDowloaded = Math.ceil(piecesTotalNumber / 100);
+      // console.log(piecesTotalNumber);
       // console.log(piecesDowloaded);
     });
 
     engine.on("download", (pieceIndex) => {
-      // console.log(pieceIndex);
-      if (pieceIndex === Math.ceil(piecesNumber / 200)) {
+      // {27042: 94, 390: 130}
+      // moviesDownload[movieDetails.id]++;
+      // console.log(moviesDownload);
+      piecesNumber++;
+      console.log(piecesNumber);
+      if (piecesNumber === Math.ceil(piecesTotalNumber / 100)) {
         res.status(200).json({ status: "success", message: "Movie Downloaded" });
 
         // console.log("fichier créé");

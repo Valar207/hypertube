@@ -101,6 +101,14 @@ export const PlayerPage = (props) => {
   };
 
   useEffect(() => {
+    if (movieDetails.length !== 0) {
+      const torrents = movieDetails.torrents;
+      const torrent = torrents.filter((t) => t.quality === "720p");
+      handleDownloadMovie(torrent[0]);
+    }
+  }, [movieDetails]);
+
+  useEffect(() => {
     fetchDetails(id);
   }, [id]);
 
