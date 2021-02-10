@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+var srt2vtt = require("srt-to-vtt");
 
 const torrentStream = require("torrent-stream");
 
@@ -66,14 +67,12 @@ exports.downloadMovie = async (req, res, next) => {
 
     engine.on("ready", () => {
       let stream;
-      console.log("re");
       for (const file of engine.files) {
         stream = file.createReadStream();
       }
     });
 
     engine.on("torrent", (torrent) => {
-      console.log("torrent parsed");
       piecesTotalNumber = torrent.pieces.length;
     });
 
@@ -95,8 +94,6 @@ exports.streamMovie = async (req, res, next) => {
     const pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
 
     fs.readdir(pathMovie, (err, file) => {
-      console.log(file);
-
       if (err) console.log(err);
       else if (path.extname(file[0]) == ".mkv" || path.extname(file[0]) == ".mp4") {
         const videoPath = path.resolve(pathMovie, file[0]);
@@ -126,17 +123,12 @@ exports.streamMovie = async (req, res, next) => {
       } else {
         const fullPath = pathMovie + "/" + file[0];
 
-        console.log(fullPath);
-
         fs.readdir(fullPath, (err, f) => {
           f.forEach((el) => {
             if (path.extname(el) == ".mp4" || path.extname(el) == ".mkv") {
               // get video stats (about 61MB)
               const videoPath = path.resolve(fullPath, el);
               const videoSize = fs.statSync(videoPath).size;
-
-              // console.log(videoPath);
-              // console.log(videoSize);
 
               // Parse Range
               // Example: "bytes=32324-"
@@ -161,6 +153,38 @@ exports.streamMovie = async (req, res, next) => {
 
               // Stream the video chunk to the client
               videoStream.pipe(res);
+            }
+          });
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server internal error" });
+  }
+};
+
+exports.streamSubtitles = async (req, res, next) => {
+  try {
+    const pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
+
+    fs.readdir(pathMovie, (err, file) => {
+      if (err) console.log(err);
+      else {
+        const fullPath = pathMovie + "/" + file[0];
+
+        fs.readdir(fullPath, (err, f) => {
+          f.forEach((el) => {
+            if (path.extname(el) == ".srt") {
+              // get subtitle path
+              const subtitlePath = path.resolve(fullPath, el);
+              const subVTT = subtitlePath.replace(".srt", ".vtt");
+
+              var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
+              newSub.on("close", () => {
+                res.set("Content-Type", "text/plain");
+                return res.status(200).sendFile(subVTT);
+              });
             }
           });
         });

@@ -121,7 +121,12 @@ export const PlayerPage = (props) => {
     <Container className="playerPage__body">
       <Grid container>
         <Grid className="playerPage__player">
-          {videoReady ? <VideoPlayer src={`http://localhost:5000/api/v1/movie/streamMovie/${id}`} /> : null}
+          {videoReady ? (
+            <VideoPlayer
+              src={`http://localhost:5000/api/v1/movie/streamMovie/${id}`}
+              sub={`http://localhost:5000/api/v1/movie/streamSubtitles/${id}`}
+            />
+          ) : null}
         </Grid>
         <Grid container className="playerPage__header" alignItems="center">
           <LocalMovies />
