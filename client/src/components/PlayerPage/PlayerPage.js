@@ -38,8 +38,7 @@ export const PlayerPage = (props) => {
   const [videoReady, setVideoReady] = useState(false);
 
   const context = useContext(AppContext);
-  const { username } = context.userInfos;
-
+  const { username, imgProfile } = context.userInfos;
   const minToHour = (min) => {
     min = Number(min);
     var hour = Math.floor(min / 60);
@@ -84,7 +83,7 @@ export const PlayerPage = (props) => {
   const handleSendComment = async (event) => {
     event.preventDefault();
     if (commentInput === "") return;
-    const newComments = [...comments, { user_login: username, content: commentInput }];
+    const newComments = [...comments, { user_login: username, content: commentInput, user_photo: imgProfile }];
     const response = await postMovieDetails({
       id,
       comments: newComments,
@@ -93,6 +92,7 @@ export const PlayerPage = (props) => {
       setCommentInput("");
       setComments(newComments);
     }
+    console.log(comments);
   };
 
   const handleDownloadMovie = async (torrent) => {
@@ -130,20 +130,29 @@ export const PlayerPage = (props) => {
         </Grid>
         <Grid container className="playerPage__header" alignItems="center">
           <LocalMovies />
-          <h3>{movieDetails.title}</h3>
+          <h5>{movieDetails.title}</h5>
           <Grid item xs />
-          <StarRate />
-          <h3>{movieDetails.rating}</h3>
+          <p style={{ margin: "0 8px 8px 0" }}>Video quality :</p>
+          {movieDetails.torrents?.map((torrent) => (
+            <>
+              <Button className="quality-btn" onClick={() => handleDownloadMovie(torrent)}>
+                {torrent.quality}
+              </Button>
+              {/* <p>{torrent.size}</p> */}
+            </>
+          ))}
+          <StarRate style={{ marginLeft: "25px" }} />
+          <h5>{movieDetails.rating}</h5>
           <Timer style={{ marginLeft: "25px" }} />
-          <h3>{movieDetails.runtime}</h3>
+          <h5>{movieDetails.runtime}</h5>
         </Grid>
 
         <Grid className="playerPage__information">
           <Divider style={{ backgroundColor: "#6c6c6c" }} />
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
-              <Info style={{ margin: "4px 5px 0 0" }} />
-              <h3> Informations :</h3>
+              <Info />
+              <h5> Informations :</h5>
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={5}>
@@ -182,63 +191,50 @@ export const PlayerPage = (props) => {
           <Divider style={{ backgroundColor: "#6c6c6c" }} />
         </Grid>
 
-        <Grid className="playerPage__quality">
-          <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
-              <Info style={{ margin: "4px 5px 0 0" }} />
-              <h3> Video quality :</h3>
-            </AccordionSummary>
-            <AccordionDetails>
-              {movieDetails.torrents?.map((torrent) => (
-                <>
-                  <Button onClick={() => handleDownloadMovie(torrent)}>{torrent.quality}</Button>
-                  <p>{torrent.size}</p>
-                </>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-          <Divider style={{ backgroundColor: "#6c6c6c" }} />
-        </Grid>
-
         <Grid className="playerPage__comments">
           <Accordion defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMore style={{ color: "white" }} />}>
-              <Comment style={{ margin: "4px 5px 0 0" }} />
-              <h3> Comments :</h3>
+              <Comment />
+              <h5> Comments :</h5>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container spacing={5}>
-                <Grid item xs={2}>
-                  <AccountCircle style={{ width: "75px", height: "75px" }} />
+              <Grid container>
+                <Grid className="send__comment" container xs={12} spacing={2}>
+                  <Grid item>
+                    <img src={imgProfile} style={{ width: "75px", height: "75px", borderRadius: "50px" }} />
+                  </Grid>
+                  <Grid item xs={8} style={{ alignSelf: "center" }}>
+                    <TextField
+                      fullWidth
+                      name=""
+                      onChange={handleCommentChange}
+                      value={commentInput}
+                      label="Write a comments"
+                      variant="outlined"
+                      rows="3"
+                    />
+                  </Grid>
+                  <Grid item xs={1} style={{ alignSelf: "center" }}>
+                    <GreenButton variant="contained" color="primary" onClick={handleSendComment}>
+                      Envoyer
+                    </GreenButton>
+                  </Grid>
                 </Grid>
-                <Grid item xs={9} style={{ alignSelf: "center" }}>
-                  <TextField
-                    fullWidth
-                    name=""
-                    onChange={handleCommentChange}
-                    value={commentInput}
-                    label="Write a comments"
-                    variant="outlined"
-                    rows="3"
-                  />
+                <Grid className="comments__space" container xs={12} direction="column-reverse">
+                  {comments.map((commentData) => {
+                    return (
+                      <Grid className="comments" container spacing={3} wrap="nowrap">
+                        <Grid item>
+                          <img className="imgProfile" src={commentData.user_photo} />
+                        </Grid>
+                        <Grid item>
+                          <h5>{commentData.user_login}</h5>
+                          <p>{commentData.content}</p>
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
                 </Grid>
-                <Grid item xs={1} style={{ alignSelf: "center" }}>
-                  <GreenButton variant="contained" color="primary" onClick={handleSendComment}>
-                    Envoyer
-                  </GreenButton>
-                </Grid>
-              </Grid>
-              <Grid>
-                {comments.map((commentData) => {
-                  return (
-                    <ul>
-                      <li>
-                        <h1>{commentData.user_login}</h1>
-                        <p>{commentData.content}</p>
-                      </li>
-                    </ul>
-                  );
-                })}
               </Grid>
             </AccordionDetails>
           </Accordion>

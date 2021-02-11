@@ -1,5 +1,8 @@
 .playerPage__body {
   color: white;
+  p {
+    opacity: 0.6;
+  }
   .playerPage__player {
     border: 1px solid white;
     width: 100%;
@@ -7,9 +10,9 @@
   }
   .MuiSvgIcon-root {
     color: #1de9b6;
-    margin: 0 5px 5px 0;
-    height: 30px;
-    width: 30px;
+    margin: 0 6px 5px 0;
+    height: 25px;
+    width: 25px;
   }
   .MuiAccordionSummary-root {
     padding: 0;
@@ -18,6 +21,23 @@
   .playerPage__header {
     width: 100%;
     height: 80px;
+    .quality-btn {
+      width: 75px;
+      margin-left: 10px;
+      color: white;
+      border: 1px solid #1de9b6;
+      border-radius: 8px;
+      &:hover {
+        transition: 0.8s;
+        color: #004d40;
+        background-color: #1de9b6;
+      }
+      &:focus {
+        outline: none;
+        color: #004d40;
+        background-color: #1de9b6;
+      }
+    }
   }
   .MuiPaper-root,
   .MuiAccordion-root,
@@ -36,6 +56,21 @@
   }
   .playerPage__comments {
     width: 100%;
+    .imgProfile {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+    .send__comment {
+      margin: 0 0 30px 0;
+    }
+    .comments__space {
+      margin: 20px 0;
+      .comments {
+        margin-bottom: 2px;
+      }
+    }
     .MuiInputBase-root {
       border-radius: 50px;
     }
