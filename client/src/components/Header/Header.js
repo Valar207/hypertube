@@ -79,7 +79,7 @@ export const Header = () => {
               }}
             />
             <IconButton className="header__icon">
-              <Link to="/listmovie" className="header__icon">
+              <Link to="/listmovie">
                 <Movie />
               </Link>
             </IconButton>
