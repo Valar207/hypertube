@@ -189,12 +189,12 @@ exports.streamSubtitles = async (req, res, next) => {
                 var fileName = s.split(".")[1];
                 const subtitlePath = path.join(fullPath, "Subs", s);
                 const subVTT = subtitlePath.replace(".srt", ".vtt");
-                // var newSub = fs.createReadStream(subVTT).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
+                // var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
 
                 // newSub.on("close", () => {
                 if (path.extname(s) === ".vtt") {
-                  // var readS = fs.readFileSync(subVTT);
-                  form.append(name, fs.createReadStream(subVTT), fileName + ".vtt");
+                  var readS = fs.readFileSync(subVTT);
+                  form.append(name, readS, fileName + ".vtt");
                 }
                 // });
               }
@@ -205,7 +205,10 @@ exports.streamSubtitles = async (req, res, next) => {
             });
           } else {
             var srt = f.find((e) => path.extname(e) === ".srt");
+
+            console.log(srt);
             const subtitlePath = path.resolve(fullPath, srt);
+            console.log(subtitlePath);
             const subVTT = subtitlePath.replace(".srt", ".vtt");
 
             var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));

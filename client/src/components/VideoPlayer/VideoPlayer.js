@@ -7,22 +7,58 @@ export const VideoPlayer = (props) => {
 
   const [test, setTest] = useState();
 
+  const [subInfos, setSubInfos] = useState([]);
+
   useEffect(() => {
     axios.get(sub).then((res) => {
-      console.log(res);
+      var rData = res.data._streams;
+      let subTmp = {};
+      let arrayTmp = [];
 
-      if (res.data) {
-        setSubs(true);
-        const url = URL.createObjectURL(new Blob([res.data], { type: "text/plain" }));
-        setTest(url);
+      for (const r of rData) {
+        if (typeof r === "string") {
+          var rParse = r.split(`"`);
+
+          const name = rParse[1];
+          const lang = rParse[3].split(".")[0];
+
+          subTmp = { name, lang };
+          // subTmp.name = name;
+          // subTmp.lang = lang;
+        }
+
+        if (r?.type) {
+          var subB64 = r.toString("base64");
+          const url = URL.createObjectURL(new Blob([subB64], { type: "text/plain" }));
+          subTmp.src = url;
+          console.log(subTmp);
+          // console.log(subInfos)
+          subTmp = { ...subTmp, src: url };
+          arrayTmp.push(subTmp);
+        }
       }
+      // console.log(arrayTmp);
+      setSubInfos(arrayTmp);
+
+      // if (res.data) {
+      //   setSubs(true);
+      //   const url = URL.createObjectURL(new Blob([res.data], { type: "text/plain" }));
+      //   setTest(url);
+      // }
     });
   }, []);
+
+  useEffect(() => {
+    console.log(subInfos);
+  }, [subInfos]);
 
   return (
     <video id="videoPlayer" width="650" controls crossOrigin="use-credentials" controlsList="nodownload">
       <source src={src} type="video/mp4" />
-      {subs ? <track label="English" kind="subtitles" srcLang="en" src={test} /> : null}
+      {subs ? <track label="English" kind="subtitles" srcLang="en" src={sub} /> : null}
+      {subInfos.map((s) => (
+        <track label={s.name} kind="subtitles" srcLang={s.lang} src={s.src} />
+      ))}
     </video>
   );
 };
