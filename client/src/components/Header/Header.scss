@@ -4,7 +4,7 @@
     background-color: #1c1c1c;
   }
   .header__logo img {
-    height: 45px;
+    height: 35px;
   }
   .header__search-bar {
     margin: 0 20px;
@@ -13,14 +13,14 @@
       border-color: #1de9b6 !important;
     }
     .MuiOutlinedInput-input {
-      height: 5px;
+      height: 3px;
     }
   }
   .header__icon {
     .MuiSvgIcon-root {
       color: white;
-      height: 35px;
-      width: 35px;
+      height: 30px;
+      width: 30px;
     }
     &:focus {
       outline: none;
