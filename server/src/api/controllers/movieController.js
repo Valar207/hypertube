@@ -78,6 +78,8 @@ exports.downloadMovie = async (req, res, next) => {
 
     engine.on("download", (pieceIndex) => {
       piecesNumber++;
+
+      console.log(piecesNumber);
       if (piecesNumber === Math.ceil(piecesTotalNumber / 100)) {
         res.status(200).json({ status: "success", message: "Movie Downloaded" });
       }
@@ -167,6 +169,7 @@ exports.streamMovie = async (req, res, next) => {
 exports.streamSubtitles = async (req, res, next) => {
   try {
     const pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
+    var subExist = false;
 
     fs.readdir(pathMovie, (err, file) => {
       if (err) console.log(err);
@@ -176,6 +179,7 @@ exports.streamSubtitles = async (req, res, next) => {
         fs.readdir(fullPath, (err, f) => {
           f.forEach((el) => {
             if (path.extname(el) == ".srt") {
+              subExist = true;
               // get subtitle path
               const subtitlePath = path.resolve(fullPath, el);
               const subVTT = subtitlePath.replace(".srt", ".vtt");
@@ -188,6 +192,8 @@ exports.streamSubtitles = async (req, res, next) => {
             }
           });
         });
+        //if no subtitle was found
+        // if (!subExist) return res.status(200).json({ status: "noSubtitles" });
       }
     });
   } catch (error) {
