@@ -12,6 +12,10 @@ const MovieSchema = new Schema({
         type: String,
         required: true,
       },
+      user_photo: {
+        type: String,
+        required: true,
+      },
       content: {
         type: String,
         required: true,
