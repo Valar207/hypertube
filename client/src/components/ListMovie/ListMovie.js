@@ -200,13 +200,13 @@ export const ListMovie = () => {
   const movieList = movies?.map((item, index) => {
     if (movies.length === index + 1) {
       return (
-        <GridListTile ref={lastMovieElement} key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
+        <GridListTile ref={lastMovieElement} key={index} style={{ height: "300px", width: "200px", margin: "10px" }}>
           <Link to={`/playerpage/${encodeURIComponent(item.id)}`} className="items-img">
             <img
               src={item.poster}
               alt={item.title}
               onError={(event) => handleImageError(event, item.title)}
-              style={{ height: "400px", width: "270px" }}
+              style={{ height: "300px", width: "200px" }}
             />
           </Link>
           <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
@@ -214,13 +214,13 @@ export const ListMovie = () => {
       );
     } else {
       return (
-        <GridListTile key={index} style={{ height: "400px", width: "270px", margin: "10px" }}>
+        <GridListTile key={index} style={{ height: "300px", width: "200px", margin: "10px" }}>
           <Link to={`/playerpage/${encodeURIComponent(item.id)}`} className="items-img">
             <img
               src={item.poster}
               alt={item.title}
               onError={(event) => handleImageError(event, item.title)}
-              style={{ height: "400px", width: "100%" }}
+              style={{ height: "300px", width: "100%" }}
             />
           </Link>
           <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
@@ -262,7 +262,7 @@ export const ListMovie = () => {
                 color: "#004d40",
               }}
             />
-            <h6> Filter </h6>
+            <h6 style={{ color: "#004d40" }}> Filter </h6>
           </div>
         </IconButton>
 
@@ -279,13 +279,13 @@ export const ListMovie = () => {
           <List className="listMovie__drawer-body">
             <Grow in={checked}>
               <div className="listMovie__category">
-                <h5> Genre </h5>
+                <h6> Genre </h6>
                 <Grid className="">{genreListFunc}</Grid>
               </div>
             </Grow>
             <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1000 } : {})}>
               <div className="listMovie__sort">
-                <h5> Sort by </h5>
+                <h6> Sort by </h6>
                 <Grid className="">
                   <Grid>
                     <Button value="year" onClick={handleSortMovie}>
@@ -305,7 +305,7 @@ export const ListMovie = () => {
             </Grow>
             <Grow in={checked} style={{ transformOrigin: "0 0 0" }} {...(checked ? { timeout: 1500 } : {})}>
               <div className="listMovie__filter">
-                <h5> Filter by </h5>
+                <h6> Filter by </h6>
                 <Grid>
                   <Grid className="listMovie__filter-grid">
                     Years : {sliderValue.years[0]} - {sliderValue.years[1]}

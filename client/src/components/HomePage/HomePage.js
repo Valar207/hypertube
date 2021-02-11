@@ -60,12 +60,12 @@ export const HomePage = () => {
         <div className="homePage__section">
           <Grid container spacing={1} key={index}>
             <Grid item xs={12}>
-              <h2>
+              <h4>
                 {item.name}
                 <Link to={{ pathname: `/ListMovie`, state: { genre: item.name } }} className="homePage__section-link">
                   see more <ChevronRight />
                 </Link>
-              </h2>
+              </h4>
             </Grid>
             <div className="homePage__section-items">
               <HorizontalScroll reverseScroll={true}>
