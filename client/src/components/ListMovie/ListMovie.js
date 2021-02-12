@@ -209,7 +209,11 @@ export const ListMovie = () => {
               style={{ height: "300px", width: "200px" }}
             />
           </Link>
-          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+          <GridListTileBar
+            className="items-title"
+            title={item.title}
+            subtitle={`Rate: ${item.rating}` + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0" + `Year: ${item.year} `}
+          />
         </GridListTile>
       );
     } else {
@@ -223,7 +227,11 @@ export const ListMovie = () => {
               style={{ height: "300px", width: "100%" }}
             />
           </Link>
-          <GridListTileBar className="items-title" title={item.title} subtitle={"Rate : " + item.rating} />
+          <GridListTileBar
+            className="items-title"
+            title={item.title}
+            subtitle={`Rate: ${item.rating}` + "\xa0\xa0\xa0\xa0\xa0" + `Year: ${item.year} `}
+          />
         </GridListTile>
       );
     }
