@@ -14,13 +14,14 @@ export const VideoPlayer = (props) => {
       if (res.data) {
         setSubs(true);
       }
-
+      console.log(res);
       if (res.data._streams) {
         var rData = res.data._streams;
         let subTmp = {};
         let arrayTmp = [];
 
         for (const r of rData) {
+          console.log(r);
           if (typeof r === "string") {
             var rParse = r.split(`"`);
 
@@ -33,11 +34,11 @@ export const VideoPlayer = (props) => {
           }
 
           if (r?.type) {
-            console.log(r);
-            var subB64 = r.data.toString("utf8");
+            // console.log(r);
+            var subB64 = new Buffer.from(r.data).toString();
+            console.log(subB64);
             const url = URL.createObjectURL(new Blob([subB64], { type: "text/plain" }));
             subTmp.src = url;
-            console.log(subB64);
             // console.log(subInfos)
             subTmp = { ...subTmp, src: url };
             arrayTmp.push(subTmp);
@@ -55,9 +56,9 @@ export const VideoPlayer = (props) => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(subInfos);
-  }, [subInfos]);
+  // useEffect(() => {
+  //   console.log(subInfos);
+  // }, [subInfos]);
 
   return (
     <video id="videoPlayer" width="650" controls crossOrigin="use-credentials" controlsList="nodownload">

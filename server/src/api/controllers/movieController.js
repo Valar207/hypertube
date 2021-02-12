@@ -7,7 +7,8 @@ const torrentStream = require("torrent-stream");
 
 const Movie = require("../models/Movie");
 const torrentConfig = require("../config/torrentConfig");
-const { toNamespacedPath } = require("path");
+
+const { forReadStream } = require("../utils/streamHandler");
 
 // controller fetch movie (GET)
 exports.getMovie = async (req, res, next) => {
@@ -81,7 +82,7 @@ exports.downloadMovie = async (req, res, next) => {
     engine.on("download", (pieceIndex) => {
       piecesNumber++;
 
-      console.log(piecesNumber);
+      // console.log(piecesNumber);
       if (piecesNumber === Math.ceil(piecesTotalNumber / 100)) {
         res.status(200).json({ status: "success", message: "Movie Downloaded" });
       }
@@ -182,37 +183,52 @@ exports.streamSubtitles = async (req, res, next) => {
 
           if (Subs) {
             fs.readdir(fullPath + "/Subs", (err, subs) => {
-              var form = new FormData();
+              // var form = new FormData();
 
-              for (s of subs) {
-                var name = s.split(".")[0];
-                var fileName = s.split(".")[1];
-                const subtitlePath = path.join(fullPath, "Subs", s);
-                const subVTT = subtitlePath.replace(".srt", ".vtt");
-                // var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
+              // for (s of subs) {
+              //   var name = s.split(".")[0];
+              //   var fileName = s.split(".")[1];
+              //   const subtitlePath = path.join(fullPath, "Subs", s);
+              //   const subVTT = subtitlePath.replace(".srt", ".vtt");
+              //   // var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
 
-                // newSub.on("close", () => {
-                if (path.extname(s) === ".vtt") {
-                  var readS = fs.readFileSync(subVTT);
-                  form.append(name, readS, fileName + ".vtt");
-                }
-                // });
-              }
-              res.setHeader("x-Content-Type", "multipart/form-data; boundary=" + form._boundary);
-              res.setHeader("Content-Type", "text/plain");
-              console.log(form);
-              res.send(form);
+              //   // newSub.on("close", () => {
+
+              //   readStream(subtitlePath, subVTT)
+              //     .then((newSub) => {
+              //       // console.log(newSub);
+              //       if (path.extname(s) === ".vtt") {
+              //         var readS = fs.readFileSync(subVTT);
+              //         form.append(name, readS, fileName + ".vtt");
+              //       }
+              //     })
+              //     .catch((error) => console.error(error));
+              //   // });
+              //   if (path.extname(s) === ".vtt") {
+              //     var readS = fs.readFileSync(subVTT);
+              //     form.append(name, readS, fileName + ".vtt");
+              //   }
+              // }
+              forReadStream(subs, fullPath)
+                .then((form) => {
+                  res.setHeader("x-Content-Type", "multipart/form-data; boundary=" + form._boundary);
+                  res.setHeader("Content-Type", "text/plain");
+                  res.send(form);
+                })
+                .catch((error) => console.error(error));
+
+              // console.log(form);
             });
           } else {
             var srt = f.find((e) => path.extname(e) === ".srt");
 
-            console.log(srt);
+            // console.log(srt);
             const subtitlePath = path.resolve(fullPath, srt);
-            console.log(subtitlePath);
+            // console.log(subtitlePath);
             const subVTT = subtitlePath.replace(".srt", ".vtt");
 
             var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
-            newSub.on("close", () => {
+            newSub.on("finish", () => {
               res.set("Content-Type", "text/plain");
               return res.status(200).sendFile(subVTT);
             });
