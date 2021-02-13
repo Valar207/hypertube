@@ -57,8 +57,18 @@ export const PlayerPage = (props) => {
     const response = await fetchMovieDetailsYTS(movie_id);
     if (response === "error") return;
     const movie = response.data;
-
-    const { title, rating, runtime, medium_cover_image, cast, genres, description_full, torrents, id } = movie.movie;
+    const {
+      title,
+      rating,
+      runtime,
+      medium_cover_image,
+      cast,
+      genres,
+      description_full,
+      torrents,
+      id,
+      year,
+    } = movie.movie;
     setMovieDetails({
       title,
       rating,
@@ -69,6 +79,7 @@ export const PlayerPage = (props) => {
       description_full,
       torrents,
       id,
+      year,
     }); //runtime retour parfois 0
 
     //download movie in server
@@ -117,6 +128,7 @@ export const PlayerPage = (props) => {
     // axios.get("http://localhost:5000/api/v1/movie/streamMovie/25946");
   }, []);
 
+  // console.log(movieDetails);
   return (
     <Container className="playerPage__body">
       <Grid container>
@@ -163,6 +175,10 @@ export const PlayerPage = (props) => {
                   <Grid item xs={12}>
                     <h5>Title :</h5>
                     <p>{movieDetails.title}</p>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <h5>Year :</h5>
+                    <p>{movieDetails.year}</p>
                   </Grid>
                   <Grid item xs={12}>
                     <h5>Genre :</h5>
