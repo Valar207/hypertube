@@ -1,9 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AppBar, Toolbar, IconButton, Grid, Popover, TextField, InputAdornment } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Grid,
+  Popover,
+  TextField,
+  InputAdornment,
+  MenuItem,
+  Menu,
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import "../../assets/Style.scss";
 import "./Header.scss";
-import { ExitToApp, Movie, AccountCircle, Close } from "@material-ui/icons";
+import { ExitToApp, Movie, AccountCircle, Close, Search } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
@@ -11,8 +21,9 @@ import { useHistory } from "react-router-dom";
 import { fetchMovieSearch } from "../../service/tmdb";
 
 export const Header = () => {
-  const { logged, setLogged, search, setSearch } = useContext(AppContext);
+  const { logged, setLogged, search, setSearch, mobileDevice, tabletDevice, desktopDevice } = useContext(AppContext);
   const [popover, setPopover] = useState(false);
+  const [menu, setMenu] = useState(false);
   const history = useHistory();
 
   const openPopover = (e) => {
@@ -20,6 +31,12 @@ export const Header = () => {
   };
   const closePopover = () => {
     setPopover(false);
+  };
+  const openMenu = (e) => {
+    setMenu(e.currentTarget);
+  };
+  const closeMenu = () => {
+    setMenu(false);
   };
   const handleLogout = async () => {
     const response = await axios.get("/auth/logout");
@@ -43,41 +60,41 @@ export const Header = () => {
   return (
     <div className="header__body">
       {logged === false ? (
-        <AppBar position="fixed" color="transparent">
-          <Toolbar>
-            <Link to="/" className="header__logo">
-              <img src="/img/hypertube-logo.svg" alt="" />
-            </Link>
-          </Toolbar>
-        </AppBar>
+        <img style={{ height: "40px", margin: "20px" }} src="/img/hypertube-logo.svg" alt="" />
       ) : (
         <AppBar position="fixed" color="primary">
           <Toolbar>
             <Link to="/HomePage" className="header__logo">
-              <img src="/img/hypertube-logo.svg" alt="" />
+              {desktopDevice ? <img src="/img/hypertube-logo.svg" alt="" /> : <img src="/img/hp-logo.svg" alt="" />}
             </Link>
             <Grid item xs />
-            <TextField
-              className="header__search-bar custom__form"
-              name="Search..."
-              onChange={handleSearch}
-              variant="outlined"
-              placeholder="Search..."
-              value={search}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment>
-                    {search ? (
-                      <IconButton onClick={handleClickShowClearSearch} className="icon-btn">
-                        <Close />
-                      </IconButton>
-                    ) : (
-                      ""
-                    )}
-                  </InputAdornment>
-                ),
-              }}
-            />
+            {!mobileDevice ? (
+              <TextField
+                className="header__search-bar custom__form"
+                name="Search..."
+                onChange={handleSearch}
+                variant="outlined"
+                placeholder="Search..."
+                value={search}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment>
+                      {search ? (
+                        <IconButton onClick={handleClickShowClearSearch} className="icon-btn">
+                          <Close />
+                        </IconButton>
+                      ) : (
+                        ""
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            ) : (
+              <IconButton className="header__icon">
+                <Search />
+              </IconButton>
+            )}
             <IconButton className="header__icon">
               <Link to="/listmovie">
                 <Movie />
@@ -86,26 +103,27 @@ export const Header = () => {
             <IconButton onClick={openPopover} className="header__icon">
               <AccountCircle />
             </IconButton>
-            <Popover
-              className="header_popover-profil"
-              open={Boolean(popover)}
-              anchorEl={popover}
-              onClose={closePopover}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <Profil />
-            </Popover>
             <IconButton onClick={handleLogout} className="header__icon">
               <ExitToApp />
             </IconButton>
           </Toolbar>
+
+          <Popover
+            className="header_popover-profil"
+            open={Boolean(popover)}
+            anchorEl={popover}
+            onClose={closePopover}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <Profil />
+          </Popover>
         </AppBar>
       )}
     </div>

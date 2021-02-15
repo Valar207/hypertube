@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
+import { useMediaQuery } from "@material-ui/core";
 import { Header } from "./components/Header/Header";
 import { HomePage } from "./components/HomePage/HomePage";
 import { ListMovie } from "./components/ListMovie/ListMovie";
@@ -22,6 +23,10 @@ axios.defaults.baseURL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
 
 function App() {
+  const mobileDevice = useMediaQuery(`(max-width: 425px)`);
+  const tabletDevice = useMediaQuery(`(min-width: 426px) and (max-width: 768px)`);
+  const desktopDevice = useMediaQuery(`(min-width: 769px)`);
+
   const [loaded, setLoaded] = useState(false);
   const [logged, setLogged] = useState(false);
   const [userInfos, setUserInfos] = useState("");
@@ -48,7 +53,19 @@ function App() {
     return (
       <React.Fragment>
         <Router>
-          <AppContext.Provider value={{ logged, setLogged, userInfos, setUserInfos, search, setSearch }}>
+          <AppContext.Provider
+            value={{
+              logged,
+              setLogged,
+              userInfos,
+              setUserInfos,
+              search,
+              setSearch,
+              mobileDevice,
+              tabletDevice,
+              desktopDevice,
+            }}
+          >
             <Header />
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />

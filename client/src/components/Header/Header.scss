@@ -4,7 +4,10 @@
     background-color: #1c1c1c;
   }
   .header__logo img {
-    height: 35px;
+    height: 40px;
+  }
+  .mobile {
+    margin: 20px !important;
   }
   .header__search-bar {
     margin: 0 20px;
@@ -26,6 +29,11 @@
       outline: none;
     }
   }
+  .header__menu {
+  }
+}
+.MuiMenu-list {
+  background-color: #2c2c2c !important;
 }
 .header_popover-profil {
   .MuiPaper-rounded {
