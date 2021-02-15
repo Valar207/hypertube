@@ -1,11 +1,14 @@
 const fs = require("fs");
 const path = require("path");
 var srt2vtt = require("srt-to-vtt");
+var FormData = require("form-data");
 
 const torrentStream = require("torrent-stream");
 
 const Movie = require("../models/Movie");
 const torrentConfig = require("../config/torrentConfig");
+
+const { forReadStream } = require("../utils/streamHandler");
 
 // controller fetch movie (GET)
 exports.getMovie = async (req, res, next) => {
@@ -78,8 +81,6 @@ exports.downloadMovie = async (req, res, next) => {
 
     engine.on("download", (pieceIndex) => {
       piecesNumber++;
-
-      console.log(piecesNumber);
       if (piecesNumber === Math.ceil(piecesTotalNumber / 100)) {
         res.status(200).json({ status: "success", message: "Movie Downloaded" });
       }
@@ -169,7 +170,6 @@ exports.streamMovie = async (req, res, next) => {
 exports.streamSubtitles = async (req, res, next) => {
   try {
     const pathMovie = process.cwd() + "/Movies/" + req.params.movie_id;
-    var subExist = false;
 
     fs.readdir(pathMovie, (err, file) => {
       if (err) console.log(err);
@@ -177,23 +177,33 @@ exports.streamSubtitles = async (req, res, next) => {
         const fullPath = pathMovie + "/" + file[0];
 
         fs.readdir(fullPath, (err, f) => {
-          f.forEach((el) => {
-            if (path.extname(el) == ".srt") {
-              subExist = true;
-              // get subtitle path
-              const subtitlePath = path.resolve(fullPath, el);
-              const subVTT = subtitlePath.replace(".srt", ".vtt");
+          if (!f) {
+            return res.status(200).json({ message: "no subtitles" });
+          }
 
-              var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
-              newSub.on("close", () => {
-                res.set("Content-Type", "text/plain");
-                return res.status(200).sendFile(subVTT);
-              });
-            }
-          });
+          var Subs = f.find((e) => e === "Subs");
+
+          if (Subs) {
+            fs.readdir(fullPath + "/Subs", (err, subs) => {
+              forReadStream(subs, fullPath)
+                .then((form) => {
+                  res.setHeader("x-Content-Type", "multipart/form-data; boundary=" + form._boundary);
+                  res.setHeader("Content-Type", "text/plain");
+                  res.send(form);
+                })
+                .catch((error) => console.error(error));
+            });
+          } else {
+            var srt = f.find((e) => path.extname(e) === ".srt");
+            const subtitlePath = path.resolve(fullPath, srt);
+            const subVTT = subtitlePath.replace(".srt", ".vtt");
+            var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
+            newSub.on("finish", () => {
+              res.set("Content-Type", "text/plain");
+              return res.status(200).sendFile(subVTT);
+            });
+          }
         });
-        //if no subtitle was found
-        // if (!subExist) return res.status(200).json({ status: "noSubtitles" });
       }
     });
   } catch (error) {
