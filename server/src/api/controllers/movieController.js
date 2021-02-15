@@ -177,7 +177,7 @@ exports.streamSubtitles = async (req, res, next) => {
         const fullPath = pathMovie + "/" + file[0];
 
         fs.readdir(fullPath, (err, f) => {
-          if (!f) {
+          if (!f.find((e) => path.extname(e) === ".srt")) {
             return res.status(200).json({ message: "no subtitles" });
           }
 
