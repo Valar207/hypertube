@@ -173,7 +173,6 @@ export const ListMovie = () => {
     setPageNumber(1);
     setMovies([]);
     if (search) {
-      console.log("search sort");
       setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
     } else {
       setMovies(

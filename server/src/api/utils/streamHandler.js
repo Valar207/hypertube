@@ -34,9 +34,9 @@ exports.forReadStream = (subs, fullPath) => {
           var readS = fs.readFileSync(subVTT);
           form.append(name, readS, fileName + ".vtt");
           // console.log(subVTT, subs);
-          console.log(s, subs[subs.length - 1]);
+          // console.log(s, subs[subs.length - 1]);
           if (s === subs[subs.length - 1]) {
-            console.log(newSub);
+            // console.log(newSub);
             resolve(form);
             // newSub.on("close", () => {
             //   console.log("nous somme dans le on finish");
