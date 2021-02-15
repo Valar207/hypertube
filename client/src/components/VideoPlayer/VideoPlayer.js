@@ -5,8 +5,6 @@ export const VideoPlayer = (props) => {
   const { src, sub } = props;
   const [subs, setSubs] = useState(false);
 
-  const [test, setTest] = useState();
-
   const [subInfos, setSubInfos] = useState([]);
 
   useEffect(() => {
