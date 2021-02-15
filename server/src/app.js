@@ -6,9 +6,9 @@ const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const fileUpload = require("express-fileupload");
-const torrentStream = require("torrent-stream");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("../Hypertube.v1.json");
+const cronjob = require("./api/services/cronjob");
 
 require("dotenv").config();
 
@@ -17,6 +17,7 @@ const api = require("./api"); // Toute l'api
 
 const app = express();
 db(); // connect to the mongodb database
+cronjob.start(); // start cronjob autodelete movies
 
 app.use(morgan("dev"));
 app.use(helmet());
