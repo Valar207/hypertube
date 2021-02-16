@@ -24,6 +24,7 @@ export const EditProfil = () => {
     email: userInfos?.email,
     language: userInfos?.language,
   });
+  console.log(user.imgProfile);
 
   const [alert, setAlert] = useState({
     open: false,
@@ -88,7 +89,13 @@ export const EditProfil = () => {
         <div className="editProfil__profil-img">
           <img
             className="imgProfile"
-            src={userInfos.imgProfile === "" ? "/img/img-default.jpg" : userInfos.imgProfile}
+            src={
+              user.imgProfile === ""
+                ? "/img/img-default.jpg"
+                : user.imgProfile instanceof File
+                ? URL.createObjectURL(user.imgProfile)
+                : user.imgProfile
+            }
             alt="Image profil"
           />
           <input
