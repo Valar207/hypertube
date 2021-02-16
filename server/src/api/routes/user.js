@@ -20,10 +20,10 @@ const {
   resetPassword,
   editPassword,
   editProfil,
+  uploadImg,
 } = require("../controllers/userController");
 
 const { checkLoggedIn } = require("../utils/authHandler");
-const { uploadImg } = require("../utils/uploadImg");
 const router = express.Router();
 
 //GET ALL THE USERS

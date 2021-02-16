@@ -58,6 +58,8 @@ export const SignInUp = (props) => {
   });
   const [errors, setErrors] = useState();
 
+  const [tabsValue, setTabsValue] = useState(0);
+
   const { logged, setLogged, userInfos, setUserInfos } = useContext(AppContext);
 
   const handleChangeSignUp = (e) => {
@@ -114,13 +116,14 @@ export const SignInUp = (props) => {
         const formData = new FormData();
         formData.append("img", userSignUp.imgProfile);
         formData.append("username", userSignUp.username);
-        axios.post("user/uploadImg", formData);
-        setErrors("");
-        setAlert({
-          open: true,
-          message: "An email has been sent to you",
-          status: "success",
-          date: new Date(),
+        axios.post("user/uploadImg", formData).then(() => {
+          setErrors("");
+          setAlert({
+            open: true,
+            message: "An email has been sent to you",
+            status: "success",
+            date: new Date(),
+          });
         });
       }
     });
@@ -143,7 +146,7 @@ export const SignInUp = (props) => {
       imgProfile: e.target.files[0],
     });
   };
-  const [tabsValue, setTabsValue] = useState(0);
+
   const handleChangeTabs = (event, newValue) => {
     setTabsValue(newValue);
   };

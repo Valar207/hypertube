@@ -17,12 +17,12 @@ function countryToFlag(isoCode) {
 export const EditProfil = () => {
   const { userInfos } = useContext(AppContext);
   const [user, setUser] = useState({
-    imgProfile: userInfos.imgProfile,
-    firstname: userInfos.firstname,
-    lastname: userInfos.lastname,
-    username: userInfos.username,
-    email: userInfos.email,
-    language: userInfos.language,
+    imgProfile: userInfos?.imgProfile,
+    firstname: userInfos?.firstname,
+    lastname: userInfos?.lastname,
+    username: userInfos?.username,
+    email: userInfos?.email,
+    language: userInfos?.language,
   });
 
   const [alert, setAlert] = useState({
@@ -34,7 +34,7 @@ export const EditProfil = () => {
   const uploadPhoto = (e) => {
     setUser({
       ...user,
-      imgProfile: URL.createObjectURL(e.target.files[0]),
+      imgProfile: e.target.files[0],
     });
   };
   const handleChange = (e) => {
@@ -73,6 +73,10 @@ export const EditProfil = () => {
           status: "success",
           date: new Date(),
         });
+        const formData = new FormData();
+        formData.append("img", user.imgProfile);
+        formData.append("username", user.username);
+        axios.post("user/uploadImg", formData).then(() => console.log("image uploaded"));
       }
     });
   };
@@ -84,7 +88,7 @@ export const EditProfil = () => {
         <div className="editProfil__profil-img">
           <img
             className="imgProfile"
-            src={user.imgProfile === "" ? "/img/img-default.jpg" : user.imgProfile}
+            src={userInfos.imgProfile === "" ? "/img/img-default.jpg" : userInfos.imgProfile}
             alt="Image profil"
           />
           <input
