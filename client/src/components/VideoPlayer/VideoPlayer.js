@@ -48,8 +48,8 @@ export const VideoPlayer = (props) => {
     <video id="videoPlayer" width="100%" controls crossOrigin="use-credentials" controlsList="nodownload">
       <source src={src} type="video/mp4" />
       {subs ? <track label="English" kind="subtitles" srcLang="en" src={sub} /> : null}
-      {subInfos.map((s) => (
-        <track label={s.name} kind="subtitles" srcLang={s.lang} src={s.src} />
+      {subInfos.map((s, i) => (
+        <track key={i} label={s.name} kind="subtitles" srcLang={s.lang} src={s.src} />
       ))}
     </video>
   );

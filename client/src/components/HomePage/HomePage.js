@@ -57,9 +57,9 @@ export const HomePage = () => {
   return (
     <div className="homePage__body">
       {genre?.map((item, index) => (
-        <div className="homePage__section">
+        <div key={index} className="homePage__section">
           <Grid container spacing={1} key={index}>
-            <Grid item xs={12}>
+            <Grid key={index} item xs={12}>
               <h4>
                 {item.name}
                 <Link to={{ pathname: `/ListMovie`, state: { genre: item.name } }} className="homePage__section-link">
@@ -69,11 +69,12 @@ export const HomePage = () => {
             </Grid>
             <div className="homePage__section-items">
               <HorizontalScroll reverseScroll={true}>
-                <Grid item xs={12}>
+                <Grid key={index} item xs={12}>
                   <GridList id="items" key={index}>
                     {loading
-                      ? Array.from(new Array(15)).map(() => (
+                      ? Array.from(new Array(15)).map((a, index) => (
                           <GridListTile
+                            key={index}
                             style={{
                               height: "300px",
                               width: "200px",
@@ -97,7 +98,7 @@ export const HomePage = () => {
                       : movieByGenre[index]?.slice(0, 15).map((movie, index) => {
                           return (
                             <GridListTile
-                              key={index}
+                              key={movie.title}
                               style={{
                                 height: "300px",
                                 width: "200px",

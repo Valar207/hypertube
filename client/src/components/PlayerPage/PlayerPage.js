@@ -164,7 +164,7 @@ export const PlayerPage = (props) => {
                 <Grid item xs={3}>
                   <img src={movieDetails.medium_cover_image} alt="" />
                 </Grid>
-                <Grid item xs={9} direction="row">
+                <Grid item xs={9} container direction="row">
                   <Grid item xs={12}>
                     <h5>Title :</h5>
                     <p>{movieDetails.title}</p>
@@ -208,7 +208,7 @@ export const PlayerPage = (props) => {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container>
-                <Grid className="send__comment" container xs={12} spacing={2}>
+                <Grid className="send__comment" container item xs={12} spacing={2}>
                   <Grid item>
                     <img src={imgProfile} style={{ width: "75px", height: "75px", borderRadius: "50px" }} />
                   </Grid>
@@ -229,10 +229,10 @@ export const PlayerPage = (props) => {
                     </GreenButton>
                   </Grid>
                 </Grid>
-                <Grid className="comments__space" container xs={12} direction="column-reverse">
-                  {comments.map((commentData) => {
+                <Grid className="comments__space" container item xs={12} direction="column-reverse">
+                  {comments.map((commentData, i) => {
                     return (
-                      <Grid className="comments" container spacing={3} wrap="nowrap">
+                      <Grid key={i} className="comments" container spacing={3} wrap="nowrap">
                         <Grid item>
                           <img className="imgProfile" src={commentData.user_photo} />
                         </Grid>

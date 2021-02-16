@@ -44,7 +44,7 @@ export const ListMovie = () => {
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({
     name: 65,
-    years: [1900, new Date().getFullYear()],
+    years: [1970, new Date().getFullYear()],
     rate: [0, 10],
   });
   const [checked, setChecked] = React.useState(false);
@@ -320,7 +320,7 @@ export const ListMovie = () => {
                       value={sliderValue.years}
                       onChange={handleChangeSlider("years")}
                       aria-labelledby="range-slider"
-                      min={1900}
+                      min={1970}
                       max={new Date().getFullYear()}
                     />
                   </Grid>
