@@ -223,6 +223,7 @@ exports.streamSubtitles = async (req, res, next) => {
           if (!f) {
             return res.status(200).json({ message: "no subtitles" });
           }
+
           if (!f.find((e) => path.extname(e) === ".srt")) {
             return res.status(200).json({ message: "no subtitles" });
           }

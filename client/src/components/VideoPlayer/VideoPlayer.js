@@ -11,7 +11,11 @@ export const VideoPlayer = (props) => {
     axios.get(sub).then((res) => {
       if (res.data) {
         console.log(res);
-        setSubs(true);
+        if (res.data.message === "no subtitles") {
+          setSubs(false);
+        } else {
+          setSubs(true);
+        }
       }
 
       if (res.data._streams) {
