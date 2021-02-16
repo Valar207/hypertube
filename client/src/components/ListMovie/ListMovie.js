@@ -120,28 +120,60 @@ export const ListMovie = () => {
     [loading, hasMore],
   );
 
-  useEffect(async () => {
-    setLoading(true);
-    setGenreList(await fetchGenreTMDB());
+  useEffect(() => {
+    let isCancelled = false;
+    const FirstEffect = async () => {
+      try {
+        if (!isCancelled) {
+          setLoading(true);
+          setGenreList(await fetchGenreTMDB());
 
-    if (search) {
-      searchAPI();
-    } else {
-      fetchAPI();
-    }
+          if (search) {
+            searchAPI();
+          } else {
+            fetchAPI();
+          }
+        }
+      } catch (e) {
+        if (!isCancelled) {
+          throw e;
+        }
+      }
+    };
+    FirstEffect();
+    return () => {
+      isCancelled = true;
+    };
   }, [search, pageNumber]);
 
-  useEffect(async () => {
-    setLoading(true);
-    setMovies([]);
-    setPageNumber(1);
-    setGenreList(await fetchGenreTMDB());
+  useEffect(() => {
+    let isCancelled = false;
 
-    if (search) {
-      searchAPI();
-    } else {
-      fetchAPI();
-    }
+    const SecondEffect = async () => {
+      try {
+        if (!isCancelled) {
+          setLoading(true);
+          setMovies([]);
+          setPageNumber(1);
+          setGenreList(await fetchGenreTMDB());
+
+          if (search) {
+            searchAPI();
+          } else {
+            fetchAPI();
+          }
+        }
+      } catch (e) {
+        if (!isCancelled) {
+          throw e;
+        }
+      }
+    };
+
+    SecondEffect();
+    return () => {
+      isCancelled = true;
+    };
   }, [sliderValue]);
 
   const handleDrawerOpen = () => {
