@@ -19,6 +19,8 @@ export const VideoPlayer = (props) => {
       }
 
       if (res.data._streams) {
+        setSubs(false);
+
         var rData = res.data._streams;
         let subTmp = {};
         let arrayTmp = [];
@@ -36,9 +38,13 @@ export const VideoPlayer = (props) => {
             const url = URL.createObjectURL(new Blob([sub64], { type: "text/plain" }));
             subTmp.src = url;
             subTmp = { ...subTmp, src: url };
-            arrayTmp.push(subTmp);
+
+            if (r.data.length > 20) {
+              arrayTmp.push(subTmp);
+            }
           }
         }
+
         setSubInfos(arrayTmp);
       }
     });
@@ -48,6 +54,7 @@ export const VideoPlayer = (props) => {
     <video id="videoPlayer" width="100%" controls crossOrigin="use-credentials" controlsList="nodownload">
       <source src={src} type="video/mp4" />
       {subs ? <track label="English" kind="subtitles" srcLang="en" src={sub} /> : null}
+
       {subInfos.map((s, i) => (
         <track key={i} label={s.name} kind="subtitles" srcLang={s.lang} src={s.src} />
       ))}
