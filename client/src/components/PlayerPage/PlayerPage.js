@@ -31,6 +31,7 @@ const GreenButton = withStyles((theme) => ({
 }))(Button);
 
 export const PlayerPage = (props) => {
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState([]);
   const [comments, setComments] = useState([]);
@@ -109,6 +110,7 @@ export const PlayerPage = (props) => {
   const handleDownloadMovie = async (torrent) => {
     const response = await downloadMovieInServer(movieDetails, torrent);
     if (response?.status === "success") setVideoReady(true);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -119,6 +121,9 @@ export const PlayerPage = (props) => {
     }
   }, [movieDetails]);
 
+  useEffect(() => {
+    setLoading(true);
+  });
   useEffect(() => {
     fetchDetails(id);
   }, [id]);
@@ -138,7 +143,9 @@ export const PlayerPage = (props) => {
               src={`http://localhost:5000/api/v1/movie/streamMovie/${id}`}
               sub={`http://localhost:5000/api/v1/movie/streamSubtitles/${id}`}
             />
-          ) : null}
+          ) : (
+            <img src="/img/loading.gif" style={{ height: "200px", width: "200px" }} />
+          )}
         </Grid>
         <Grid container className="playerPage__header" alignItems="center">
           <LocalMovies />
