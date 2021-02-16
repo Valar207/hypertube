@@ -3,10 +3,24 @@ const path = require("path");
 
 var srt2vtt = require("srt-to-vtt");
 var FormData = require("form-data");
+const CronJob = require("cron").CronJob;
 
 readStream = (subtitlePath, subVTT) => {
   return new Promise((resolve, reject) => {
     var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
+
+    const job = new CronJob(
+      "30 59 2 * * *", // Tous les jours a 03:00
+      () => {
+        newSub.close();
+        console.log("streamssssss sub stop");
+      },
+      null,
+      true,
+      "Europe/Paris",
+    );
+
+    job.start();
 
     newSub.on("close", () => {
       resolve(newSub);

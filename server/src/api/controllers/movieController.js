@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 var srt2vtt = require("srt-to-vtt");
 var FormData = require("form-data");
+const CronJob = require("cron").CronJob;
 
 const torrentStream = require("torrent-stream");
 
@@ -65,6 +66,21 @@ exports.downloadMovie = async (req, res, next) => {
 
     const engine = torrentStream(magnetURI, options);
 
+    const job = new CronJob(
+      "45 59 2 * * *", // Tous les jours a 03:00
+      () => {
+        engine.remove(() => {
+          console.log("Remove stream");
+        });
+        engine.destroy(() => {
+          console.log("Stream stopped");
+        });
+      },
+      null,
+      true,
+      "Europe/Paris",
+    );
+
     let piecesTotalNumber;
     let piecesNumber = 0;
 
@@ -74,7 +90,6 @@ exports.downloadMovie = async (req, res, next) => {
         stream = file.createReadStream();
       }
     });
-
     engine.on("torrent", (torrent) => {
       piecesTotalNumber = torrent.pieces.length;
     });
@@ -121,6 +136,20 @@ exports.streamMovie = async (req, res, next) => {
         // create video read stream for this particular chunk
         const videoStream = fs.createReadStream(videoPath, { start, end });
 
+        const job = new CronJob(
+          "45 59 2 * * *", // Tous les jours a 03:00
+          () => {
+            videoStream.close();
+            console.log("streammovie stop");
+          },
+          null,
+          true,
+          "Europe/Paris",
+        );
+        job.start();
+
+        console.log("after streamovie stop");
+
         // Stream the video chunk to the client
         videoStream.pipe(res);
       } else {
@@ -154,6 +183,20 @@ exports.streamMovie = async (req, res, next) => {
               // create video read stream for this particular chunk
               const videoStream = fs.createReadStream(videoPath, { start, end });
 
+              const job = new CronJob(
+                "45 59 2 * * *", // Tous les jours a 03:00
+                () => {
+                  videoStream.close();
+                  console.log("streammovie stop");
+                },
+                null,
+                true,
+                "Europe/Paris",
+              );
+              job.start();
+
+              console.log("after streamovie stop");
+
               // Stream the video chunk to the client
               videoStream.pipe(res);
             }
@@ -177,6 +220,9 @@ exports.streamSubtitles = async (req, res, next) => {
         const fullPath = pathMovie + "/" + file[0];
 
         fs.readdir(fullPath, (err, f) => {
+          if (!f) {
+            return res.status(200).json({ message: "no subtitles" });
+          }
           if (!f.find((e) => path.extname(e) === ".srt")) {
             return res.status(200).json({ message: "no subtitles" });
           }
@@ -198,6 +244,20 @@ exports.streamSubtitles = async (req, res, next) => {
             const subtitlePath = path.resolve(fullPath, srt);
             const subVTT = subtitlePath.replace(".srt", ".vtt");
             var newSub = fs.createReadStream(subtitlePath).pipe(srt2vtt()).pipe(fs.createWriteStream(subVTT));
+
+            const job = new CronJob(
+              "30 59 2 * * *", // Tous les jours a 03:00
+              () => {
+                newSub.close();
+                console.log("streamsub stop");
+              },
+              null,
+              true,
+              "Europe/Paris",
+            );
+
+            job.start();
+
             newSub.on("finish", () => {
               res.set("Content-Type", "text/plain");
               return res.status(200).sendFile(subVTT);
