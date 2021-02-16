@@ -144,15 +144,6 @@ export const PlayerPage = (props) => {
           <LocalMovies />
           <h5>{movieDetails.title}</h5>
           <Grid item xs />
-          <p style={{ margin: "0 8px 8px 24px" }}>Video quality :</p>
-          {movieDetails.torrents?.map((torrent) => (
-            <>
-              <Button className="quality-btn" onClick={() => handleDownloadMovie(torrent)}>
-                {torrent.quality}
-              </Button>
-              {/* <p>{torrent.size}</p> */}
-            </>
-          ))}
           <StarRate style={{ marginLeft: "25px" }} />
           <h5>{movieDetails.rating}</h5>
           <Timer style={{ marginLeft: "25px" }} />
