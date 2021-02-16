@@ -41,7 +41,7 @@ export const VideoPlayer = (props) => {
   }, []);
 
   return (
-    <video id="videoPlayer" width="650" controls crossOrigin="use-credentials" controlsList="nodownload">
+    <video id="videoPlayer" width="100%" controls crossOrigin="use-credentials" controlsList="nodownload">
       <source src={src} type="video/mp4" />
       {subs ? <track label="English" kind="subtitles" srcLang="en" src={sub} /> : null}
       {subInfos.map((s) => (
