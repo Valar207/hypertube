@@ -58,6 +58,16 @@ MovieSchema.statics.deleteMovie = async function (movie_id) {
   }
 };
 
+//Mettre a jour un film et ses commentaires via l'id du film
+MovieSchema.statics.updateMovie = async function (movie_id, movieData) {
+  try {
+    const result = await this.model("Movie").findByIdAndUpdate(movie_id, movieData).exec();
+    return result;
+  } catch (error) {
+    console.error(`Movie model: ${error}`);
+  }
+};
+
 const Movie = mongoose.model("Movie", MovieSchema, "Movie");
 
 module.exports = Movie;

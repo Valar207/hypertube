@@ -47,6 +47,7 @@ router.patch("/language/:language", checkLoggedIn, updateLanguage);
 
 //SIGNUP USER IN DB
 router.post("/signup", createUser);
+//UPLOAD USER IMAGE IN DB
 router.post("/uploadImg", uploadImg);
 //ACTIVATE USER ACCOUNT
 router.post("/activateUser", activateUser);

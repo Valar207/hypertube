@@ -332,7 +332,8 @@ exports.editProfil = async (req, res, next) => {
 };
 
 exports.uploadImg = (req, res) => {
-  const image = req.files.img;
+  const image = req.files?.img;
+  if (!image) return res.status(200).json({ status: "success", message: "image not changed" });
   const username = req.body.username;
   var type = extpath.extname(`${req.files.img.name}`);
   const path = `/photos/${username}`;
