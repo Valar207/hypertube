@@ -3,11 +3,8 @@ import axios from "axios";
 const apiKey = "c61443eabda628a3182b80fb394a0514";
 const url = "https://api.themoviedb.org/3";
 const nowPlayingUrl = `${url}/movie/now_playing`;
-const topratedUrl = `${url}/movie/top_rated`;
-const movieUrl = `${url}/movie`;
 const genreUrl = `${url}/genre/movie/list`;
 const moviesUrl = `${url}/discover/movie`;
-const personUrl = `${url}/trending/person/week`;
 const searchUrl = `${url}/search/movie`;
 
 export const fetchMovieSearchTMDB = async (movie) => {

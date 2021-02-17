@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { TextField, Container, Grid, Button } from "@material-ui/core";
 import "./EditPassword.scss";
 import "../../assets/Style.scss";

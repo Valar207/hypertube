@@ -19,14 +19,7 @@ import {
   Divider,
   IconButton,
 } from "@material-ui/core";
-import {
-  fetchMoviesTMDB,
-  fetchGenreTMDB,
-  fetchMovieByGenreTMDB,
-  fetchPersonsTMDB,
-  fetchTopratedMovie,
-  fetchMovieSearchTMDB,
-} from "../../service/tmdb";
+import { fetchGenreTMDB } from "../../service/tmdb";
 import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
 import { AppContext } from "../../App";
 
@@ -54,7 +47,6 @@ export const ListMovie = () => {
 
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [loadingDisplay, setLoadingDisplay] = useState(true);
 
@@ -117,7 +109,7 @@ export const ListMovie = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore],
+    [loading],
   );
 
   useEffect(() => {

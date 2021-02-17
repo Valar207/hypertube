@@ -1,15 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Grid,
-  Popover,
-  TextField,
-  InputAdornment,
-  MenuItem,
-  Menu,
-} from "@material-ui/core";
+import { AppBar, Toolbar, IconButton, Grid, Popover, TextField, InputAdornment } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import "../../assets/Style.scss";
 import "./Header.scss";
@@ -18,12 +8,11 @@ import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { fetchMovieSearch } from "../../service/tmdb";
 
 export const Header = () => {
-  const { logged, setLogged, search, setSearch, mobileDevice, tabletDevice, desktopDevice } = useContext(AppContext);
+  const { logged, setLogged, search, setSearch, mobileDevice, desktopDevice } = useContext(AppContext);
   const [popover, setPopover] = useState(false);
-  const [menu, setMenu] = useState(false);
+  // const [menu, setMenu] = useState(false);
   const history = useHistory();
 
   const openPopover = (e) => {
@@ -32,12 +21,12 @@ export const Header = () => {
   const closePopover = () => {
     setPopover(false);
   };
-  const openMenu = (e) => {
-    setMenu(e.currentTarget);
-  };
-  const closeMenu = () => {
-    setMenu(false);
-  };
+  // const openMenu = (e) => {
+  //   setMenu(e.currentTarget);
+  // };
+  // const closeMenu = () => {
+  //   setMenu(false);
+  // };
   const handleLogout = async () => {
     const response = await axios.get("/auth/logout");
     const result = response.data;

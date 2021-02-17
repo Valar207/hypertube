@@ -10,7 +10,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-import { Comment, ExpandMore, Info, AccountCircle, Timer, StarRate, LocalMovies } from "@material-ui/icons";
+import { Comment, ExpandMore, Info, Timer, StarRate, LocalMovies } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
@@ -139,7 +139,7 @@ export const PlayerPage = (props) => {
               sub={`http://localhost:5000/api/v1/movie/streamSubtitles/${id}`}
             />
           ) : (
-            <img src="/img/loading.gif" style={{ height: "200px", width: "200px" }} />
+            <img src="/img/loading.gif" style={{ height: "200px", width: "200px" }} alt="loading" />
           )}
         </Grid>
         <Grid container className="playerPage__header" alignItems="center">
@@ -162,7 +162,7 @@ export const PlayerPage = (props) => {
             <AccordionDetails>
               <Grid container spacing={5}>
                 <Grid item xs={3}>
-                  <img src={movieDetails.medium_cover_image} alt="" />
+                  <img src={movieDetails.medium_cover_image} alt="details" />
                 </Grid>
                 <Grid item xs={9} container direction="row">
                   <Grid item xs={12}>
@@ -210,7 +210,11 @@ export const PlayerPage = (props) => {
               <Grid container>
                 <Grid className="send__comment" container item xs={12} spacing={2}>
                   <Grid item>
-                    <img src={imgProfile} style={{ width: "75px", height: "75px", borderRadius: "50px" }} />
+                    <img
+                      src={imgProfile}
+                      style={{ width: "75px", height: "75px", borderRadius: "50px" }}
+                      alt="profil"
+                    />
                   </Grid>
                   <Grid item xs={8} style={{ alignSelf: "center" }}>
                     <TextField
@@ -234,7 +238,7 @@ export const PlayerPage = (props) => {
                     return (
                       <Grid key={i} className="comments" container spacing={3} wrap="nowrap">
                         <Grid item>
-                          <img className="imgProfile" src={commentData.user_photo} />
+                          <img className="imgProfile" src={commentData.user_photo} alt="commentProfil" />
                         </Grid>
                         <Grid item>
                           <h5>{commentData.user_login}</h5>

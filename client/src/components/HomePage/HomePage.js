@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
+import { Grid, GridList, GridListTileBar, GridListTile } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
 import Skeleton from "@material-ui/lab/Skeleton";
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Link } from "react-router-dom";
-import {
-  fetchMoviesTMDB,
-  fetchGenreTMDB,
-  fetchMovieByGenreTMDB,
-  fetchPersonsTMDB,
-  fetchTopratedMovieTMDB,
-} from "../../service/tmdb";
-import { fetchMoviesYTS, fetchMovieSearchYTS, fetchMoviesByGenreYTS } from "../../service/yts";
+import { fetchGenreTMDB } from "../../service/tmdb";
+import { fetchMoviesYTS } from "../../service/yts";
 
 import textToImage from "text-to-image";
 
@@ -34,11 +28,32 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchGenre();
+    let isCancelled = false;
+
+    try {
+      if (!isCancelled) {
+        fetchGenre();
+      }
+    } catch (e) {
+      if (!isCancelled) {
+        throw e;
+      }
+    }
   }, []);
+
   useEffect(() => {
-    setLoading(true);
-    setMovie();
+    let isCancelled = false;
+
+    try {
+      if (!isCancelled) {
+        setLoading(true);
+        setMovie();
+      }
+    } catch (e) {
+      if (!isCancelled) {
+        throw e;
+      }
+    }
   }, [genre]);
 
   const handleImageError = async (event, title) => {

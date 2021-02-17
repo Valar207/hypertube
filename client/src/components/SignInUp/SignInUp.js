@@ -60,7 +60,7 @@ export const SignInUp = (props) => {
 
   const [tabsValue, setTabsValue] = useState(0);
 
-  const { logged, setLogged, userInfos, setUserInfos } = useContext(AppContext);
+  const { setLogged, setUserInfos } = useContext(AppContext);
 
   const handleChangeSignUp = (e) => {
     setUserSignUp({

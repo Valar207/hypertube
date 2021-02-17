@@ -4,7 +4,7 @@ import { Visibility, VisibilityOff } from "@material-ui/icons";
 import axios from "axios";
 import "./ResetPassword.scss";
 import "../../assets/Style.scss";
-import { useLocation, useHistory, Link } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 
 export const ResetPassword = () => {
@@ -31,7 +31,6 @@ export const ResetPassword = () => {
     if (url.search) {
       const urlEmail = url.search.split("&")[0].split("=")[0].split("?")[1];
       const urlToken = url.search.split("&")[1].split("=")[0];
-      const email = url.search.split("&")[0].split("=")[1];
 
       //CHECK IF URL CONTAINS EMAIL AND TOKEN, IF NOT REDIRECT TO "/"
       if (urlEmail === "email" && urlToken === "token") {

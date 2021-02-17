@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { TextField, Container, Tabs, Tab, Grid, Button, Box, IconButton, InputAdornment } from "@material-ui/core";
+import { TextField, Container, Grid, Button } from "@material-ui/core";
 import "./EditProfil.scss";
 import "../../assets/Style.scss";
 import axios from "axios";
@@ -8,11 +8,11 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import SimpleSnackbar from "../SnackBar/SnackBar";
 import { AppContext } from "../../App";
 
-function countryToFlag(isoCode) {
-  return typeof String.fromCodePoint !== "undefined"
-    ? isoCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-    : isoCode;
-}
+// function countryToFlag(isoCode) {
+//   return typeof String.fromCodePoint !== "undefined"
+//     ? isoCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+//     : isoCode;
+// }
 
 export const EditProfil = () => {
   const { userInfos } = useContext(AppContext);
@@ -96,7 +96,7 @@ export const EditProfil = () => {
                 ? URL.createObjectURL(user.imgProfile)
                 : user.imgProfile
             }
-            alt="Image profil"
+            alt="profil"
           />
           <input
             accept="image/*"

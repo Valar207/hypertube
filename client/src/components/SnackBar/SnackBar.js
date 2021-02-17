@@ -1,17 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
 export default function SimpleSnackbar({ status, message }) {
-  const teste = true;
   const [open, setOpen] = useState(true);
-  // useEffect(
-  //   () => {
-  //     setOpen(true);
-  //   },
-  //   [status]
-  // );
-
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
