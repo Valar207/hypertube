@@ -128,40 +128,40 @@ exports.getUserById = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
   let { email, username } = req.body;
   //CHECK SIGNUP INPUTS
-  const errors = await validateSignupInputs(req);
-  if (!errors.isEmpty()) {
-    res.send(errors);
-  } else {
-    const userEmailExist = await User.findUserByEmail(email);
-    const userUsernameExist = await User.findUserByUsername(username);
+  let errors = await validateSignupInputs(req);
+  if (!errors.isEmpty()) return res.send(errors);
 
-    //CHECK IF USER EXIST IN DB
-    if (userEmailExist || userUsernameExist) {
-      return res.status(200).json({
-        status: "error",
-        message: "Username or email already exist",
-      });
-    }
+  let errorsPassword = await validateNewPasswordInputs(req);
+  if (!errorsPassword.isEmpty()) return res.send(errorsPassword);
 
-    const newUser = await User.insertUser(req.body);
-    if (!newUser) {
-      return res.send({
-        status: "error",
-        message: "Erreur lors de l'inscription de l'utilisateur",
-      });
-    }
+  const userEmailExist = await User.findUserByEmail(email);
+  const userUsernameExist = await User.findUserByUsername(username);
 
-    const user = await User.findUserByUsername(username);
-    const validationToken = user.vkey; //get validation token to insert in sendMail
-
-    console.log("user entered in db");
-    sendSignUpMail(email, username, validationToken);
-
-    return res.send({
-      status: "success",
-      message: `${username} a bien été inscrit`,
+  //CHECK IF USER EXIST IN DB
+  if (userEmailExist || userUsernameExist) {
+    return res.status(200).json({
+      status: "error",
+      message: "Username or email already exist",
     });
   }
+
+  const newUser = await User.insertUser(req.body);
+  if (!newUser) {
+    return res.send({
+      status: "error",
+      message: "Erreur lors de l'inscription de l'utilisateur",
+    });
+  }
+
+  const user = await User.findUserByUsername(username);
+  const validationToken = user.vkey; //get validation token to insert in sendMail
+
+  sendSignUpMail(email, username, validationToken);
+
+  return res.send({
+    status: "success",
+    message: `${username} a bien été inscrit`,
+  });
 };
 
 exports.activateUser = async (req, res, next) => {
@@ -300,9 +300,11 @@ exports.editPassword = async (req, res, next) => {
 
 exports.editProfil = async (req, res, next) => {
   const { imgProfile, firstname, lastname, username, email, language } = req.body;
-
-  console.log("username :" + username);
-  console.log("username requser :" + req.user.username);
+  if (email !== req.user.email && !req.user.password)
+    return res.send({
+      status: "error",
+      message: "You are logged via google or 42, you can't modify your email",
+    });
 
   if (
     imgProfile !== req.user.imgProfile ||
