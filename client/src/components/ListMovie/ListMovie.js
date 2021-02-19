@@ -19,8 +19,7 @@ import {
   Divider,
   IconButton,
 } from "@material-ui/core";
-import { fetchGenreTMDB } from "../../service/tmdb";
-import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
+import { fetchMoviesYTS, fetchMovieSearchYTS, searchCancelToken } from "../../service/yts";
 import { AppContext } from "../../App";
 
 import { distinctObjectArray } from "../../utils/arrayFunctions";
@@ -78,21 +77,27 @@ export const ListMovie = () => {
     } else {
       setLoadingDisplay(false);
     }
-    setGenreList(await fetchGenreTMDB());
+    // setGenreList(await fetchGenreTMDB());
   };
 
   const searchAPI = async () => {
     let newMovies = await fetchMovieSearchYTS(search, pageNumber);
+    if (newMovies === "error") {
+      console.log("error newMovies", newMovies);
+      return;
+    }
     if (newMovies) {
+      console.log(newMovies);
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
 
       setMovies(result);
       setLoading(false);
     } else {
-      setLoadingDisplay(false);
+      return;
+      // setLoadingDisplay(false);
     }
-    setGenreList(await fetchGenreTMDB());
+    // setGenreList(await fetchGenreTMDB());
   };
 
   //Pour savoir si le dernier élément est à l'écran
@@ -113,59 +118,49 @@ export const ListMovie = () => {
   );
 
   useEffect(() => {
-    let isCancelled = false;
+    console.log("search has been updated");
     const FirstEffect = async () => {
       try {
-        if (!isCancelled) {
-          setLoading(true);
-          setGenreList(await fetchGenreTMDB());
+        setLoading(true);
+        // setGenreList(await fetchGenreTMDB());
 
-          if (search) {
-            searchAPI();
-          } else {
-            fetchAPI();
-          }
+        if (search) {
+          await searchAPI();
+        } else {
+          await fetchAPI();
         }
       } catch (e) {
-        if (!isCancelled) {
-          throw e;
-        }
+        console.error(e);
       }
     };
     FirstEffect();
     return () => {
-      isCancelled = true;
+      console.log("cleanup", searchCancelToken);
+      setMovies([]);
+      searchCancelToken.source?.cancel(searchCancelToken.id);
     };
   }, [search, pageNumber]);
 
   useEffect(() => {
-    let isCancelled = false;
-
     const SecondEffect = async () => {
       try {
-        if (!isCancelled) {
-          setLoading(true);
-          setMovies([]);
-          setPageNumber(1);
-          setGenreList(await fetchGenreTMDB());
+        setLoading(true);
+        setMovies([]);
+        setPageNumber(1);
+        // setGenreList(await fetchGenreTMDB());
 
-          if (search) {
-            searchAPI();
-          } else {
-            fetchAPI();
-          }
+        if (search) {
+          await searchAPI();
+        } else {
+          await fetchAPI();
         }
       } catch (e) {
-        if (!isCancelled) {
-          throw e;
-        }
+        console.error(e);
+        return;
       }
     };
 
     SecondEffect();
-    return () => {
-      isCancelled = true;
-    };
   }, [sliderValue]);
 
   const handleDrawerOpen = () => {

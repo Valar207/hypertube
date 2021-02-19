@@ -4,6 +4,8 @@ const url = "https://yts.unblockedproxy.biz/api/v2";
 const list = url + "/list_movies.json";
 const details = url + "/movie_details.json";
 
+export var searchCancelToken = { id: null, source: null };
+
 export const fetchMovieDetailsYTS = async (movie_id) => {
   try {
     const { data } = await axios.get(details, {
@@ -23,6 +25,11 @@ export const fetchMovieDetailsYTS = async (movie_id) => {
 
 export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
   try {
+    const source = axios.CancelToken.source();
+    searchCancelToken.source = source;
+    searchCancelToken.id = Math.random().toString();
+    console.log(searchCancelToken);
+
     const { data } = await axios.get(list, {
       params: {
         query_term: movie,
@@ -30,8 +37,9 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
         sort_by: sort ? sort : null,
       },
       withCredentials: false,
+      cancelToken: searchCancelToken.source.token,
     });
-    const modifiedData = data.data.movies.map((m) => ({
+    const modifiedData = data?.data?.movies?.map((m) => ({
       id: m["id"],
       backPoster: m["large_cover_image"],
       popularity: m["rating"],
@@ -43,11 +51,21 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
     }));
 
     return modifiedData;
-  } catch (error) {}
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log(error, "fetchMoviesSearchYTS");
+      return "error";
+    } else {
+      throw error;
+    }
+  }
 };
 
 export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
   try {
+    // const source = axios.searchCancelToken.source();
+    // searchCancelToken.source = source;
+
     const { data } = await axios.get(list, {
       params: {
         page: pageNumber,
@@ -55,6 +73,7 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
         sort_by: sort ? sort : null,
       },
       withCredentials: false,
+      // searchCancelToken: searchCancelToken.source,
     });
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],
@@ -68,5 +87,12 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
     }));
 
     return modifiedData;
-  } catch (error) {}
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log(error, "fetchMoviesYTS");
+      return;
+    } else {
+      throw error;
+    }
+  }
 };
