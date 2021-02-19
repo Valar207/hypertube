@@ -84,6 +84,9 @@ export const ListMovie = () => {
 
   const searchAPI = async () => {
     let newMovies = await fetchMovieSearchYTS(search, pageNumber);
+
+    console.log(newMovies);
+
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
@@ -156,9 +159,9 @@ export const ListMovie = () => {
           setGenreList(await fetchGenreTMDB());
 
           if (search) {
-            searchAPI();
+            await searchAPI();
           } else {
-            fetchAPI();
+            await fetchAPI();
           }
         }
       } catch (e) {

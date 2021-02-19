@@ -22,7 +22,7 @@ export const fetchMovieDetailsYTS = async (movie_id) => {
 };
 
 export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
-  // console.log(movie);
+  console.log(movie);
   try {
     const { data } = await axios.get(list, {
       params: {
@@ -32,7 +32,7 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
       },
       withCredentials: false,
     });
-    // console.log(data);
+    console.log(data);
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],
       backPoster: m["large_cover_image"],
@@ -44,7 +44,7 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
       year: m["year"],
     }));
 
-    // console.log(modifiedData);
+    console.log(modifiedData);
 
     return modifiedData;
   } catch (error) {}
