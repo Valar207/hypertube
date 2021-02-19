@@ -18,6 +18,8 @@ import {
   List,
   Divider,
   IconButton,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core";
 import { fetchGenreTMDB } from "../../service/tmdb";
 import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
@@ -32,8 +34,9 @@ export const ListMovie = () => {
   const location = useLocation();
 
   const [genreFromHomePage, setGenreFromHomePage] = useState(location.state?.genre);
+  const [search, setSearch] = useState("");
 
-  const { search, setSearch, mobileDevice, desktopDevice } = useContext(AppContext);
+  const { mobileDevice, desktopDevice } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState({
     name: 65,
@@ -84,7 +87,6 @@ export const ListMovie = () => {
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
-
       setMovies(result);
       setLoading(false);
     } else {
@@ -111,30 +113,36 @@ export const ListMovie = () => {
   );
 
   useEffect(() => {
-    let isCancelled = false;
-    const FirstEffect = async () => {
+    const searchEffect = async () => {
       try {
-        if (!isCancelled) {
-          setLoading(true);
-          setGenreList(await fetchGenreTMDB());
+        setLoading(true);
+        setGenreList(await fetchGenreTMDB());
+        setMovies([]);
+        setPageNumber(1);
 
-          if (search) {
-            searchAPI();
-          } else {
-            fetchAPI();
-          }
+        if (search) {
+          await searchAPI();
+        } else {
+          await fetchAPI();
         }
-      } catch (e) {
-        if (!isCancelled) {
-          throw e;
-        }
+      } catch (e) {}
+    };
+    searchEffect();
+  }, [search]);
+
+  useEffect(() => {
+    const pageNbEffect = async () => {
+      if (pageNumber === 1) {
+        setMovies([]);
+      }
+      if (search) {
+        await searchAPI();
+      } else {
+        await fetchAPI();
       }
     };
-    FirstEffect();
-    return () => {
-      isCancelled = true;
-    };
-  }, [search, pageNumber]);
+    pageNbEffect();
+  }, [pageNumber]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -217,6 +225,13 @@ export const ListMovie = () => {
     };
     const dataUri = await textToImage.generate(title, options);
     image.src = dataUri;
+  };
+
+  const handleSearch = async (e) => {
+    setSearch(e.target.value);
+  };
+  const handleClickShowClearSearch = () => {
+    setSearch("");
   };
 
   const movieList = movies?.map((item, index) => {
@@ -325,6 +340,29 @@ export const ListMovie = () => {
           </Grid>
         </div>
         <Divider style={{ backgroundColor: "#4c4c4c", marginLeft: "20px" }} />
+        <TextField
+          className="header__search-bar custom__form"
+          name="Search..."
+          onChange={handleSearch}
+          variant="outlined"
+          placeholder="Search..."
+          value={search}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment>
+                {search ? (
+                  <IconButton onClick={handleClickShowClearSearch} className="icon-btn">
+                    <Close />
+                  </IconButton>
+                ) : (
+                  ""
+                )}
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Divider style={{ backgroundColor: "#4c4c4c", marginLeft: "20px" }} />
+
         <List className="listMovie__drawer-body">
           <Grow in={checked}>
             <div className="listMovie__category">

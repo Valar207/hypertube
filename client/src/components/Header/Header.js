@@ -33,18 +33,18 @@ export const Header = () => {
     if (result.status === "success") setLogged(false);
     history.push("/");
   };
-  const handleSearch = async (e) => {
-    setSearch(e.target.value);
-  };
-  const handleClickShowClearSearch = () => {
-    setSearch("");
-  };
+  // const handleSearch = async (e) => {
+  //   setSearch(e.target.value);
+  // };
+  // const handleClickShowClearSearch = () => {
+  //   setSearch("");
+  // };
 
-  useEffect(() => {
-    if (search) {
-      history.push("/listmovie");
-    }
-  }, [search]);
+  // useEffect(() => {
+  //   if (search) {
+  //     history.push("/listmovie");
+  //   }
+  // }, [search]);
 
   return (
     <div className="header__body">
@@ -57,7 +57,7 @@ export const Header = () => {
               {desktopDevice ? <img src="/img/hypertube-logo.svg" alt="" /> : <img src="/img/hp-logo.svg" alt="" />}
             </Link>
             <Grid item xs />
-            {!mobileDevice ? (
+            {/* {!mobileDevice ? (
               <TextField
                 className="header__search-bar custom__form"
                 name="Search..."
@@ -83,7 +83,7 @@ export const Header = () => {
               <IconButton className="header__icon">
                 <Search />
               </IconButton>
-            )}
+            )} */}
             <IconButton className="header__icon">
               <Link to="/listmovie">
                 <Movie />
