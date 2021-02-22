@@ -134,6 +134,10 @@ export const ListMovie = () => {
   }, [search, pageNumber]);
 
   useEffect(() => {
+    setGenreFromHomePage("");
+  }, [genre]);
+
+  useEffect(() => {
     const SecondEffect = async () => {
       try {
         setLoading(true);
