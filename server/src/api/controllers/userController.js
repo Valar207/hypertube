@@ -11,7 +11,14 @@ const User = require("../models/User");
 exports.getAllUsers = async (req, res, next) => {
   try {
     const users = await User.getUsers();
-    return res.status(200).json(users);
+    const result = users.map((user) => {
+      return {
+        language: user.language,
+        username: user.username,
+        imgProfile: user.imgProfile === "" ? "/img/img-default.jpg" : user.imgProfile,
+      };
+    });
+    return res.status(200).json(result);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: err });
