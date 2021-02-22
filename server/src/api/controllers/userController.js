@@ -245,10 +245,10 @@ exports.resetPassword = async (req, res, next) => {
     });
   }
 
-  if (newPassword.length < 8) {
+  if (!new RegExp(/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/).test(newPassword)) {
     return res.send({
       status: "error",
-      message: "Password must be at least 8 characters",
+      message: "Must contain 8 characters, 1 letter, 1 number and 1 special character",
       param: "newPassword",
     });
   }
@@ -279,7 +279,7 @@ exports.editPassword = async (req, res, next) => {
     if (!new RegExp(/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/).test(newPassword)) {
       return res.send({
         status: "error",
-        message: "Your password must be at least 8 characters",
+        message: "Must contain 8 characters, 1 letter, 1 number and 1 special character",
         param: "newPassword",
       });
     }
