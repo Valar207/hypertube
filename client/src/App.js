@@ -15,6 +15,7 @@ import { ResetPassword } from "./components/ResetPassword/ResetPassword";
 import { ErrorPage } from "./components/ErrorPage/ErrorPage";
 import { EditProfil } from "./components/Profil/EditProfil";
 import { EditPassword } from "./components/Profil/EditPassword";
+import { ListUsers } from "./components/ListUsers/ListUsers";
 
 //INITIALIZE CONTEXT
 export const AppContext = createContext();
@@ -70,6 +71,7 @@ function App() {
             <Switch>
               <Route exact path="/HomePage" component={() => <HomePage />} />
               <Route path="/ListMovie" component={() => <ListMovie />} />
+              <Route path="/ListUsers" component={() => <ListUsers />} />
               <Route path="/PlayerPage/:id" component={() => <PlayerPage />} />
               <Route exact path="/Profil" component={() => <Profil />} />
               <Route exact path="/EditProfil" component={() => <EditProfil />} />

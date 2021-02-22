@@ -222,15 +222,7 @@ export const ListMovie = () => {
   const movieList = movies?.map((item, index) => {
     if (movies.length === index + 1) {
       return (
-        <GridListTile
-          ref={lastMovieElement}
-          key={index}
-          style={
-            desktopDevice
-              ? { height: "300px", width: "200px", margin: "5px" }
-              : { height: "280px", width: "190px", margin: "2px" }
-          }
-        >
+        <GridListTile ref={lastMovieElement} key={index}>
           <Link to={`/playerpage/${encodeURIComponent(item.id)}`} className="items-img">
             <img
               src={item.poster}
@@ -248,20 +240,13 @@ export const ListMovie = () => {
       );
     } else {
       return (
-        <GridListTile
-          key={index}
-          style={
-            mobileDevice
-              ? { height: "240px", width: "155px", margin: "2px" }
-              : { height: "300px", width: "200px", margin: "5px" }
-          }
-        >
+        <GridListTile key={index}>
           <Link to={`/playerpage/${encodeURIComponent(item.id)}`} className="items-img">
             <img
               src={item.poster}
               alt={item.title}
               onError={(event) => handleImageError(event, item.title)}
-              style={{ height: "100%", width: "100%" }}
+              style={{ height: "300px", width: "200px" }}
             />
           </Link>
           <GridListTileBar
@@ -309,10 +294,8 @@ export const ListMovie = () => {
         </Fab>
       </div>
       <div className={clsx("listMovie__items--before", open && "listMovie__items--after")}>
-        {<GridList>{movieList}</GridList>}
-        <GridList style={{ justifyContent: "center" }}>
-          {loadingDisplay ? <img src="/img/loading.gif" style={{ height: "200px", width: "200px" }} /> : ""}
-        </GridList>
+        {movieList}
+        {loadingDisplay ? <img src="/img/loading.gif" style={{ height: "200px", width: "200px" }} /> : ""}
       </div>
 
       <Drawer className="listMovie__drawer" anchor={desktopDevice ? "left" : "bottom"} variant="persistent" open={open}>

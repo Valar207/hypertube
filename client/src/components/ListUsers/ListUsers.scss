@@ -1,0 +1,25 @@
+.listUsers__body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, max-content));
+  grid-gap: 14px;
+  padding: initial;
+  justify-content: center;
+  margin: 50px;
+  p {
+    color: white;
+  }
+  .MuiCard-root {
+    list-style-type: none;
+    // margin: 5px;
+    width: 170px;
+    height: 260px;
+    text-align: center;
+    background-color: #444444;
+  }
+  .listusers__card {
+    .imgProfile {
+      width: 100px;
+      border-radius: 50px;
+    }
+  }
+}
