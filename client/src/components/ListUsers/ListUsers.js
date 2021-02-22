@@ -24,14 +24,28 @@ axios.defaults.baseURL = "http://localhost:5000/api/v1";
 export const ListUsers = () => {
   const [users, setUsers] = useState([]);
 
+  const source = axios.CancelToken.source();
   const fetchUsers = async () => {
-    const { data } = await axios.get("/user");
-    if (data) setUsers(data);
-    return;
+    try {
+      const { data } = await axios.get("/user", {
+        cancelToken: source.token,
+      });
+      if (data) setUsers(data);
+      return;
+    } catch (e) {
+      if (axios.isCancel(e)) {
+        return "error";
+      } else {
+        throw e;
+      }
+    }
   };
 
   useEffect(() => {
     fetchUsers();
+    return () => {
+      source.cancel();
+    };
   }, []);
 
   return (
