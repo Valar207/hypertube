@@ -5,8 +5,8 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Link } from "react-router-dom";
-import { fetchGenreTMDB } from "../../service/tmdb";
-import { fetchMoviesYTS } from "../../service/yts";
+import { fetchGenreTMDB, searchCancelTokenTmdb } from "../../service/tmdb";
+import { fetchMoviesYTS, searchCancelToken } from "../../service/yts";
 
 import textToImage from "text-to-image";
 
@@ -18,42 +18,57 @@ export const HomePage = () => {
   const fetchGenre = async () => {
     setGenre(await fetchGenreTMDB());
   };
+
   const setMovie = async () => {
-    const movie = [];
-    for await (const g of genre) {
-      movie.push(await fetchMoviesYTS(g.name));
+    try {
+      const movie = [];
+      for await (const g of genre) {
+        movie.push(await fetchMoviesYTS(g.name));
+      }
+      setMovieByGenre(movie);
+      setLoading(false);
+    } catch (e) {
+      return;
     }
-    setMovieByGenre(movie);
-    setLoading(false);
   };
 
   useEffect(() => {
-    let isCancelled = false;
-
+    let isMounted = true;
     try {
-      if (!isCancelled) {
+      if (isMounted) {
         fetchGenre();
       }
     } catch (e) {
-      if (!isCancelled) {
-        throw e;
-      }
+      return;
     }
+
+    return () => {
+      searchCancelTokenTmdb.source?.cancel();
+      searchCancelToken.source?.cancel();
+
+      console.log("first useeffect");
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
-    let isCancelled = false;
+    let isMounted = true;
 
     try {
-      if (!isCancelled) {
+      if (isMounted) {
         setLoading(true);
         setMovie();
       }
     } catch (e) {
-      if (!isCancelled) {
-        throw e;
-      }
+      return;
     }
+
+    return () => {
+      console.log("second useeffect");
+
+      searchCancelToken.source?.cancel();
+      isMounted = false;
+    };
   }, [genre]);
 
   const handleImageError = async (event, title) => {

@@ -14,6 +14,7 @@ import { Comment, ExpandMore, Info, Timer, StarRate, LocalMovies } from "@materi
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { fetchMovieDetailsYTS } from "../../service/yts";
+import { searchCancelToken } from "../../service/movie";
 import { fetchMovieDetails, postMovieDetails, downloadMovieInServer } from "../../service/movie";
 import { AppContext } from "../../App";
 import { VideoPlayer } from "../VideoPlayer/VideoPlayer";
@@ -86,9 +87,13 @@ export const PlayerPage = (props) => {
   };
 
   const fetchComments = async (movie_id) => {
-    const response = await fetchMovieDetails(movie_id);
-    const comments = response?.comments;
-    if (comments) setComments(comments);
+    try {
+      const response = await fetchMovieDetails(movie_id);
+      const comments = response?.comments;
+      if (comments) setComments(comments);
+    } catch (e) {
+      return;
+    }
   };
 
   const handleSendComment = async (event) => {
@@ -125,6 +130,10 @@ export const PlayerPage = (props) => {
 
   useEffect(() => {
     fetchComments(id);
+
+    return () => {
+      searchCancelToken.source?.cancel();
+    };
     // axios.get("http://localhost:5000/api/v1/movie/streamMovie/25946");
   }, []);
 

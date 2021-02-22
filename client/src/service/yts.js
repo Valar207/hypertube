@@ -8,6 +8,9 @@ export var searchCancelToken = { id: null, source: null };
 
 export const fetchMovieDetailsYTS = async (movie_id) => {
   try {
+    const source = axios.CancelToken.source();
+    searchCancelToken.source = source;
+    searchCancelToken.id = Math.random().toString();
     const { data } = await axios.get(details, {
       params: {
         movie_id,
@@ -15,11 +18,17 @@ export const fetchMovieDetailsYTS = async (movie_id) => {
         with_cast: true,
       },
       withCredentials: false,
+      cancelToken: searchCancelToken.source.token,
     });
     if (data) return data;
     return "error";
   } catch (error) {
-    console.error(error);
+    if (axios.isCancel(error)) {
+      // console.log(error, "fetchMoviesSearchYTS");
+      return "error";
+    } else {
+      throw error;
+    }
   }
 };
 
@@ -63,8 +72,8 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
 
 export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
   try {
-    // const source = axios.searchCancelToken.source();
-    // searchCancelToken.source = source;
+    const source = axios.CancelToken.source();
+    searchCancelToken.source = source;
 
     const { data } = await axios.get(list, {
       params: {
@@ -73,7 +82,7 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
         sort_by: sort ? sort : null,
       },
       withCredentials: false,
-      // searchCancelToken: searchCancelToken.source,
+      cancelToken: searchCancelToken.source.token,
     });
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],
@@ -89,7 +98,8 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
     return modifiedData;
   } catch (error) {
     if (axios.isCancel(error)) {
-      // console.log(error, "fetchMoviesYTS");
+      console.log(error, "fetchMoviesYTS");
+      throw error;
       return;
     } else {
       throw error;
