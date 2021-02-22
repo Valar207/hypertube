@@ -13,7 +13,8 @@ import {
 import { Comment, ExpandMore, Info, Timer, StarRate, LocalMovies } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
-import { fetchMovieDetailsYTS } from "../../service/yts";
+import { fetchMovieDetailsYTS, searchCancelToken } from "../../service/yts";
+import { searchCancelTokenMovie, downloadCancel } from "../../service/movie";
 import { fetchMovieDetails, postMovieDetails, downloadMovieInServer } from "../../service/movie";
 import { AppContext } from "../../App";
 import { VideoPlayer } from "../VideoPlayer/VideoPlayer";
@@ -54,41 +55,49 @@ export const PlayerPage = (props) => {
   };
 
   const fetchDetails = async (movie_id) => {
-    const response = await fetchMovieDetailsYTS(movie_id);
-    if (response === "error") return;
-    const movie = response.data;
-    const {
-      title,
-      rating,
-      runtime,
-      medium_cover_image,
-      cast,
-      genres,
-      description_full,
-      torrents,
-      id,
-      year,
-    } = movie.movie;
-    setMovieDetails({
-      title,
-      rating,
-      runtime: minToHour(runtime),
-      medium_cover_image,
-      cast,
-      genres,
-      description_full,
-      torrents,
-      id,
-      year,
-    }); //runtime retour parfois 0
+    try {
+      const response = await fetchMovieDetailsYTS(movie_id);
+      if (response === "error") return;
+      const movie = response.data;
+      const {
+        title,
+        rating,
+        runtime,
+        medium_cover_image,
+        cast,
+        genres,
+        description_full,
+        torrents,
+        id,
+        year,
+      } = movie.movie;
+      setMovieDetails({
+        title,
+        rating,
+        runtime: minToHour(runtime),
+        medium_cover_image,
+        cast,
+        genres,
+        description_full,
+        torrents,
+        id,
+        year,
+      }); //runtime retour parfois 0
+    } catch (e) {
+      return;
+    }
 
     //download movie in server
   };
 
   const fetchComments = async (movie_id) => {
-    const response = await fetchMovieDetails(movie_id);
-    const comments = response?.comments;
-    if (comments) setComments(comments);
+    try {
+      const response = await fetchMovieDetails(movie_id);
+      const comments = response?.comments;
+      if (comments) setComments(comments);
+    } catch (e) {
+      return;
+    }
   };
 
   const handleSendComment = async (event) => {
@@ -107,8 +116,12 @@ export const PlayerPage = (props) => {
   };
 
   const handleDownloadMovie = async (torrent) => {
-    const response = await downloadMovieInServer(movieDetails, torrent);
-    if (response?.status === "success") setVideoReady(true);
+    try {
+      const response = await downloadMovieInServer(movieDetails, torrent);
+      if (response?.status === "success") setVideoReady(true);
+    } catch (e) {
+      return;
+    }
   };
 
   useEffect(() => {
@@ -117,14 +130,24 @@ export const PlayerPage = (props) => {
       const torrent = torrents.filter((t) => t.quality === "720p");
       handleDownloadMovie(torrent[0]);
     }
+    return () => {
+      downloadCancel.source?.cancel();
+    };
   }, [movieDetails]);
 
   useEffect(() => {
     fetchDetails(id);
+    return () => {
+      searchCancelToken.source?.cancel();
+    };
   }, [id]);
 
   useEffect(() => {
     fetchComments(id);
+
+    return () => {
+      searchCancelTokenMovie.source?.cancel();
+    };
     // axios.get("http://localhost:5000/api/v1/movie/streamMovie/25946");
   }, []);
 

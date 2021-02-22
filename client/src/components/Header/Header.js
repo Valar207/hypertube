@@ -8,6 +8,7 @@ import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { DelayInput } from "react-delay-input";
 
 export const Header = () => {
   const { logged, setLogged, search, setSearch, mobileDevice, desktopDevice } = useContext(AppContext);
@@ -58,27 +59,7 @@ export const Header = () => {
             </Link>
             <Grid item xs />
             {!mobileDevice ? (
-              <TextField
-                className="header__search-bar custom__form"
-                name="Search..."
-                onChange={handleSearch}
-                variant="outlined"
-                placeholder="Search..."
-                value={search}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment>
-                      {search ? (
-                        <IconButton onClick={handleClickShowClearSearch} className="icon-btn">
-                          <Close />
-                        </IconButton>
-                      ) : (
-                        ""
-                      )}
-                    </InputAdornment>
-                  ),
-                }}
-              />
+              <DelayInput minLength={2} delayTimeout={300} onChange={handleSearch} />
             ) : (
               <IconButton className="header__icon">
                 <Search />

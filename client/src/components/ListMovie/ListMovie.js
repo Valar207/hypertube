@@ -19,8 +19,8 @@ import {
   Divider,
   IconButton,
 } from "@material-ui/core";
+import { fetchMoviesYTS, fetchMovieSearchYTS, searchCancelToken } from "../../service/yts";
 import { fetchGenreTMDB } from "../../service/tmdb";
-import { fetchMoviesYTS, fetchMovieSearchYTS } from "../../service/yts";
 import { AppContext } from "../../App";
 
 import { distinctObjectArray } from "../../utils/arrayFunctions";
@@ -70,17 +70,19 @@ export const ListMovie = () => {
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
-
       setMovies(result);
       setLoading(false);
     } else {
       setLoadingDisplay(false);
     }
-    setGenreList(await fetchGenreTMDB());
+    // setGenreList(await fetchGenreTMDB());
   };
 
   const searchAPI = async () => {
     let newMovies = await fetchMovieSearchYTS(search, pageNumber);
+    if (newMovies === "error") {
+      return;
+    }
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
@@ -90,7 +92,7 @@ export const ListMovie = () => {
     } else {
       setLoadingDisplay(false);
     }
-    setGenreList(await fetchGenreTMDB());
+    // setGenreList(await fetchGenreTMDB());
   };
 
   //Pour savoir si le dernier élément est à l'écran
@@ -110,60 +112,52 @@ export const ListMovie = () => {
     [loading],
   );
 
+  useEffect(async () => {
+    setGenreList(await fetchGenreTMDB());
+  }, []);
+
   useEffect(() => {
-    let isCancelled = false;
     const FirstEffect = async () => {
       try {
-        if (!isCancelled) {
-          setLoading(true);
-          setGenreList(await fetchGenreTMDB());
+        setLoading(true);
+        // setGenreList(await fetchGenreTMDB());
 
-          if (search) {
-            searchAPI();
-          } else {
-            fetchAPI();
-          }
+        if (search) {
+          await searchAPI();
+        } else {
+          await fetchAPI();
         }
       } catch (e) {
-        if (!isCancelled) {
-          throw e;
-        }
+        return;
       }
     };
     FirstEffect();
     return () => {
-      isCancelled = true;
+      console.log("cleanup", searchCancelToken);
+      // setMovies([]);
+      searchCancelToken.source?.cancel(searchCancelToken.id);
     };
   }, [search, pageNumber]);
 
   useEffect(() => {
-    let isCancelled = false;
-
     const SecondEffect = async () => {
       try {
-        if (!isCancelled) {
-          setLoading(true);
-          setMovies([]);
-          setPageNumber(1);
-          setGenreList(await fetchGenreTMDB());
+        setLoading(true);
+        setMovies([]);
+        setPageNumber(1);
+        // setGenreList(await fetchGenreTMDB());
 
-          if (search) {
-            searchAPI();
-          } else {
-            fetchAPI();
-          }
+        if (search) {
+          await searchAPI();
+        } else {
+          await fetchAPI();
         }
       } catch (e) {
-        if (!isCancelled) {
-          throw e;
-        }
+        return;
       }
     };
 
     SecondEffect();
-    return () => {
-      isCancelled = true;
-    };
   }, [sliderValue]);
 
   const handleDrawerOpen = () => {
@@ -184,25 +178,33 @@ export const ListMovie = () => {
   };
 
   const handleGenreClick = async (genre) => {
-    setPageNumber(1);
-    setGenre(genre);
-    setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
-    setSearch("");
-    setGenreFromHomePage("");
+    try {
+      setPageNumber(1);
+      setGenre(genre);
+      setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
+      setSearch("");
+      setGenreFromHomePage("");
+    } catch (e) {
+      return;
+    }
   };
 
   const handleSortMovie = async (e) => {
-    setSort(e.currentTarget.value);
-    setPageNumber(1);
-    setMovies([]);
-    if (search) {
-      setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
-    } else {
-      setMovies(
-        filterMovie(
-          await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
-        ),
-      );
+    try {
+      setSort(e.currentTarget.value);
+      setPageNumber(1);
+      setMovies([]);
+      if (search) {
+        setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
+      } else {
+        setMovies(
+          filterMovie(
+            await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
+          ),
+        );
+      }
+    } catch (e) {
+      return;
     }
   };
 

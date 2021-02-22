@@ -7,6 +7,8 @@ const genreUrl = `${url}/genre/movie/list`;
 const moviesUrl = `${url}/discover/movie`;
 const searchUrl = `${url}/search/movie`;
 
+export var searchCancelTokenTmdb = { id: null, source: null };
+
 export const fetchMovieSearchTMDB = async (movie) => {
   try {
     const { data } = await axios.get(searchUrl, {
@@ -60,6 +62,9 @@ export const fetchMoviesTMDB = async () => {
 
 export const fetchGenreTMDB = async () => {
   try {
+    const source = axios.CancelToken.source();
+    searchCancelTokenTmdb.source = source;
+    searchCancelTokenTmdb.id = Math.random().toString();
     const { data } = await axios.get(genreUrl, {
       params: {
         api_key: apiKey,
@@ -67,6 +72,7 @@ export const fetchGenreTMDB = async () => {
         page: 1,
       },
       withCredentials: false,
+      cancelToken: searchCancelTokenTmdb.source.token,
     });
     const modifiedData = data["genres"].map((g) => ({
       id: g["id"],
@@ -75,7 +81,14 @@ export const fetchGenreTMDB = async () => {
     modifiedData[14].name = "Sci-fi";
     modifiedData[15].name = "Reality-TV";
     return modifiedData;
-  } catch (error) {}
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log(error, "fetchMoviesSearchYTS");
+      throw error;
+    } else {
+      throw error;
+    }
+  }
 };
 
 export const fetchMovieByGenreTMDB = async (genre_id) => {
