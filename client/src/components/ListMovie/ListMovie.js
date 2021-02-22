@@ -20,6 +20,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { fetchMoviesYTS, fetchMovieSearchYTS, searchCancelToken } from "../../service/yts";
+import { fetchGenreTMDB } from "../../service/tmdb";
 import { AppContext } from "../../App";
 
 import { distinctObjectArray } from "../../utils/arrayFunctions";
@@ -71,7 +72,6 @@ export const ListMovie = () => {
     if (newMovies) {
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
-
       setMovies(result);
       setLoading(false);
     } else {
@@ -83,19 +83,16 @@ export const ListMovie = () => {
   const searchAPI = async () => {
     let newMovies = await fetchMovieSearchYTS(search, pageNumber);
     if (newMovies === "error") {
-      console.log("error newMovies", newMovies);
       return;
     }
     if (newMovies) {
-      console.log(newMovies);
       const tableau = [...movies, ...newMovies];
       const result = filterMovie(distinctObjectArray(tableau));
 
       setMovies(result);
       setLoading(false);
     } else {
-      return;
-      // setLoadingDisplay(false);
+      setLoadingDisplay(false);
     }
     // setGenreList(await fetchGenreTMDB());
   };
@@ -117,8 +114,11 @@ export const ListMovie = () => {
     [loading],
   );
 
+  useEffect(async () => {
+    setGenreList(await fetchGenreTMDB());
+  }, []);
+
   useEffect(() => {
-    console.log("search has been updated");
     const FirstEffect = async () => {
       try {
         setLoading(true);
@@ -136,7 +136,7 @@ export const ListMovie = () => {
     FirstEffect();
     return () => {
       console.log("cleanup", searchCancelToken);
-      setMovies([]);
+      // setMovies([]);
       searchCancelToken.source?.cancel(searchCancelToken.id);
     };
   }, [search, pageNumber]);
