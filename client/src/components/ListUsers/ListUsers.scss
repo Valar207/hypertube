@@ -10,15 +10,16 @@
   }
   .MuiCard-root {
     list-style-type: none;
-    // margin: 5px;
     width: 170px;
-    height: 260px;
+    height: 250px;
     text-align: center;
     background-color: #444444;
   }
   .listusers__card {
     .imgProfile {
       width: 100px;
+      height: 100px;
+      object-fit: cover;
       border-radius: 50px;
     }
   }

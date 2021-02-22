@@ -59,7 +59,23 @@ export const Header = () => {
             </Link>
             <Grid item xs />
             {!mobileDevice ? (
-              <DelayInput minLength={2} delayTimeout={300} onChange={handleSearch} />
+              <div className="header__search-bar">
+                <DelayInput
+                  placeholder="Search"
+                  minLength={2}
+                  delayTimeout={300}
+                  onChange={handleSearch}
+                  className="search-bar"
+                  value={search}
+                />
+                {search ? (
+                  <button className="cleanSearch" name="showSignUpPassword" onClick={handleClickShowClearSearch}>
+                    <Close />
+                  </button>
+                ) : (
+                  ""
+                )}
+              </div>
             ) : (
               <IconButton className="header__icon">
                 <Search />
