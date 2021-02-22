@@ -24,7 +24,6 @@ export const EditProfil = () => {
     email: userInfos?.email,
     language: userInfos?.language,
   });
-  console.log(user.imgProfile);
 
   const [alert, setAlert] = useState({
     open: false,

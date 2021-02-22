@@ -178,7 +178,6 @@ exports.activateUser = async (req, res, next) => {
   if (user) {
     const bddToken = user.vkey;
     if (urlToken === bddToken) {
-      console.log("token match");
       User.updateUser(user.id, { vkey: "" });
       res.send({ status: "success", message: "Account activated !" });
     } else {
@@ -278,8 +277,6 @@ exports.editPassword = async (req, res, next) => {
 
   if (await authHandler.comparePassword(req.user.password, oldPassword)) {
     if (!new RegExp(/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/).test(newPassword)) {
-      console.log("LAAAAA");
-
       return res.send({
         status: "error",
         message: "Your password must be at least 8 characters",

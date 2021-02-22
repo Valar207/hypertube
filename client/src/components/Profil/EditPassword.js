@@ -26,8 +26,6 @@ export const EditPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post("user/editPassword", password).then((res) => {
-      console.log(res.data);
-
       if (res.data.status === "error") {
         setAlert({
           open: true,

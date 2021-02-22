@@ -18,7 +18,6 @@ const removeDir = (path) => {
       fs.rmdirSync(path);
     }
   } else {
-    console.log("Directory path not found.");
   }
 };
 

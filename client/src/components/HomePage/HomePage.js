@@ -48,8 +48,6 @@ export const HomePage = () => {
     return () => {
       searchCancelTokenTmdb.source?.cancel();
       searchCancelToken.source?.cancel();
-
-      console.log("first useeffect");
       isMounted = false;
     };
   }, []);
@@ -67,8 +65,6 @@ export const HomePage = () => {
     }
 
     return () => {
-      console.log("second useeffect");
-
       searchCancelToken.source?.cancel();
       isMounted = false;
     };

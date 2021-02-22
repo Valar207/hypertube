@@ -24,7 +24,6 @@ export const fetchMovieDetailsYTS = async (movie_id) => {
     return "error";
   } catch (error) {
     if (axios.isCancel(error)) {
-      console.log(error, "fetchMoviesSearchYTS");
       throw error;
     } else {
       throw error;
@@ -37,7 +36,6 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
     const source = axios.CancelToken.source();
     searchCancelToken.source = source;
     searchCancelToken.id = Math.random().toString();
-    // console.log(searchCancelToken);
 
     const { data } = await axios.get(list, {
       params: {
@@ -62,7 +60,6 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
     return modifiedData;
   } catch (error) {
     if (axios.isCancel(error)) {
-      // console.log(error, "fetchMoviesSearchYTS");
       return "error";
     } else {
       throw error;
@@ -98,7 +95,6 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
     return modifiedData;
   } catch (error) {
     if (axios.isCancel(error)) {
-      console.log(error, "fetchMoviesYTS");
       throw error;
       return;
     } else {

@@ -83,7 +83,6 @@ export const fetchGenreTMDB = async () => {
     return modifiedData;
   } catch (error) {
     if (axios.isCancel(error)) {
-      console.log(error, "fetchMoviesSearchYTS");
       throw error;
     } else {
       throw error;

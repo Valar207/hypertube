@@ -51,7 +51,7 @@ const verifyCallback42 = async (accessToken, refreshToken, profile, done) => {
   try {
     const user_42 = profile._json;
     const { login, first_name, last_name, email, image_url, campus } = user_42;
-    console.log(login, first_name, last_name, email, image_url, campus[0].language.identifier);
+    // console.log(login, first_name, last_name, email, image_url, campus[0].language.identifier);
     const user = await User.findUserByEmail(email);
     if (user) return done(null, user);
     const newUser = new User({

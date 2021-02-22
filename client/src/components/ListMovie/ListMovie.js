@@ -75,7 +75,6 @@ export const ListMovie = () => {
     } else {
       setLoadingDisplay(false);
     }
-    // setGenreList(await fetchGenreTMDB());
   };
 
   const searchAPI = async () => {
@@ -92,7 +91,6 @@ export const ListMovie = () => {
     } else {
       setLoadingDisplay(false);
     }
-    // setGenreList(await fetchGenreTMDB());
   };
 
   //Pour savoir si le dernier élément est à l'écran
@@ -120,8 +118,6 @@ export const ListMovie = () => {
     const FirstEffect = async () => {
       try {
         setLoading(true);
-        // setGenreList(await fetchGenreTMDB());
-
         if (search) {
           await searchAPI();
         } else {
@@ -133,8 +129,6 @@ export const ListMovie = () => {
     };
     FirstEffect();
     return () => {
-      console.log("cleanup", searchCancelToken);
-      // setMovies([]);
       searchCancelToken.source?.cancel(searchCancelToken.id);
     };
   }, [search, pageNumber]);
@@ -145,8 +139,6 @@ export const ListMovie = () => {
         setLoading(true);
         setMovies([]);
         setPageNumber(1);
-        // setGenreList(await fetchGenreTMDB());
-
         if (search) {
           await searchAPI();
         } else {

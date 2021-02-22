@@ -112,7 +112,6 @@ export const PlayerPage = (props) => {
       setCommentInput("");
       setComments(newComments);
     }
-    console.log(comments);
   };
 
   const handleDownloadMovie = async (torrent) => {
@@ -151,7 +150,6 @@ export const PlayerPage = (props) => {
     // axios.get("http://localhost:5000/api/v1/movie/streamMovie/25946");
   }, []);
 
-  // console.log(movieDetails);
   return (
     <Container className="playerPage__body">
       <Grid container>

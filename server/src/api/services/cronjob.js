@@ -8,13 +8,12 @@ const job = new CronJob(
   "0 3 * * *", // Tous les jours a 03:00
   () => {
     removeDir(pathToMovies);
-    console.log("Movies have been autodeleted");
   },
   null,
   true,
   "Europe/Paris",
 );
 
-console.log("AUTODELETE JOB STARTED");
+// console.log("AUTODELETE JOB STARTED");
 
 module.exports = job;

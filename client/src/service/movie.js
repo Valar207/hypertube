@@ -17,7 +17,6 @@ export const fetchMovieDetails = async (movie_id) => {
     return data;
   } catch (error) {
     if (axios.isCancel(error)) {
-      // console.log(error, "fetchMoviesSearchYTS");
       throw error;
     } else {
       throw error;
@@ -54,7 +53,6 @@ export const downloadMovieInServer = async (movieDetails, torrent) => {
     return data;
   } catch (error) {
     if (axios.isCancel(error)) {
-      // console.log(error, "fetchMoviesSearchYTS");
       throw error;
     } else {
       throw error;

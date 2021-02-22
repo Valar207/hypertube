@@ -13,7 +13,6 @@ readStream = (subtitlePath, subVTT) => {
       "30 59 2 * * *", // Tous les jours a 03:00
       () => {
         newSub.close();
-        console.log("streamssssss sub stop");
       },
       null,
       true,

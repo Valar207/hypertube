@@ -10,7 +10,6 @@ export const VideoPlayer = (props) => {
   useEffect(() => {
     axios.get(sub).then((res) => {
       if (res.data) {
-        console.log(res);
         if (res.data.message === "no subtitles") {
           setSubs(false);
         } else {

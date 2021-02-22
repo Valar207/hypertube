@@ -70,10 +70,10 @@ exports.downloadMovie = async (req, res, next) => {
       "45 59 2 * * *", // Tous les jours a 03:00
       () => {
         engine.remove(() => {
-          console.log("Remove stream");
+          // console.log("Remove stream");
         });
         engine.destroy(() => {
-          console.log("Stream stopped");
+          // console.log("Stream stopped");
         });
       },
       null,
@@ -140,15 +140,12 @@ exports.streamMovie = async (req, res, next) => {
           "45 59 2 * * *", // Tous les jours a 03:00
           () => {
             videoStream.close();
-            console.log("streammovie stop");
           },
           null,
           true,
           "Europe/Paris",
         );
         job.start();
-
-        console.log("after streamovie stop");
 
         // Stream the video chunk to the client
         videoStream.pipe(res);

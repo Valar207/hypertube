@@ -23,7 +23,6 @@ export const ResetPasswordEmail = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post("user/resetPasswordEmail", userEmail).then((res) => {
-      console.log(res);
       if (res.data.status === "error") {
         setAlert({
           open: true,
