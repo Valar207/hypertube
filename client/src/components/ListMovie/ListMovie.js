@@ -179,6 +179,7 @@ export const ListMovie = () => {
 
   const handleGenreClick = async (genre) => {
     try {
+      setMovies([]);
       setPageNumber(1);
       setGenre(genre);
       setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
