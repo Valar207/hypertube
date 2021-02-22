@@ -3,7 +3,7 @@ import { AppBar, Toolbar, IconButton, Grid, Popover, TextField, InputAdornment }
 import { Link } from "react-router-dom";
 import "../../assets/Style.scss";
 import "./Header.scss";
-import { ExitToApp, Movie, AccountCircle, Close, Search } from "@material-ui/icons";
+import { ExitToApp, Movie, AccountCircle, Close, Search, Group } from "@material-ui/icons";
 import { Profil } from "../Profil/Profil";
 import { AppContext } from "../../App";
 import axios from "axios";
@@ -87,6 +87,11 @@ export const Header = () => {
             <IconButton className="header__icon">
               <Link to="/listmovie">
                 <Movie />
+              </Link>
+            </IconButton>
+            <IconButton className="header__icon">
+              <Link to="/listusers">
+                <Group />
               </Link>
             </IconButton>
             <IconButton onClick={openPopover} className="header__icon">

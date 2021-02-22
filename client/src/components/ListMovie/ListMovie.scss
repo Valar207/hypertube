@@ -142,8 +142,15 @@
     }
   }
   .listMovie__items--before {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+    grid-gap: 14px;
+    padding: initial;
+    justify-content: center;
+    list-style-type: none;
     .MuiGridList-root {
-      justify-content: center;
+      list-style-type: none;
     }
     @media (max-width: 768px) {
       padding: 30px 0 0 0px;
@@ -165,6 +172,9 @@
     display: none;
     height: 25%;
     background: linear-gradient(transparent, 25%, black);
+    .MuiGridListTile-root {
+      list-style-type: none;
+    }
     .MuiGridListTileBar-title {
       font-size: 18px;
     }
