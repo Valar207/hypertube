@@ -12,7 +12,13 @@ const validateSignupInputs = async (req) => {
 };
 
 const validateNewPasswordInputs = async (req) => {
-  await check("password", "password is not valid").isLength({ min: 8 }).run(req);
+  await check(
+    "password",
+    "password should contain at least 8 characters, 1 lower case, 1 upper case and 1 special character",
+  )
+    .isLength({ min: 8 })
+    .matches(/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/, "i")
+    .run(req);
   await check("confirmPassword", "Passwords don't match")
     .custom((value, { req, loc, path }) => {
       if (value !== req.body.password) {

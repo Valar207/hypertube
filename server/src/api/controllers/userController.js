@@ -277,7 +277,9 @@ exports.editPassword = async (req, res, next) => {
     return res.status(200).json({ status: "error", message: "You are registered via google or 42" });
 
   if (await authHandler.comparePassword(req.user.password, oldPassword)) {
-    if (newPassword.length < 8) {
+    if (!new RegExp(/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$/).test(newPassword)) {
+      console.log("LAAAAA");
+
       return res.send({
         status: "error",
         message: "Your password must be at least 8 characters",
