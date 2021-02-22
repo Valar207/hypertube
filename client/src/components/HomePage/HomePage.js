@@ -16,7 +16,11 @@ export const HomePage = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchGenre = async () => {
-    setGenre(await fetchGenreTMDB());
+    try {
+      setGenre(await fetchGenreTMDB());
+    } catch (e) {
+      return;
+    }
   };
 
   const setMovie = async () => {
@@ -41,7 +45,6 @@ export const HomePage = () => {
     } catch (e) {
       return;
     }
-
     return () => {
       searchCancelTokenTmdb.source?.cancel();
       searchCancelToken.source?.cancel();

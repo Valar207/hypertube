@@ -130,7 +130,7 @@ export const ListMovie = () => {
           await fetchAPI();
         }
       } catch (e) {
-        console.error(e);
+        return;
       }
     };
     FirstEffect();
@@ -155,7 +155,6 @@ export const ListMovie = () => {
           await fetchAPI();
         }
       } catch (e) {
-        console.error(e);
         return;
       }
     };
@@ -180,25 +179,33 @@ export const ListMovie = () => {
   };
 
   const handleGenreClick = async (genre) => {
-    setPageNumber(1);
-    setGenre(genre);
-    setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
-    setSearch("");
-    setGenreFromHomePage("");
+    try {
+      setPageNumber(1);
+      setGenre(genre);
+      setMovies(await fetchMoviesYTS(genre, pageNumber, sort));
+      setSearch("");
+      setGenreFromHomePage("");
+    } catch (e) {
+      return;
+    }
   };
 
   const handleSortMovie = async (e) => {
-    setSort(e.currentTarget.value);
-    setPageNumber(1);
-    setMovies([]);
-    if (search) {
-      setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
-    } else {
-      setMovies(
-        filterMovie(
-          await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
-        ),
-      );
+    try {
+      setSort(e.currentTarget.value);
+      setPageNumber(1);
+      setMovies([]);
+      if (search) {
+        setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
+      } else {
+        setMovies(
+          filterMovie(
+            await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
+          ),
+        );
+      }
+    } catch (e) {
+      return;
     }
   };
 

@@ -81,7 +81,14 @@ export const fetchGenreTMDB = async () => {
     modifiedData[14].name = "Sci-fi";
     modifiedData[15].name = "Reality-TV";
     return modifiedData;
-  } catch (error) {}
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log(error, "fetchMoviesSearchYTS");
+      throw error;
+    } else {
+      throw error;
+    }
+  }
 };
 
 export const fetchMovieByGenreTMDB = async (genre_id) => {
