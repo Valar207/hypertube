@@ -19,7 +19,7 @@ import {
   Divider,
   IconButton,
 } from "@material-ui/core";
-import { fetchMoviesYTS, fetchMovieSearchYTS, searchCancelToken } from "../../service/yts";
+import { fetchMoviesYTS, fetchMovieSearchYTS, searchCancelToken, searchCancelTokenFetch } from "../../service/yts";
 import { fetchGenreTMDB } from "../../service/tmdb";
 import { AppContext } from "../../App";
 
@@ -66,31 +66,44 @@ export const ListMovie = () => {
   };
 
   const fetchAPI = async () => {
-    const newMovies = await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, sort);
-    if (newMovies) {
-      const tableau = [...movies, ...newMovies];
-      const result = filterMovie(distinctObjectArray(tableau));
-      setMovies(result);
-      setLoading(false);
-    } else {
-      setLoadingDisplay(false);
-    }
+    try {
+      const newMovies = await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, sort);
+      if (newMovies) {
+        const tableau = [...movies, ...newMovies];
+        const result = filterMovie(distinctObjectArray(tableau));
+        setMovies(result);
+        setLoading(false);
+      } else {
+        setLoadingDisplay(false);
+      }
+    } catch (e) {}
+
+    return () => {
+      searchCancelTokenFetch.source?.cancel();
+    };
   };
 
   const searchAPI = async () => {
-    let newMovies = await fetchMovieSearchYTS(search, pageNumber);
-    if (newMovies === "error") {
+    try {
+      let newMovies = await fetchMovieSearchYTS(search, pageNumber);
+      if (newMovies === "error") {
+        return;
+      }
+      if (newMovies) {
+        const tableau = [...movies, ...newMovies];
+        const result = filterMovie(distinctObjectArray(tableau));
+
+        setMovies(result);
+        setLoading(false);
+      } else {
+        setLoadingDisplay(false);
+      }
+    } catch (e) {
       return;
     }
-    if (newMovies) {
-      const tableau = [...movies, ...newMovies];
-      const result = filterMovie(distinctObjectArray(tableau));
-
-      setMovies(result);
-      setLoading(false);
-    } else {
-      setLoadingDisplay(false);
-    }
+    return () => {
+      searchCancelToken.source?.cancel(searchCancelToken.id);
+    };
   };
 
   //Pour savoir si le dernier élément est à l'écran

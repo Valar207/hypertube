@@ -5,6 +5,7 @@ const list = url + "/list_movies.json";
 const details = url + "/movie_details.json";
 
 export var searchCancelToken = { id: null, source: null };
+export var searchCancelTokenFetch = { id: null, source: null };
 
 export const fetchMovieDetailsYTS = async (movie_id) => {
   try {
@@ -70,7 +71,7 @@ export const fetchMovieSearchYTS = async (movie, pageNumber, sort) => {
 export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
   try {
     const source = axios.CancelToken.source();
-    searchCancelToken.source = source;
+    searchCancelTokenFetch.source = source;
 
     const { data } = await axios.get(list, {
       params: {
@@ -79,7 +80,7 @@ export const fetchMoviesYTS = async (genre, pageNumber, sort) => {
         sort_by: sort ? sort : null,
       },
       withCredentials: false,
-      cancelToken: searchCancelToken.source.token,
+      cancelToken: searchCancelTokenFetch.source.token,
     });
     const modifiedData = data.data.movies.map((m) => ({
       id: m["id"],

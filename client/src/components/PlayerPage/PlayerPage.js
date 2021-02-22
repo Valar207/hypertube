@@ -118,6 +118,9 @@ export const PlayerPage = (props) => {
     try {
       const response = await downloadMovieInServer(movieDetails, torrent);
       if (response?.status === "success") setVideoReady(true);
+      else {
+        return;
+      }
     } catch (e) {
       return;
     }

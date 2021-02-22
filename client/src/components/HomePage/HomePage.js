@@ -6,7 +6,7 @@ import "./HomePage.scss";
 import HorizontalScroll from "react-scroll-horizontal";
 import { Link } from "react-router-dom";
 import { fetchGenreTMDB, searchCancelTokenTmdb } from "../../service/tmdb";
-import { fetchMoviesYTS, searchCancelToken } from "../../service/yts";
+import { fetchMoviesYTS, searchCancelToken, searchCancelTokenFetch } from "../../service/yts";
 
 import textToImage from "text-to-image";
 
@@ -65,7 +65,7 @@ export const HomePage = () => {
     }
 
     return () => {
-      searchCancelToken.source?.cancel();
+      searchCancelTokenFetch.source?.cancel();
       isMounted = false;
     };
   }, [genre]);
