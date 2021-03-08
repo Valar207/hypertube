@@ -78,7 +78,7 @@ exports.downloadMovie = async (req, res, next) => {
       },
       null,
       true,
-      "Europe/Paris",
+      "Europe/Paris"
     );
 
     let piecesTotalNumber;
@@ -117,7 +117,7 @@ exports.streamMovie = async (req, res, next) => {
         const videoPath = path.resolve(pathMovie, file[0]);
         const videoSize = fs.statSync(videoPath).size;
 
-        const CHUNK_SIZE = 10 ** 6; // 1MB
+        const CHUNK_SIZE = 100 ** 6; // 1MB
         const start = Number(range.replace(/\D/g, ""));
         const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
@@ -143,7 +143,7 @@ exports.streamMovie = async (req, res, next) => {
           },
           null,
           true,
-          "Europe/Paris",
+          "Europe/Paris"
         );
         job.start();
 
@@ -161,7 +161,7 @@ exports.streamMovie = async (req, res, next) => {
 
               // Parse Range
               // Example: "bytes=32324-"
-              const CHUNK_SIZE = 10 ** 6; // 1MB
+              const CHUNK_SIZE = 100 ** 6; // 1MB
               const start = Number(range.replace(/\D/g, ""));
               const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
@@ -188,7 +188,7 @@ exports.streamMovie = async (req, res, next) => {
                 },
                 null,
                 true,
-                "Europe/Paris",
+                "Europe/Paris"
               );
               job.start();
 
@@ -251,7 +251,7 @@ exports.streamSubtitles = async (req, res, next) => {
               },
               null,
               true,
-              "Europe/Paris",
+              "Europe/Paris"
             );
 
             job.start();

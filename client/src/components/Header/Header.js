@@ -63,7 +63,7 @@ export const Header = () => {
                 <DelayInput
                   placeholder="Search"
                   minLength={2}
-                  delayTimeout={300}
+                  delayTimeout={1000}
                   onChange={handleSearch}
                   className="search-bar"
                   value={search}

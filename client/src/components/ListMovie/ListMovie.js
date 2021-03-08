@@ -102,7 +102,7 @@ export const ListMovie = () => {
       return;
     }
     return () => {
-      searchCancelToken.source?.cancel(searchCancelToken.id);
+      searchCancelToken.source?.cancel();
     };
   };
 
@@ -120,7 +120,7 @@ export const ListMovie = () => {
       });
       if (node) observer.current.observe(node);
     },
-    [loading],
+    [loading]
   );
 
   useEffect(async () => {
@@ -156,9 +156,8 @@ export const ListMovie = () => {
         setLoading(true);
         setMovies([]);
         setPageNumber(1);
-        if (search) {
-          await searchAPI();
-        } else {
+
+        if (!search) {
           await fetchAPI();
         }
       } catch (e) {
@@ -207,11 +206,7 @@ export const ListMovie = () => {
       if (search) {
         setMovies(filterMovie(await fetchMovieSearchYTS(search, pageNumber, e.currentTarget.value)));
       } else {
-        setMovies(
-          filterMovie(
-            await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value),
-          ),
-        );
+        setMovies(filterMovie(await fetchMoviesYTS(genreFromHomePage ? genreFromHomePage : genre, pageNumber, e.currentTarget.value)));
       }
     } catch (e) {
       return;
@@ -361,12 +356,7 @@ export const ListMovie = () => {
                 </Grid>
                 <Grid className="listMovie__filter-grid">
                   Ratings : {sliderValue.rate[0]} - {sliderValue.rate[1]}
-                  <Slider
-                    value={sliderValue.rate}
-                    max={10}
-                    onChange={handleChangeSlider("rate")}
-                    valueLabelDisplay="auto"
-                  />
+                  <Slider value={sliderValue.rate} max={10} onChange={handleChangeSlider("rate")} valueLabelDisplay="auto" />
                 </Grid>
               </Grid>
             </div>
