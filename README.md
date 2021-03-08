@@ -1,5 +1,8 @@
 # HyperTube project
 Popcorntime like app
+![alt text](client/public/img/git_img/homepage.PNG)
+![alt text](client/public/img/git_img/listMovie.PNG)
+![alt text](client/public/img/git_img/movie.PNG)
 ## Dependencies
 To start this website you need to have installed `nodejs`
 ### Launch app
