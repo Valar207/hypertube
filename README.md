@@ -1,23 +1,45 @@
 # HyperTube project
+
 Popcorntime like app
 ![alt text](client/public/img/git_img/homepage.PNG)
 ![alt text](client/public/img/git_img/listMovies.PNG)
 ![alt text](client/public/img/git_img/movie.PNG)
+
+## Tech Stack
+
+- Serveur: **NodeJS** - Framework **Express**
+- Client: **ReactJS** - **MaterialUI** - **SASS**
+- DB: **MongoDB**
+- Architecture: Client-Server - **API RESTful**
+
 ## Dependencies
+
 To start this website you need to have installed `nodejs`
+
 ### Launch app
+
 go to client root and run
+
 ```shell
 npm install
 npm start
 ```
+
 go to server root and run
+
 ```shell
 npm install
 npm start
 ```
+
+### Documentation
+
+Once the server is running, API documentation is available at http://localhost:5000/api-docs/
+
 ## Requirements
+
 You will need a .env file in server directory
+
 ```
 PORT=5000
 SITEURL=...
