@@ -3,7 +3,7 @@
 Popcorntime like app
 
 **HyperTube is a streaming website allowing you to watch your favorite movies**
-**Credit to:[Glorian Bikoumou](https://github.com/GlorianB) - [Valentin Rossi](https://github.com/Valar207) - [Alexandre Soysavanh](https://github.com/alexsoysavanh)**
+**Credit to: [Glorian Bikoumou](https://github.com/GlorianB) - [Valentin Rossi](https://github.com/Valar207) - [Alexandre Soysavanh](https://github.com/alexsoysavanh)**
 
 ![alt text](client/public/img/git_img/homepage.PNG)
 ![alt text](client/public/img/git_img/listMovies.PNG)
