@@ -26,7 +26,7 @@ To start this website you need to have installed `nodejs`
 go to client root and run
 
 ```shell
-npm install
+npm install --legacy-peer-deps
 npm start
 ```
 
